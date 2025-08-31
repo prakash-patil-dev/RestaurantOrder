@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:vm="clr-namespace:RestaurantOrder.ViewModels"
+             xmlns:Models="clr-namespace:RestaurantOrder.Models"
+             x:DataType="vm:INVHEADViewModel" Style="{StaticResource NewOrderPageStyle}" 
+             x:Class="RestaurantOrder.Views.CallBillsPage">
+ 
+    <!--<ContentPage.BindingContext>
+        <vm:INVHEADViewModel/>
+    </ContentPage.BindingContext>-->
+
+    <Grid RowSpacing="0" ColumnSpacing="0" HorizontalOptions="Fill" VerticalOptions="Fill">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="9*"></RowDefinition> <!--6.51-->
+            <RowDefinition Height="1*"></RowDefinition>
+            <RowDefinition Height="87*"></RowDefinition>
+            <RowDefinition Height="3*"></RowDefinition>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="1*"></ColumnDefinition>
+            <ColumnDefinition Width="98*"></ColumnDefinition>
+            <ColumnDefinition Width="1*"></ColumnDefinition>
+        </Grid.ColumnDefinitions>
+
+        <Image Grid.Column="0" Grid.ColumnSpan="3" Grid.Row="0" Source="header_bg.png" HorizontalOptions="Fill" VerticalOptions="Fill"  Aspect="Fill"/>
+        <ImageButton Grid.Column="1" Grid.Row="0" Grid.ColumnSpan="2" Source="icon_close.png" HorizontalOptions="End"
+                     VerticalOptions="Center" Aspect="AspectFit" BackgroundColor="Transparent" TranslationX="-10" Clicked="ImageCloseButton_Clicked" />
+
+
+        <Label Text="Open Bills" FontSize="25" TextColor="#9096d4" Grid.Row="0" Grid.Column="1" VerticalOptions="Center" HorizontalOptions="Center"/>
+        
+        <ScrollView Orientation="Horizontal" Grid.Row="2" Grid.Column="1" HorizontalOptions="Fill" VerticalOptions="Fill">
+
+            <CollectionView ItemsSource="{Binding AllOpenBillsList}"  BackgroundColor="Transparent"  HorizontalOptions="Fill" VerticalOptions="Fill" VerticalScrollBarVisibility="Always" HorizontalScrollBarVisibility="Always" ItemSizingStrategy="MeasureAllItems">
+                <CollectionView.ItemsLayout>
+                    <LinearItemsLayout Orientation="Vertical" ItemSpacing="2" />
+                </CollectionView.ItemsLayout>
+                <CollectionView.Header>
+                    <Grid RowSpacing="0" ColumnSpacing="0" Padding="0" Margin="0" >
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="50"></RowDefinition>
+                        </Grid.RowDefinitions>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="{OnPlatform  iOS=110, Android=110, WinUI=220}"></ColumnDefinition>
+                            <ColumnDefinition Width="{OnPlatform  iOS=110, Android=110, WinUI=230}"></ColumnDefinition>
+                            <ColumnDefinition Width="{OnPlatform  iOS=170, Android=170, WinUI=330}"></ColumnDefinition>
+                            <ColumnDefinition Width="{OnPlatform  iOS=140, Android=140, WinUI=240}"></ColumnDefinition>
+                            <ColumnDefinition Width="{OnPlatform  iOS=110, Android=110, WinUI=210}"></ColumnDefinition>
+                            <ColumnDefinition Width="{OnPlatform  iOS=150, Android=150, WinUI=250}"></ColumnDefinition>
+                            <ColumnDefinition Width="{OnPlatform  iOS=100, Android=100, WinUI=210}"></ColumnDefinition>
+                        </Grid.ColumnDefinitions>
+                      
+                        <Border Grid.Row="0" Grid.Column="0" Stroke="DarkGray" StrokeThickness="1" HorizontalOptions="Start" VerticalOptions="Fill" />
+                        <Border Grid.Row="0" Grid.Column="0" Stroke="DarkGray" StrokeThickness="1" HorizontalOptions="End" VerticalOptions="Fill" />
+                        <Border Grid.Row="0" Grid.Column="1" Stroke="DarkGray" StrokeThickness="1" HorizontalOptions="End" VerticalOptions="Fill" />
+                        <Border Grid.Row="0" Grid.Column="2" Stroke="DarkGray" StrokeThickness="1" HorizontalOptions="End" VerticalOptions="Fill" />
+                        <Border Grid.Row="0" Grid.Column="3" Stroke="DarkGray" StrokeThickness="1" HorizontalOptions="End" VerticalOptions="Fill" />
+                        <Border Grid.Row="0" Grid.Column="4" Stroke="DarkGray" StrokeThickness="1" HorizontalOptions="End" VerticalOptions="Fill" />
+                        <Border Grid.Row="0" Grid.Column="5" Stroke="DarkGray" StrokeThickness="1" HorizontalOptions="End" VerticalOptions="Fill" />
+                        <Border Grid.Row="0" Grid.Column="6" Stroke="DarkGray" StrokeThickness="1" HorizontalOptions="End" VerticalOptions="Fill" />
+
+                        <Border Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="7" Stroke="DarkGray" StrokeThickness="1" HorizontalOptions="Fill" VerticalOptions="Start" />
+                        <Border Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="7" Stroke="DarkGray" StrokeThickness="1" HorizontalOptions="Fill" VerticalOptions="End" />
+
+                        <Label Text="Bill No." HorizontalOptions="Center" VerticalOptions="Center" FontAttributes="Bold" Grid.Column="0"  TextColor="#9096d4"/>
+                        <Label Text="Date" HorizontalOptions="Center" VerticalOptions="Center" FontAttributes="Bold" Grid.Column="1" TextColor="#9096d4"/>
+                        <Label Text="Customer" HorizontalOptions="Center" VerticalOptions="Center" FontAttributes="Bold" Grid.Column="2" TextColor="#9096d4"/>
+                        <Label Text="Bill Amt." HorizontalOptions="Center" VerticalOptions="Center" FontAttributes="Bold" Grid.Column="3" TextColor="#9096d4"/>
+                        <Label Text="Deposit" HorizontalOptions="Center" VerticalOptions="Center" FontAttributes="Bold" Grid.Column="4" TextColor="#9096d4"/>
+                        <Label Text="Balance" HorizontalOptions="Center" VerticalOptions="Center" FontAttributes="Bold" Grid.Column="5" TextColor="#9096d4"/>
+                        <Label Text="Staff" HorizontalOptions="Center" VerticalOptions="Center" FontAttributes="Bold" Grid.Column="6" TextColor="#9096d4"/>
+                    </Grid>
+                </CollectionView.Header>
+
+                <CollectionView.ItemTemplate>
+                    <DataTemplate x:DataType="Models:INVHEAD">
+                        <Grid RowSpacing="0" ColumnSpacing="0"  Padding="0" Margin="0">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="50"></RowDefinition>
+                            </Grid.RowDefinitions>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="{OnPlatform  iOS=110, Android=110, WinUI=220}"></ColumnDefinition>
+                                <ColumnDefinition Width="{OnPlatform  iOS=110, Android=110, WinUI=230}"></ColumnDefinition>
+                                <ColumnDefinition Width="{OnPlatform  iOS=170, Android=170, WinUI=330}"></ColumnDefinition>
+                                <ColumnDefinition Width="{OnPlatform  iOS=140, Android=140, WinUI=240}"></ColumnDefinition>
+                                <ColumnDefinition Width="{OnPlatform  iOS=110, Android=110, WinUI=210}"></ColumnDefinition>
+                                <ColumnDefinition Width="{OnPlatform  iOS=150, Android=150, WinUI=250}"></ColumnDefinition>
+                                <ColumnDefinition Width="{OnPlatform  iOS=100, Android=100, WinUI=210}"></ColumnDefinition>
+                            </Grid.ColumnDefinitions>
+
+                            <Image Source="newrowbg.png" HorizontalOptions="Fill" VerticalOptions="Fill" Aspect="Fill"  Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="7"/>
+                            <Border Grid.Row="0" Grid.Column="0" Stroke="DarkGray" StrokeThickness="1" HorizontalOptions="Start" VerticalOptions="Fill" Margin="0,2,0,5" />
+                            <Border Grid.Row="0" Grid.Column="0" Stroke="DarkGray" StrokeThickness="1" HorizontalOptions="End" VerticalOptions="Fill" Margin="0,2,0,5" />
+                            <Border Grid.Row="0" Grid.Column="1" Stroke="DarkGray" StrokeThickness="1" HorizontalOptions="End" VerticalOptions="Fill" Margin="0,2,0,5" />
+                            <Border Grid.Row="0" Grid.Column="2" Stroke="DarkGray" StrokeThickness="1" HorizontalOptions="End" VerticalOptions="Fill" Margin="0,2,0,5" />
+                            <Border Grid.Row="0" Grid.Column="3" Stroke="DarkGray" StrokeThickness="1" HorizontalOptions="End" VerticalOptions="Fill" Margin="0,2,0,5" />
+                            <Border Grid.Row="0" Grid.Column="3" Stroke="DarkGray" StrokeThickness="1" HorizontalOptions="End" VerticalOptions="Fill" Margin="0,2,0,5" />
+                            <Border Grid.Row="0" Grid.Column="4" Stroke="DarkGray" StrokeThickness="1" HorizontalOptions="End" VerticalOptions="Fill" Margin="0,2,0,5" />
+                            <Border Grid.Row="0" Grid.Column="5" Stroke="DarkGray" StrokeThickness="1" HorizontalOptions="End" VerticalOptions="Fill" Margin="0,2,0,5" />
+                            <Border Grid.Row="0" Grid.Column="6" Stroke="DarkGray" StrokeThickness="1" HorizontalOptions="End" VerticalOptions="Fill" Margin="0,2,0,5" />
+
+                            <Label Text="{Binding TXNNO}" FontSize="14" TextColor="#a8d5f0" Grid.Row="0" Grid.Column="0"  HorizontalOptions="Center" VerticalOptions="Center"/>
+                            <Label Text="{Binding TXNDT, StringFormat='{}{0:dd-MM-yyyy}'}" FontSize="14" TextColor="#a8d5f0" Grid.Row="0" Grid.Column="1"  HorizontalOptions="Center" VerticalOptions="Center"/>
+                            <Label Text="{Binding CUSTNAME}" FontSize="14" TextColor="#a8d5f0" Grid.Row="0" Grid.Column="2"  HorizontalOptions="Center" VerticalOptions="Center"/>
+                            <Label Text="{Binding BILLAMOUNT}" FontSize="14" TextColor="#a8d5f0" Grid.Row="0" Grid.Column="3"  HorizontalOptions="Center" VerticalOptions="Center"/>
+                            <Label Text="{Binding DEPCASH}" FontSize="14" TextColor="#a8d5f0" Grid.Row="0" Grid.Column="4"  HorizontalOptions="Center" VerticalOptions="Center"/>
+                            <Label Text="{Binding BALANCE}" FontSize="14" TextColor="#a8d5f0" Grid.Row="0" Grid.Column="5" HorizontalOptions="Center" VerticalOptions="Center" />
+                            <Label Text="{Binding STAFF}" FontSize="14" TextColor="#a8d5f0"  Grid.Row="0" Grid.Column="6" HorizontalOptions="Center" VerticalOptions="Center"/>
+                        </Grid>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
+        </ScrollView>
+
+        <Border Grid.Row="2" Grid.Column="1" Stroke="DarkGray" StrokeThickness="2" Padding="0" StrokeShape="Rectangle" Margin="0" />
+        
+        <ActivityIndicator IsRunning="{Binding Isbussy}" IsVisible="{Binding IsVisibleIndicator}" VerticalOptions="Center" HorizontalOptions="Center" 
+                           Grid.Column="1" Grid.Row="0" Grid.RowSpan="4" Color="#8c24d1"  />
+    </Grid>
+</ContentPage>

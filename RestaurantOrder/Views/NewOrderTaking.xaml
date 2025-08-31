@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:custom="clr-namespace:RestaurantOrder.CustomControls"    
+             xmlns:vm="clr-namespace:RestaurantOrder.ViewModels"
+             x:DataType="vm:NewOrderTakingViewModel"
+             x:Class="RestaurantOrder.Views.NewOrderTaking" Style="{StaticResource NewOrderPageStyle}" >  
+  
+    <!--<ContentPage.Resources>
+        
+    </ContentPage.Resources>-->
+    <Grid RowSpacing="0" ColumnSpacing="0" >
+        <Grid.RowDefinitions>
+            <RowDefinition Height="2*"></RowDefinition>
+            <RowDefinition Height="14*"></RowDefinition>
+            <RowDefinition Height="15*"></RowDefinition>
+            <RowDefinition Height="4*"></RowDefinition>
+            <RowDefinition Height="35*"></RowDefinition>
+            <RowDefinition Height="5*"></RowDefinition>
+            <RowDefinition Height="13*"></RowDefinition>
+            <RowDefinition Height="12*"></RowDefinition>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="3*"></ColumnDefinition>
+            <ColumnDefinition Width="94*"></ColumnDefinition>
+            <ColumnDefinition Width="3*"></ColumnDefinition>
+        </Grid.ColumnDefinitions>
+
+        <Label Text="New Order Taking" TextColor="#9096d4" Grid.Row="1" Grid.Column="1" VerticalTextAlignment="Center" VerticalOptions="Center" HorizontalOptions="Center"  Style="{StaticResource Headline}" SemanticProperties.HeadingLevel="Level1"  />
+
+        <Grid Grid.Row="2"  Grid.Column="1"  ColumnSpacing="0" RowSpacing="0" Padding="0" Margin="0" >
+            <Grid.RowDefinitions>
+                <RowDefinition Height="46*"></RowDefinition>    
+                <RowDefinition Height="8*"></RowDefinition>
+                <RowDefinition Height="46*"></RowDefinition>
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="27*"></ColumnDefinition>
+                <ColumnDefinition Width="38*"></ColumnDefinition>
+                <ColumnDefinition Width="2*"></ColumnDefinition>
+                <ColumnDefinition Width="33*"></ColumnDefinition>
+            </Grid.ColumnDefinitions>
+          
+            <Label Text="TABLE :" TextColor="#9096d4" Grid.Row="0" Grid.Column="0" VerticalTextAlignment="Center" VerticalOptions="Center" HorizontalOptions="Center"  Style="{StaticResource SubHeadline}" SemanticProperties.HeadingLevel="Level1"  />
+            <Label Text="GUEST :" TextColor="#9096d4" Grid.Row="2" Grid.Column="0" VerticalTextAlignment="Center" VerticalOptions="Center" HorizontalOptions="Center"  Style="{StaticResource SubHeadline}" SemanticProperties.HeadingLevel="Level1"  />
+
+            <Image Grid.Column="1" Grid.Row="0" Source="textbox_bg.png"  Aspect="Fill" VerticalOptions="Fill"></Image>
+            <Image Grid.Column="1" Grid.Row="2" Source="textbox_bg.png"  Aspect="Fill" VerticalOptions="Fill"></Image>
+            <Border StrokeThickness="2" Stroke="Honeydew" Padding="0" Grid.Column="1"  Grid.Row="0" HorizontalOptions="Fill" VerticalOptions="Fill" StrokeShape="RoundRectangle 5,5,5,5" >
+                <custom:BorderlessEntry Text="{Binding TableNo}" TextColor="WhiteSmoke" HorizontalOptions="Fill" VerticalOptions="Fill" FontAutoScalingEnabled="True" TextChanged="OnTableNoEntryTextChanged" Keyboard="Numeric" />
+            </Border>
+            <Border StrokeThickness="2" Stroke="Honeydew" Padding="0" Grid.Column="1" Grid.Row="2" HorizontalOptions="Fill" VerticalOptions="Fill" StrokeShape="RoundRectangle 5,5,5,5" >
+                <custom:BorderlessEntry Text="{Binding TotalGuest}" TextColor="WhiteSmoke" HorizontalOptions="Fill" VerticalOptions="Fill"  FontAutoScalingEnabled="True"
+                        TextChanged="OnTotalGuestEntryTextChanged" Keyboard="Numeric"/>
+            </Border>
+            <Button x:Name="BtnCall" TextColor="Black" FontAttributes="Bold" FontSize="19" BackgroundColor="#7CFF72" Grid.Column="3" Grid.Row="0" Grid.RowSpan="3" CornerRadius="5" Text="CALL"  BorderColor="Honeydew" BorderWidth="2" HorizontalOptions="Fill" Margin="0,15" TranslationY="-15" VerticalOptions="Fill" Clicked="BtnCall_Clicked"/>
+        </Grid>
+
+        <Grid Grid.Row="4"  Grid.Column="1"  ColumnSpacing="0" RowSpacing="0">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="31.1*"></RowDefinition>
+                <RowDefinition Height="5*"></RowDefinition>
+                <RowDefinition Height="19.3*"></RowDefinition>
+                <RowDefinition Height="3*"></RowDefinition>
+                <RowDefinition Height="19.3*"></RowDefinition>
+                <RowDefinition Height="3*"></RowDefinition>
+                <RowDefinition Height="19.3*"></RowDefinition>
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="28*"></ColumnDefinition>
+                <ColumnDefinition Width="28*"></ColumnDefinition>
+                <ColumnDefinition Width="44*"></ColumnDefinition>
+            </Grid.ColumnDefinitions>
+
+            <Button x:Name="BtnNewOrder" TextColor="Black" FontAttributes="Bold" FontSize="17" FontAutoScalingEnabled="True" BackgroundColor="#E3E3E3" Grid.Column="2" Grid.Row="0"  CornerRadius="5" Text="New Order" BorderColor="Honeydew" BorderWidth="2"
+                     HorizontalOptions="Fill"  VerticalOptions="Fill" Clicked="BtnNewOrder_Clicked"/>
+            <Button TextColor="Black" FontAttributes="Bold" FontSize="17" FontAutoScalingEnabled="True" BackgroundColor="#E3E3E3" Grid.Column="2" Grid.Row="2"  CornerRadius="5" Text="Logout" BorderColor="Honeydew" BorderWidth="2" HorizontalOptions="Fill" VerticalOptions="Fill" />
+            <Button TextColor="Black" FontAttributes="Bold" FontSize="17" FontAutoScalingEnabled="True" BackgroundColor="#DCDCDC" Grid.Column="2" Grid.Row="4"  CornerRadius="5" Text="Sync" BorderColor="Honeydew" BorderWidth="2" HorizontalOptions="Fill" VerticalOptions="Fill" />
+            <Button TextColor="Black" FontAttributes="Bold" FontSize="17" FontAutoScalingEnabled="True" BackgroundColor="#DCDCDC" Grid.Column="2" Grid.Row="6"  CornerRadius="5" Text="Settings" BorderColor="Honeydew" BorderWidth="2" HorizontalOptions="Fill" VerticalOptions="Fill" />
+        </Grid>
+
+        <Grid Grid.Row="6"  Grid.Column="1"  ColumnSpacing="0" RowSpacing="0">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="50*"></RowDefinition>
+                <RowDefinition Height="50*"></RowDefinition>
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="30*"></ColumnDefinition>
+                <ColumnDefinition Width="30*"></ColumnDefinition>
+                <ColumnDefinition Width="40*"></ColumnDefinition>
+            </Grid.ColumnDefinitions>
+            
+            <Label Text="Check Date &amp; time"  Grid.Row="0" Grid.Column="0" LineBreakMode="TailTruncation" Grid.ColumnSpan="2" VerticalTextAlignment="Center" VerticalOptions="Center"  HorizontalOptions="Center" 
+                 Style="{StaticResource SubHeadline}" SemanticProperties.HeadingLevel="Level1"  />
+
+            <DatePicker Grid.Row="1" Grid.Column="0" HorizontalOptions="Center" VerticalOptions="End" FontSize="15" FontAutoScalingEnabled="True" />
+            <TimePicker Grid.Row="1" Grid.Column="1" HorizontalOptions="Center" VerticalOptions="End" FontSize="15" FontAutoScalingEnabled="True" />
+
+            <Button TextColor="Black" FontAttributes="Bold" FontSize="19" BackgroundColor="#DCDCDC" Grid.Column="3" Grid.Row="1"  CornerRadius="5" Text="Set" BorderColor="Honeydew" BorderWidth="2" HorizontalOptions="Fill" Margin="0,0,5,0" VerticalOptions="Fill" />
+        </Grid>
+
+        <ActivityIndicator x:Name="NewOrderPageIndecator"  IsRunning="{Binding IsBusy}" IsVisible="{Binding IsVisibleIndicator}" VerticalOptions="Center" HorizontalOptions="Center" 
+               Grid.Column="1" Grid.Row="1" Grid.RowSpan="6" Color="#8c24d1"  />
+    </Grid>
+</ContentPage>
