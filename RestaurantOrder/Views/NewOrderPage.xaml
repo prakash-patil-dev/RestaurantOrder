@@ -42,13 +42,13 @@
                     <RowDefinition Height="*"></RowDefinition>
                 </Grid.RowDefinitions>
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="{OnPlatform  iOS=110, Android=110, WinUI=220}"></ColumnDefinition>
-                    <ColumnDefinition Width="{OnPlatform  iOS=110, Android=110, WinUI=230}"></ColumnDefinition>
-                    <ColumnDefinition Width="{OnPlatform  iOS=170, Android=170, WinUI=330}"></ColumnDefinition>
-                    <ColumnDefinition Width="{OnPlatform  iOS=140, Android=140, WinUI=240}"></ColumnDefinition>
-                    <ColumnDefinition Width="{OnPlatform  iOS=110, Android=110, WinUI=210}"></ColumnDefinition>
-                    <ColumnDefinition Width="{OnPlatform  iOS=150, Android=150, WinUI=250}"></ColumnDefinition>
-                    <ColumnDefinition Width="{OnPlatform  iOS=100, Android=100, WinUI=210}"></ColumnDefinition>
+                    <ColumnDefinition Width="{OnPlatform  iOS=110, Android=110, WinUI=10*}"></ColumnDefinition>
+                    <ColumnDefinition Width="{OnPlatform  iOS=110, Android=110, WinUI=12*}"></ColumnDefinition>
+                    <ColumnDefinition Width="{OnPlatform  iOS=170, Android=170, WinUI=22*}"></ColumnDefinition>
+                    <ColumnDefinition Width="{OnPlatform  iOS=140, Android=140, WinUI=14*}"></ColumnDefinition>
+                    <ColumnDefinition Width="{OnPlatform  iOS=110, Android=110, WinUI=14*}"></ColumnDefinition>
+                    <ColumnDefinition Width="{OnPlatform  iOS=150, Android=150, WinUI=14*}"></ColumnDefinition>
+                    <ColumnDefinition Width="{OnPlatform  iOS=100, Android=100, WinUI=14*}"></ColumnDefinition>
                 </Grid.ColumnDefinitions>
 
                 <Border Grid.Row="0" Grid.Column="0" Stroke="DarkGray" StrokeThickness="1" HorizontalOptions="Start" VerticalOptions="Fill" />
@@ -94,13 +94,13 @@
                                     <RowDefinition Height="50"></RowDefinition>
                                 </Grid.RowDefinitions>
                                 <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="{OnPlatform  iOS=110, Android=110, WinUI=220}"></ColumnDefinition>
-                                    <ColumnDefinition Width="{OnPlatform  iOS=110, Android=110, WinUI=230}"></ColumnDefinition>
-                                    <ColumnDefinition Width="{OnPlatform  iOS=170, Android=170, WinUI=330}"></ColumnDefinition>
-                                    <ColumnDefinition Width="{OnPlatform  iOS=140, Android=140, WinUI=240}"></ColumnDefinition>
-                                    <ColumnDefinition Width="{OnPlatform  iOS=110, Android=110, WinUI=210}"></ColumnDefinition>
-                                    <ColumnDefinition Width="{OnPlatform  iOS=150, Android=150, WinUI=250}"></ColumnDefinition>
-                                    <ColumnDefinition Width="{OnPlatform  iOS=100, Android=100, WinUI=210}"></ColumnDefinition>
+                                    <ColumnDefinition Width="{OnPlatform  iOS=110, Android=110, WinUI=10*}"></ColumnDefinition>
+                                    <ColumnDefinition Width="{OnPlatform  iOS=110, Android=110, WinUI=12*}"></ColumnDefinition>
+                                    <ColumnDefinition Width="{OnPlatform  iOS=170, Android=170, WinUI=22*}"></ColumnDefinition>
+                                    <ColumnDefinition Width="{OnPlatform  iOS=140, Android=140, WinUI=14*}"></ColumnDefinition>
+                                    <ColumnDefinition Width="{OnPlatform  iOS=110, Android=110, WinUI=14*}"></ColumnDefinition>
+                                    <ColumnDefinition Width="{OnPlatform  iOS=150, Android=150, WinUI=14*}"></ColumnDefinition>
+                                    <ColumnDefinition Width="{OnPlatform  iOS=100, Android=100, WinUI=14*}"></ColumnDefinition>
                                 </Grid.ColumnDefinitions>
 
                                 <Image Source="newrowbg.png" HorizontalOptions="Fill" VerticalOptions="Fill" Aspect="Fill"  Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="7"/>
@@ -142,11 +142,11 @@
                         <RowDefinition Height="Auto"/>
                         <RowDefinition Height="Auto"/>
                         <RowDefinition Height="Auto"/>
-                        <RowDefinition Height="3"/>
-                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="3" />
                         <RowDefinition Height="Auto" />
                         <RowDefinition Height="3" />
-                        <RowDefinition Height="10" />
+                        <RowDefinition Height="5" />
                     </Grid.RowDefinitions>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="25*"/>
@@ -156,29 +156,41 @@
                         <!--<ColumnDefinition Width="20*"/>-->
                     </Grid.ColumnDefinitions>
 
+                    <Grid  Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="4" >
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                        </Grid.RowDefinitions>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="50*"/>
+                            <ColumnDefinition Width="50*"/>
+                        </Grid.ColumnDefinitions>
+                        <Label Text="{Binding CurrentOpenBill.TABLENO ,StringFormat='Table No : {0}'}" FontSize="14" TextColor="#9096d4" Grid.Row="0" Grid.Column="0" VerticalOptions="Center" HorizontalOptions="Center" VerticalTextAlignment="Center" HeightRequest="40"/>
+                        <Label Text="{Binding CurrentOpenBill.TOTCOSTAMT ,StringFormat='Total Customer : {0}'}" FontSize="14" TextColor="#9096d4" Grid.Row="0" Grid.Column="1" VerticalOptions="Center" HorizontalOptions="Center" VerticalTextAlignment="Center" HeightRequest="40"/>
+                    </Grid>
 
-
-                    <Button BackgroundColor="#CBBC7B" Background="#CBBC7B" Padding="0" Margin="0" FontSize="11" FontAttributes="Bold" CornerRadius="3" BorderWidth="2" HeightRequest="40" BorderColor="RosyBrown" Text="CAT HELP" Grid.Row="0" Grid.Column="0" Command="{Binding QuickBtnCLickCommand}" CommandParameter="CAT HELP" />
-                    <Button BackgroundColor="#CBBC7B" Background="#CBBC7B" Padding="0" Margin="0" FontSize="11" FontAttributes="Bold" CornerRadius="3" BorderWidth="2" HeightRequest="40" BorderColor="RosyBrown" Text="ITEM HELP" Grid.Row="0" Grid.Column="1" Command="{Binding QuickBtnCLickCommand}" CommandParameter="ITEM HELP"/>
-                    <Button BackgroundColor="#CBBC7B" Background="#CBBC7B" Padding="0" Margin="0" FontSize="11" FontAttributes="Bold" CornerRadius="3" BorderWidth="2" HeightRequest="40" BorderColor="RosyBrown" Text="BILL TYPE" Grid.Row="0" Grid.Column="2" Command="{Binding QuickBtnCLickCommand}" CommandParameter="BILL TYPE"/>
-                    <Button BackgroundColor="#CBBC7B" Background="#CBBC7B" Padding="0" Margin="0" FontSize="11" FontAttributes="Bold" CornerRadius="3" BorderWidth="2" HeightRequest="40" BorderColor="RosyBrown" Text="COMBO PACK" Grid.Row="0" Grid.Column="3" Command="{Binding QuickBtnCLickCommand}" CommandParameter="COMBO PACK" />
+                  
+                    <Button BackgroundColor="#CBBC7B" Background="#CBBC7B" Padding="0" Margin="0" FontSize="11" FontAttributes="Bold" CornerRadius="3" BorderWidth="2" HeightRequest="40" BorderColor="RosyBrown" Text="CAT HELP" Grid.Row="1" Grid.Column="0" Command="{Binding QuickBtnCLickCommand}" CommandParameter="CAT HELP" />
+                    <Button BackgroundColor="#CBBC7B" Background="#CBBC7B" Padding="0" Margin="0" FontSize="11" FontAttributes="Bold" CornerRadius="3" BorderWidth="2" HeightRequest="40" BorderColor="RosyBrown" Text="ITEM HELP" Grid.Row="1" Grid.Column="1" Command="{Binding QuickBtnCLickCommand}" CommandParameter="ITEM HELP"/>
+                    <Button BackgroundColor="#CBBC7B" Background="#CBBC7B" Padding="0" Margin="0" FontSize="11" FontAttributes="Bold" CornerRadius="3" BorderWidth="2" HeightRequest="40" BorderColor="RosyBrown" Text="BILL TYPE" Grid.Row="1" Grid.Column="2" Command="{Binding QuickBtnCLickCommand}" CommandParameter="BILL TYPE"/>
+                    <Button BackgroundColor="#CBBC7B" Background="#CBBC7B" Padding="0" Margin="0" FontSize="11" FontAttributes="Bold" CornerRadius="3" BorderWidth="2" HeightRequest="40" BorderColor="RosyBrown" Text="COMBO PACK" Grid.Row="1" Grid.Column="3" Command="{Binding QuickBtnCLickCommand}" CommandParameter="COMBO PACK" />
                     
-                    <Button BackgroundColor="#CBBC7B" Background="#CBBC7B" Padding="0" Margin="0" FontSize="11" FontAttributes="Bold" CornerRadius="3" BorderWidth="2" HeightRequest="40" BorderColor="RosyBrown" Text="TOPPING" Grid.Row="1" Grid.Column="0" Command="{Binding QuickBtnCLickCommand}" CommandParameter="TOPPING"/>
-                    <Button BackgroundColor="#CBBC7B" Background="#CBBC7B" Padding="0" Margin="0" FontSize="11" FontAttributes="Bold" CornerRadius="3" BorderWidth="2" HeightRequest="40" BorderColor="RosyBrown" Text="KOT MESSAGE" Grid.Row="1" Grid.Column="1" Command="{Binding QuickBtnCLickCommand}" CommandParameter="KOT MESSAGE" />
-                    <Button BackgroundColor="#CBBC7B" Background="#CBBC7B" Padding="0" Margin="0" FontSize="11" FontAttributes="Bold" CornerRadius="3" BorderWidth="2" HeightRequest="40" BorderColor="RosyBrown" Text="CLEAR LINE" Grid.Row="1" Grid.Column="2" Command="{Binding QuickBtnCLickCommand}" CommandParameter="CLEAR LINE"/>
-                    <Button BackgroundColor="#CBBC7B" Background="#CBBC7B" Padding="0" Margin="0" FontSize="11" FontAttributes="Bold" CornerRadius="3" BorderWidth="2" HeightRequest="40" BorderColor="RosyBrown" Text="OPEN PRICE" Grid.Row="1" Grid.Column="3" Command="{Binding QuickBtnCLickCommand}" CommandParameter="OPEN PRICE" />
+                    <Button BackgroundColor="#CBBC7B" Background="#CBBC7B" Padding="0" Margin="0" FontSize="11" FontAttributes="Bold" CornerRadius="3" BorderWidth="2" HeightRequest="40" BorderColor="RosyBrown" Text="TOPPING" Grid.Row="2" Grid.Column="0" Command="{Binding QuickBtnCLickCommand}" CommandParameter="TOPPING"/>
+                    <Button BackgroundColor="#CBBC7B" Background="#CBBC7B" Padding="0" Margin="0" FontSize="11" FontAttributes="Bold" CornerRadius="3" BorderWidth="2" HeightRequest="40" BorderColor="RosyBrown" Text="KOT MESSAGE" Grid.Row="2" Grid.Column="1" Command="{Binding QuickBtnCLickCommand}" CommandParameter="KOT MESSAGE" />
+                    <Button BackgroundColor="#CBBC7B" Background="#CBBC7B" Padding="0" Margin="0" FontSize="11" FontAttributes="Bold" CornerRadius="3" BorderWidth="2" HeightRequest="40" BorderColor="RosyBrown" Text="CLEAR LINE" Grid.Row="2" Grid.Column="2" Command="{Binding QuickBtnCLickCommand}" CommandParameter="CLEAR LINE"/>
+                    <Button BackgroundColor="#CBBC7B" Background="#CBBC7B" Padding="0" Margin="0" FontSize="11" FontAttributes="Bold" CornerRadius="3" BorderWidth="2" HeightRequest="40" BorderColor="RosyBrown" Text="OPEN PRICE" Grid.Row="2" Grid.Column="3" Command="{Binding QuickBtnCLickCommand}" CommandParameter="OPEN PRICE" />
 
-                    <Button BackgroundColor="#CBBC7B" Background="#CBBC7B" Padding="0" Margin="0" FontSize="11" FontAttributes="Bold" CornerRadius="3" BorderWidth="2" HeightRequest="40" BorderColor="RosyBrown" Text="BILL DISC" Grid.Row="2" Grid.Column="0" Command="{Binding QuickBtnCLickCommand}" CommandParameter="BILL DISC" IsVisible="{Binding IsMoreKeysVisible}" />
-                    <Button BackgroundColor="#CBBC7B" Background="#CBBC7B" Padding="0" Margin="0" FontSize="11" FontAttributes="Bold" CornerRadius="3" BorderWidth="2" HeightRequest="40" BorderColor="RosyBrown" Text="HOLD BILL" Grid.Row="2" Grid.Column="1" Command="{Binding QuickBtnCLickCommand}" CommandParameter="HOLD BILL" IsVisible="{Binding IsMoreKeysVisible}" />
-                    <Button BackgroundColor="#CBBC7B" Background="#CBBC7B" Padding="0" Margin="0" FontSize="11" FontAttributes="Bold" CornerRadius="3" BorderWidth="2" HeightRequest="40" BorderColor="RosyBrown" Text="PRINT N HOLD BILL" Grid.Row="2" Grid.Column="2" Command="{Binding QuickBtnCLickCommand}" CommandParameter="PRINT N HOLD BILL" IsVisible="{Binding IsMoreKeysVisible}" />
-                    <Button BackgroundColor="#CBBC7B" Background="#CBBC7B" Padding="0" Margin="0" FontSize="11" FontAttributes="Bold" CornerRadius="3" BorderWidth="2" HeightRequest="40" BorderColor="RosyBrown" Text="OPEN BILLS" Grid.Row="2" Grid.Column="3" Command="{Binding QuickBtnCLickCommand}" CommandParameter="OPEN BILLS" IsVisible="{Binding IsMoreKeysVisible}" />
+                    <Button BackgroundColor="#CBBC7B" Background="#CBBC7B" Padding="0" Margin="0" FontSize="11" FontAttributes="Bold" CornerRadius="3" BorderWidth="2" HeightRequest="40" BorderColor="RosyBrown" Text="BILL DISC" Grid.Row="3" Grid.Column="0" Command="{Binding QuickBtnCLickCommand}" CommandParameter="BILL DISC" IsVisible="{Binding IsMoreKeysVisible}" />
+                    <Button BackgroundColor="#CBBC7B" Background="#CBBC7B" Padding="0" Margin="0" FontSize="11" FontAttributes="Bold" CornerRadius="3" BorderWidth="2" HeightRequest="40" BorderColor="RosyBrown" Text="HOLD BILL" Grid.Row="3" Grid.Column="1" Command="{Binding QuickBtnCLickCommand}" CommandParameter="HOLD BILL" IsVisible="{Binding IsMoreKeysVisible}" />
+                    <Button BackgroundColor="#CBBC7B" Background="#CBBC7B" Padding="0" Margin="0" FontSize="11" FontAttributes="Bold" CornerRadius="3" BorderWidth="2" HeightRequest="40" BorderColor="RosyBrown" Text="PRINT N HOLD BILL" Grid.Row="3" Grid.Column="2" Command="{Binding QuickBtnCLickCommand}" CommandParameter="PRINT N HOLD BILL" IsVisible="{Binding IsMoreKeysVisible}" />
+                    <Button BackgroundColor="#CBBC7B" Background="#CBBC7B" Padding="0" Margin="0" FontSize="11" FontAttributes="Bold" CornerRadius="3" BorderWidth="2" HeightRequest="40" BorderColor="RosyBrown" Text="OPEN BILLS" Grid.Row="3" Grid.Column="3" Command="{Binding QuickBtnCLickCommand}" CommandParameter="OPEN BILLS" IsVisible="{Binding IsMoreKeysVisible}" />
 
-                    <Button BackgroundColor="#CBBC7B" Background="#CBBC7B" Padding="0" Margin="0" FontSize="11" FontAttributes="Bold" CornerRadius="3" BorderWidth="2" HeightRequest="40" BorderColor="RosyBrown" Text="PRICE TYPE" Grid.Row="3" Grid.Column="0" Command="{Binding QuickBtnCLickCommand}" CommandParameter="PRICE TYPE" IsVisible="{Binding IsMoreKeysVisible}" />
-                    <Button BackgroundColor="#CBBC7B" Background="#CBBC7B" Padding="0" Margin="0" FontSize="11" FontAttributes="Bold" CornerRadius="3" BorderWidth="2" HeightRequest="40" BorderColor="RosyBrown" Text="PLU" Grid.Row="3" Grid.Column="1" Command="{Binding QuickBtnCLickCommand}" CommandParameter="PLU" IsVisible="{Binding IsMoreKeysVisible}" />
-                    <Button BackgroundColor="#CBBC7B" Background="#CBBC7B" Padding="0" Margin="0" FontSize="11" FontAttributes="Bold" CornerRadius="3" BorderWidth="2" HeightRequest="40" BorderColor="RosyBrown" Text="SETTLEMENT" Grid.Row="3" Grid.Column="2" Command="{Binding QuickBtnCLickCommand}" CommandParameter="SETTLEMENT" IsVisible="{Binding IsMoreKeysVisible}" />
-                    <Button BackgroundColor="#CBBC7B" Background="#CBBC7B" Padding="0" Margin="0" FontSize="11" FontAttributes="Bold" CornerRadius="3" BorderWidth="2" HeightRequest="40" BorderColor="RosyBrown" Text="DISPLAY TOTAL" Grid.Row="3" Grid.Column="3" Command="{Binding QuickBtnCLickCommand}" CommandParameter="DISPLAY TOTAL" IsVisible="{Binding IsMoreKeysVisible}" />
+                    <Button BackgroundColor="#CBBC7B" Background="#CBBC7B" Padding="0" Margin="0" FontSize="11" FontAttributes="Bold" CornerRadius="3" BorderWidth="2" HeightRequest="40" BorderColor="RosyBrown" Text="PRICE TYPE" Grid.Row="4" Grid.Column="0" Command="{Binding QuickBtnCLickCommand}" CommandParameter="PRICE TYPE" IsVisible="{Binding IsMoreKeysVisible}" />
+                    <Button BackgroundColor="#CBBC7B" Background="#CBBC7B" Padding="0" Margin="0" FontSize="11" FontAttributes="Bold" CornerRadius="3" BorderWidth="2" HeightRequest="40" BorderColor="RosyBrown" Text="PLU" Grid.Row="4" Grid.Column="1" Command="{Binding QuickBtnCLickCommand}" CommandParameter="PLU" IsVisible="{Binding IsMoreKeysVisible}" />
+                    <Button BackgroundColor="#CBBC7B" Background="#CBBC7B" Padding="0" Margin="0" FontSize="11" FontAttributes="Bold" CornerRadius="3" BorderWidth="2" HeightRequest="40" BorderColor="RosyBrown" Text="SETTLEMENT" Grid.Row="4" Grid.Column="2" Command="{Binding QuickBtnCLickCommand}" CommandParameter="SETTLEMENT" IsVisible="{Binding IsMoreKeysVisible}" />
+                    <Button BackgroundColor="#CBBC7B" Background="#CBBC7B" Padding="0" Margin="0" FontSize="11" FontAttributes="Bold" CornerRadius="3" BorderWidth="2" HeightRequest="40" BorderColor="RosyBrown" Text="DISPLAY TOTAL" Grid.Row="4" Grid.Column="3" Command="{Binding QuickBtnCLickCommand}" CommandParameter="DISPLAY TOTAL" IsVisible="{Binding IsMoreKeysVisible}" />
 
-                    <ImageButton Grid.Row="4" Grid.Column="4" BackgroundColor="Transparent" Background="Transparent" Source="icon_downarrow.png" Padding="0" Margin="0" Aspect="AspectFit" HeightRequest="24" MaximumHeightRequest="24" MaximumWidthRequest="36"
+                    <ImageButton Grid.Row="5" Grid.Column="4" BackgroundColor="Transparent" Background="Transparent" Source="icon_downarrow.png" Padding="0" Margin="0" Aspect="AspectFit" HeightRequest="24" MaximumHeightRequest="24" MaximumWidthRequest="36"
                                  Command="{Binding QuickBtnCLickCommand}" CommandParameter="ARROWCOMMAND"  HorizontalOptions="End" VerticalOptions="Center">
                         <ImageButton.Triggers>
                             <DataTrigger TargetType="ImageButton" Binding="{Binding IsMoreKeysVisible}" Value="True">
@@ -190,43 +202,42 @@
                         </ImageButton.Triggers>
                     </ImageButton>
 
-                    <CollectionView  Grid.Row="5" Grid.Column="0" Grid.ColumnSpan="5" HorizontalOptions="Fill" VerticalOptions="Fill" MaximumHeightRequest="140" 
-                                 ItemsSource="{Binding AllCATEGORYList}" IsVisible="{Binding IsCategoryListVisible}" ItemSizingStrategy="MeasureAllItems"   >
+                    <CollectionView  Grid.Row="6" Grid.Column="0" Grid.ColumnSpan="5" HorizontalOptions="Fill" VerticalOptions="Fill" MaximumHeightRequest="140" 
+                                     ItemsSource="{Binding AllCATEGORYList}" IsVisible="{Binding IsCategoryListVisible}" ItemSizingStrategy="MeasureAllItems"   >
                         <CollectionView.ItemsLayout>
-                            <GridItemsLayout Orientation="Vertical" Span="4" VerticalItemSpacing="1" HorizontalItemSpacing="1"/>
+                            <GridItemsLayout Orientation="Vertical" Span="{OnPlatform  iOS=4, Android=4, WinUI=7}" VerticalItemSpacing="1" HorizontalItemSpacing="1"/>
                         </CollectionView.ItemsLayout>
                         <CollectionView.ItemTemplate>
                             <DataTemplate x:DataType="Models:CATEGORY" >
                                 <Grid Padding="0" Margin="0" ColumnSpacing="0" RowSpacing="0">
                                     <Button Text="{Binding NAME}" Grid.Row="0" Grid.Column="0" Padding="0" Margin="0"
-                                            HeightRequest="50" FontAutoScalingEnabled="True" Background="#81FF81"  BackgroundColor="#81FF81"
+                                            HeightRequest="50" FontAutoScalingEnabled="True" TextColor="{StaticResource PrimaryDarkText}" Background="#81FF81"  BackgroundColor="#81FF81"
                                             HorizontalOptions="Fill"  FontSize="12"  FontAttributes="Bold"  LineBreakMode="WordWrap" CornerRadius="2" BorderWidth="1" BorderColor="RosyBrown"
-                                    VerticalOptions="Fill"/>
+                                            VerticalOptions="Fill"/>
                                 </Grid>
 
                             </DataTemplate>
                         </CollectionView.ItemTemplate>
                     </CollectionView>
 
-                    <CollectionView  Grid.Row="5" Grid.Column="0" Grid.ColumnSpan="5" HorizontalOptions="Fill" VerticalOptions="Fill" MaximumHeightRequest="140" 
-                        ItemsSource="{Binding AllItemList}" IsVisible="{Binding IsItemListVisible}" ItemSizingStrategy="MeasureAllItems" >
-                  
+                    <CollectionView  Grid.Row="6" Grid.Column="0" Grid.ColumnSpan="5" HorizontalOptions="Fill" VerticalOptions="Fill" MaximumHeightRequest="140" 
+                                     ItemsSource="{Binding AllItemList}" IsVisible="{Binding IsItemListVisible}" ItemSizingStrategy="MeasureAllItems" >
+
                         <CollectionView.ItemsLayout>
-                            <GridItemsLayout Orientation="Vertical" Span="4" VerticalItemSpacing="1" HorizontalItemSpacing="1"/>
+                            <GridItemsLayout Orientation="Vertical" Span="{OnPlatform  iOS=4, Android=4, WinUI=7}" VerticalItemSpacing="1" HorizontalItemSpacing="1"/>
                         </CollectionView.ItemsLayout>
                         <CollectionView.ItemTemplate>
                             <DataTemplate x:DataType="Models:item" >
                                 <Grid Padding="0" Margin="0" ColumnSpacing="0" RowSpacing="0">
-                                    <Button Text="{Binding ITEMNAME1}" TextColor="#E9EC57" Grid.Row="0" Grid.Column="0" Padding="0" Margin="0"  HeightRequest="50" FontAutoScalingEnabled="True" Background="#8080FE"  BackgroundColor="#8080FE"
-                                            HorizontalOptions="Fill"  FontSize="12" FontAttributes="Bold"  LineBreakMode="WordWrap" CornerRadius="2" BorderWidth="1" BorderColor="White"  VerticalOptions="Fill"/>
+                                    <Button Text="{Binding ITEMNAME1}" TextColor="#E9EC57" Grid.Row="0" Grid.Column="0" Padding="0" Margin="0"  HeightRequest="50"
+                                            FontAutoScalingEnabled="True" Background="#8080FE" BackgroundColor="#8080FE" HorizontalOptions="Fill" FontSize="12" 
+                                            FontAttributes="Bold" LineBreakMode="WordWrap" CornerRadius="2" BorderWidth="1" BorderColor="White" VerticalOptions="Fill"/>
                                 </Grid>
                             </DataTemplate>
                         </CollectionView.ItemTemplate>
                     </CollectionView>
 
-                    <Label Text="{Binding CurrentOpenBill.TABLENO ,StringFormat='Table No : {0}'}" FontSize="14" TextColor="#9096d4" Grid.Row="7" Grid.Column="0" Grid.ColumnSpan="2" VerticalOptions="Center" HorizontalOptions="Center" HeightRequest="30"/>
-                    <Label Text="{Binding CurrentOpenBill.TOTCOSTAMT ,StringFormat='Total Customer : {0}'}" FontSize="14" TextColor="#9096d4" Grid.Row="7" Grid.Column="2" Grid.ColumnSpan="2" VerticalOptions="Center" HorizontalOptions="Center" HeightRequest="30"/>
-                    
+
                     <ScrollView Orientation="Horizontal" Grid.Row="8" Grid.Column="0"   Grid.ColumnSpan="5" >
                         <Grid RowSpacing="0" ColumnSpacing="0" Padding="0" Margin="0" >
                             <Grid.RowDefinitions>
@@ -234,28 +245,28 @@
                                 <RowDefinition Height="*"></RowDefinition>
                             </Grid.RowDefinitions>
                             <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="{OnPlatform  iOS=75, Android=75, WinUI=100}"></ColumnDefinition>
-                                <ColumnDefinition Width="{OnPlatform  iOS=260, Android=260, WinUI=450}"></ColumnDefinition>
-                                <ColumnDefinition Width="{OnPlatform  iOS=150, Android=150, WinUI=180}"></ColumnDefinition>
-                                <ColumnDefinition Width="{OnPlatform  iOS=140, Android=140, WinUI=240}"></ColumnDefinition>
-                                <ColumnDefinition Width="{OnPlatform  iOS=110, Android=110, WinUI=210}"></ColumnDefinition>
+                                <ColumnDefinition Width="{OnPlatform  iOS=75,  Android=75,  WinUI=15*}"></ColumnDefinition>
+                                <ColumnDefinition Width="{OnPlatform  iOS=260, Android=260, WinUI=34*}"></ColumnDefinition>
+                                <ColumnDefinition Width="{OnPlatform  iOS=150, Android=150, WinUI=15*}"></ColumnDefinition>
+                                <ColumnDefinition Width="{OnPlatform  iOS=140, Android=140, WinUI=18*}"></ColumnDefinition>
+                                <ColumnDefinition Width="{OnPlatform  iOS=110, Android=110, WinUI=18*}"></ColumnDefinition>
                             </Grid.ColumnDefinitions>
 
                             <Border Grid.Row="0" Grid.Column="0" Stroke="DarkGray" StrokeThickness="1" HorizontalOptions="Start" VerticalOptions="Fill" />
-                            <Border Grid.Row="0" Grid.Column="0" Stroke="DarkGray" StrokeThickness="1" HorizontalOptions="End" VerticalOptions="Fill" />
-                            <Border Grid.Row="0" Grid.Column="1" Stroke="DarkGray" StrokeThickness="1" HorizontalOptions="End" VerticalOptions="Fill" />
-                            <Border Grid.Row="0" Grid.Column="2" Stroke="DarkGray" StrokeThickness="1" HorizontalOptions="End" VerticalOptions="Fill" />
-                            <Border Grid.Row="0" Grid.Column="3" Stroke="DarkGray" StrokeThickness="1" HorizontalOptions="End" VerticalOptions="Fill" />
-                            <Border Grid.Row="0" Grid.Column="4" Stroke="DarkGray" StrokeThickness="1" HorizontalOptions="End" VerticalOptions="Fill" />
+                            <Border Grid.Row="0" Grid.Column="0" Stroke="DarkGray" StrokeThickness="1" HorizontalOptions="End"   VerticalOptions="Fill" />
+                            <Border Grid.Row="0" Grid.Column="1" Stroke="DarkGray" StrokeThickness="1" HorizontalOptions="End"   VerticalOptions="Fill" />
+                            <Border Grid.Row="0" Grid.Column="2" Stroke="DarkGray" StrokeThickness="1" HorizontalOptions="End"   VerticalOptions="Fill" />
+                            <Border Grid.Row="0" Grid.Column="3" Stroke="DarkGray" StrokeThickness="1" HorizontalOptions="End"   VerticalOptions="Fill" />
+                            <Border Grid.Row="0" Grid.Column="4" Stroke="DarkGray" StrokeThickness="1" HorizontalOptions="End"   VerticalOptions="Fill" />
 
                             <Border Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="5" Stroke="DarkGray" StrokeThickness="1" HorizontalOptions="Fill" VerticalOptions="Start" />
                             <Border Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="5" Stroke="DarkGray" StrokeThickness="1" HorizontalOptions="Fill" VerticalOptions="End" />
                            
-                            <Label Text="" HorizontalOptions="Center" VerticalOptions="Center" FontAttributes="Bold" Grid.Column="0"  TextColor="#9096d4"/>
+                            <Label Text=""             HorizontalOptions="Center" VerticalOptions="Center" FontAttributes="Bold" Grid.Column="0" TextColor="#9096d4"/>
                             <Label Text="ITEM DETAILS" HorizontalOptions="Center" VerticalOptions="Center" FontAttributes="Bold" Grid.Column="1" TextColor="#9096d4"/>
-                            <Label Text="QTY" HorizontalOptions="Center" VerticalOptions="Center" FontAttributes="Bold" Grid.Column="2" TextColor="#9096d4"/>
-                            <Label Text="UNIT" HorizontalOptions="Center" VerticalOptions="Center" FontAttributes="Bold" Grid.Column="3" TextColor="#9096d4"/>
-                            <Label Text="AMT" HorizontalOptions="Center" VerticalOptions="Center" FontAttributes="Bold" Grid.Column="4" TextColor="#9096d4"/>
+                            <Label Text="QTY"          HorizontalOptions="Center" VerticalOptions="Center" FontAttributes="Bold" Grid.Column="2" TextColor="#9096d4"/>
+                            <Label Text="UNIT"         HorizontalOptions="Center" VerticalOptions="Center" FontAttributes="Bold" Grid.Column="3" TextColor="#9096d4"/>
+                            <Label Text="AMT"          HorizontalOptions="Center" VerticalOptions="Center" FontAttributes="Bold" Grid.Column="4" TextColor="#9096d4"/>
                           
                         <CollectionView Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="5" ItemsSource="{Binding CurrentOpenBillDetails}"  BackgroundColor="Transparent"  HorizontalOptions="Fill" VerticalOptions="Fill" VerticalScrollBarVisibility="Always" HorizontalScrollBarVisibility="Always" 
                                         ItemSizingStrategy="MeasureAllItems" MaximumHeightRequest="450" Margin="0,0,0,1">
@@ -272,28 +283,29 @@
                                         <Grid.RowDefinitions>
                                             <RowDefinition Height="50"></RowDefinition>
                                         </Grid.RowDefinitions>
-                                        <Grid.ColumnDefinitions>
-                                            <ColumnDefinition Width="{OnPlatform  iOS=75,  Android=75,  WinUI=100}"></ColumnDefinition>
-                                            <ColumnDefinition Width="{OnPlatform  iOS=260, Android=260, WinUI=450}"></ColumnDefinition>
-                                            <ColumnDefinition Width="{OnPlatform  iOS=150, Android=150, WinUI=180}"></ColumnDefinition>
-                                            <ColumnDefinition Width="{OnPlatform  iOS=140, Android=140, WinUI=240}"></ColumnDefinition>
-                                            <ColumnDefinition Width="{OnPlatform  iOS=110, Android=110, WinUI=210}"></ColumnDefinition>
-                                        </Grid.ColumnDefinitions>
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="{OnPlatform  iOS=75,  Android=75,  WinUI=15*}"></ColumnDefinition>
+                                                <ColumnDefinition Width="{OnPlatform  iOS=260, Android=260, WinUI=34*}"></ColumnDefinition>
+                                                <ColumnDefinition Width="{OnPlatform  iOS=150, Android=150, WinUI=15*}"></ColumnDefinition>
+                                                <ColumnDefinition Width="{OnPlatform  iOS=140, Android=140, WinUI=18*}"></ColumnDefinition>
+                                                <ColumnDefinition Width="{OnPlatform  iOS=110, Android=110, WinUI=18*}"></ColumnDefinition>
+                                            </Grid.ColumnDefinitions>
 
                                         <Image Source="newrowbg.png" HorizontalOptions="Fill" VerticalOptions="Fill" Aspect="Fill"  Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="7"/>
+                                        
                                         <Border Grid.Row="0" Grid.Column="0" Stroke="DarkGray" StrokeThickness="1" HorizontalOptions="Start" VerticalOptions="Fill" Margin="0,2,0,5" />
-                                        <Border Grid.Row="0" Grid.Column="0" Stroke="DarkGray" StrokeThickness="1" HorizontalOptions="End" VerticalOptions="Fill" Margin="0,2,0,5" />
-                                        <Border Grid.Row="0" Grid.Column="1" Stroke="DarkGray" StrokeThickness="1" HorizontalOptions="End" VerticalOptions="Fill" Margin="0,2,0,5" />
-                                        <Border Grid.Row="0" Grid.Column="2" Stroke="DarkGray" StrokeThickness="1" HorizontalOptions="End" VerticalOptions="Fill" Margin="0,2,0,5" />
-                                        <Border Grid.Row="0" Grid.Column="3" Stroke="DarkGray" StrokeThickness="1" HorizontalOptions="End" VerticalOptions="Fill" Margin="0,2,0,5" />
-                                        <Border Grid.Row="0" Grid.Column="3" Stroke="DarkGray" StrokeThickness="1" HorizontalOptions="End" VerticalOptions="Fill" Margin="0,2,0,5" />
-                                        <Border Grid.Row="0" Grid.Column="4" Stroke="DarkGray" StrokeThickness="1" HorizontalOptions="End" VerticalOptions="Fill" Margin="0,2,0,5" />
+                                        <Border Grid.Row="0" Grid.Column="0" Stroke="DarkGray" StrokeThickness="1" HorizontalOptions="End"   VerticalOptions="Fill" Margin="0,2,0,5" />
+                                        <Border Grid.Row="0" Grid.Column="1" Stroke="DarkGray" StrokeThickness="1" HorizontalOptions="End"   VerticalOptions="Fill" Margin="0,2,0,5" />
+                                        <Border Grid.Row="0" Grid.Column="2" Stroke="DarkGray" StrokeThickness="1" HorizontalOptions="End"   VerticalOptions="Fill" Margin="0,2,0,5" />
+                                        <Border Grid.Row="0" Grid.Column="3" Stroke="DarkGray" StrokeThickness="1" HorizontalOptions="End"   VerticalOptions="Fill" Margin="0,2,0,5" />
+                                        <Border Grid.Row="0" Grid.Column="3" Stroke="DarkGray" StrokeThickness="1" HorizontalOptions="End"   VerticalOptions="Fill" Margin="0,2,0,5" />
+                                        <Border Grid.Row="0" Grid.Column="4" Stroke="DarkGray" StrokeThickness="1" HorizontalOptions="End"   VerticalOptions="Fill" Margin="0,2,0,5" />
 
-                                        <Label Text="{Binding EATTAKE}" FontSize="14" TextColor="#a8d5f0" Grid.Row="0" Grid.Column="0"  HorizontalOptions="Center" VerticalOptions="Center"/>
-                                        <Label Text="{Binding ITEMNAME2}" FontSize="14" TextColor="#a8d5f0" Grid.Row="0" Grid.Column="1"  HorizontalOptions="Center" VerticalOptions="Center"/>
-                                        <Label Text="{Binding QUANTITY}" FontSize="14" TextColor="#a8d5f0" Grid.Row="0" Grid.Column="2"  HorizontalOptions="Center" VerticalOptions="Center"/>
-                                        <Label Text="{Binding UNITCODE}" FontSize="14" TextColor="#a8d5f0" Grid.Row="0" Grid.Column="3"  HorizontalOptions="Center" VerticalOptions="Center"/>
-                                        <Label Text="{Binding AMOUNT}" FontSize="14" TextColor="#a8d5f0" Grid.Row="0" Grid.Column="4"  HorizontalOptions="Center" VerticalOptions="Center"/>
+                                        <Label Text="{Binding EATTAKE}"   FontSize="14" TextColor="#a8d5f0" Grid.Row="0" Grid.Column="0" HorizontalOptions="Center" VerticalOptions="Center"/>
+                                        <Label Text="{Binding ITEMNAME1}" FontSize="14" TextColor="#a8d5f0" Grid.Row="0" Grid.Column="1" HorizontalOptions="Center" VerticalOptions="Center"/>
+                                        <Label Text="{Binding QUANTITY}"  FontSize="14" TextColor="#a8d5f0" Grid.Row="0" Grid.Column="2" HorizontalOptions="Center" VerticalOptions="Center"/>
+                                        <Label Text="{Binding UNITCODE}"  FontSize="14" TextColor="#a8d5f0" Grid.Row="0" Grid.Column="3" HorizontalOptions="Center" VerticalOptions="Center"/>
+                                        <Label Text="{Binding AMOUNT}"    FontSize="14" TextColor="#a8d5f0" Grid.Row="0" Grid.Column="4" HorizontalOptions="Center" VerticalOptions="Center"/>
                                     </Grid>
                                 </DataTemplate>
                             </CollectionView.ItemTemplate>
