@@ -41,11 +41,11 @@ namespace RestaurantOrder.Views
                     case "DISPLAYALERT":
                         await DisplayAlert("Error", RecivedMessage[1], "OK");
                         break;
-                    case "LOGINSUCCESS":
-                        // Application.Current.MainPage = new AppShell();
-                        if (Application.Current != null)
-                            Application.Current.Windows[0].Page = new AppShell();
-                        break;
+                    //case "LOGINSUCCESS":
+                    //    // Application.Current.MainPage = new AppShell();
+                    //    if (Application.Current != null)
+                    //        Application.Current.Windows[0].Page = new AppShell();
+                    //    break;
                     case "TOASTALERT":
                         CancellationTokenSource cancellationTokenSource = new CancellationTokenSource();
                         var toast = Toast.Make(RecivedMessage[1], ToastDuration.Short, 15).Show(cancellationTokenSource.Token);

@@ -1,18 +1,19 @@
 ﻿using RestaurantOrder.ApiService;
 using RestaurantOrder.Models;
 using System.Collections.ObjectModel;
-using System.ComponentModel;
-using System.Runtime.CompilerServices;
 using System.Windows.Input;
 
 namespace RestaurantOrder.ViewModels.Main;
 public class MainUserViewModel : NotifyPropertyBaseViewModel
 {
-    long userId = 0;
-    public long UserId { get { return userId; } set { SetProperty(ref userId, value); } }
+    private string _UserCode = string.Empty;
+    public string UserCode { get { return _UserCode; } set { SetProperty(ref _UserCode, value); } }
 
     private string _UserEmail = string.Empty;
     public string UserEmail { get => _UserEmail; set { SetProperty(ref _UserEmail, value); } }
+   
+    private string _UserPassword = string.Empty;
+    public string UserPassword { get => _UserPassword; set { SetProperty(ref _UserPassword, value); } }
 
 
     private string _Password = string.Empty;
@@ -52,14 +53,30 @@ public class MainUserViewModel : NotifyPropertyBaseViewModel
     {
         try
         {
-           // LoggedIn_Command = new Command(OnCommandLoggedIn);
-            OnActionLoggedIn += OnCommandLoggedIn;
+          _=  CheckLoginStatusAsync();
+
+             // LoggedIn_Command = new Command(OnCommandLoggedIn);
+             OnActionLoggedIn += OnCommandLoggedIn;
         }
         catch (Exception ex)
         { 
         }
     }
+    public async Task CheckLoginStatusAsync()
+    {
+        var isLoggedIn = await SecureStorage.GetAsync("IsLoggedIn");
+        var isLoggedIn1 = await SecureStorage.GetAsync("Username");
+        var isLoggedIn2 = await SecureStorage.GetAsync("Password");
 
+        if (isLoggedIn == "true")
+        {
+            // Navigate to home page
+        }
+        else
+        {
+            // Show login page
+        }
+    }
     public async Task LoadUsersData()
     {
         try
@@ -108,7 +125,16 @@ public class MainUserViewModel : NotifyPropertyBaseViewModel
                     {
                         Isbussy = false;
                         IsVisibleIndecator = false;
-                        RecivedMessageOnLoginpage(new string[] { $"LOGINSUCCESS", $"Login success UserCode : " + peopleq.UserCode + " Username: " + peopleq.Username + " and Password: " + peopleq.Password });
+
+                        await SecureStorage.SetAsync("IsLoggedIn", "true");
+                        await SecureStorage.SetAsync("Username", peopleq?.Username ?? string.Empty);
+                        await SecureStorage.SetAsync("Password", peopleq?.Password ?? string.Empty);
+                        UserCode = peopleq?.UserCode ?? string.Empty;
+                        UserEmail = peopleq?.Username ?? string.Empty;
+                        UserPassword = peopleq?.Password ?? string.Empty;
+                        if (Application.Current != null)
+                            Application.Current.Windows[0].Page = new AppShell();
+                        //RecivedMessageOnLoginpage(new string[] { $"LOGINSUCCESS", $"Login success UserCode : " + peopleq.UserCode + " Username: " + peopleq.Username + " and Password: " + peopleq.Password });
                     }
                 }
                 else

@@ -14,7 +14,7 @@ public static class ApiClient
     static ApiClient()
     {
 #if ANDROID
-        _baseUrl = "http://10.252.56.220:4545";
+        _baseUrl = "http://10.182.218.220:4545";
 #else
         _baseUrl = "http://localhost:4545";
 #endif
@@ -95,7 +95,7 @@ public static class ApiClient
             }
         });
 
-    public static Task<TResponse?> PostAsync<TRequest, TResponse>(string endpoint, TRequest data) =>
+    public static Task<TResponse?> PostAsync<TRequest, TResponse>(string endpoint, TRequest data,int Retry =3) =>
         ExecuteWithRetryAsync(async () =>
         {
             try
@@ -106,15 +106,39 @@ public static class ApiClient
 
 
                 var response = await _httpClient.PostAsJsonAsync($"{_baseUrl}/{endpoint}", data).ConfigureAwait(false);
-                if (!await HandleErrorAsync(response)) return default;
-                return await response.Content.ReadFromJsonAsync<TResponse>();
+                try
+                {
+                    string json = JsonSerializer.Serialize(data);
+                    Console.WriteLine(json); // or Debug.WriteLine(json)
+                    if (!await HandleErrorAsync(response)) return default;
+                    //return await response.Content.ReadFromJsonAsync<TResponse>();
+                        
+                    if (typeof(TResponse) == typeof(string))
+                    {
+                        var raw = await response.Content.ReadAsStringAsync();
+                        return (TResponse)(object)raw;
+                    }
+                    else
+                    {
+                        return await response.Content.ReadFromJsonAsync<TResponse>();
+                    }
+
+                }
+                catch (JsonException ex)
+                {
+                    var raw = await response.Content.ReadAsStringAsync();
+                    Console.WriteLine($"Deserialization failed. Raw response: {raw}");
+                    throw;
+                }
             }
+            
+
             catch (Exception ex)
             {
                 Debug.WriteLine($"POST {endpoint} failed: {ex}");
                 throw;
             }
-        });
+        },retries: Retry);
 
     public static Task<bool> PostNoResponseAsync<TRequest>(string endpoint, TRequest data) =>
         ExecuteWithRetryAsync(async () =>
@@ -135,4 +159,14 @@ public static class ApiClient
                 throw;
             }
         });
+
+
 }
+//public class ApiResult<T>
+//{
+//    public T? Data { get; set; }
+//    public HttpStatusCode StatusCode { get; set; }
+//    public bool IsSuccess { get; set; }
+//    public string? RawResponse { get; set; }
+//    public string? ErrorMessage { get; set; }
+//}

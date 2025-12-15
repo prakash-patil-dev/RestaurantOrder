@@ -1,0 +1,277 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<pages:PopupPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+                 xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+                 xmlns:pages="clr-namespace:Mopups.Pages;assembly=Mopups"
+                 xmlns:animations="clr-namespace:Mopups.Animations;assembly=Mopups"
+                 x:Class="RestaurantOrder.Views.CustomerPopup" 
+                 CloseWhenBackgroundIsClicked="False" HasKeyboardOffset="False"
+                 xmlns:vm="clr-namespace:RestaurantOrder.ViewModels"
+                  xmlns:Models="clr-namespace:RestaurantOrder.Models"
+                 xmlns:local="clr-namespace:RestaurantOrder.Converters"
+                 xmlns:custom="clr-namespace:RestaurantOrder.CustomControls"    
+                 x:DataType="vm:CustomerViewModel"
+                 BackgroundColor="#9907080A">
+
+    <pages:PopupPage.Animation>
+        <animations:ScaleAnimation 
+          PositionIn="Center"
+          PositionOut="Center"
+          ScaleIn="1.0"
+          ScaleOut="1.0"
+          DurationIn="200"
+          DurationOut="200"
+          EasingIn="SinOut"
+          EasingOut="SinIn"
+          HasBackgroundAnimation="True"/>
+    </pages:PopupPage.Animation>
+    <pages:PopupPage.Resources>
+        <ResourceDictionary>
+            <local:InverseBoolConverter x:Key="InverseBoolConverter" />
+        </ResourceDictionary>
+    </pages:PopupPage.Resources>
+    <Grid  Style="{StaticResource PopupPageStyle}"  >
+        <Grid.RowDefinitions>
+            <RowDefinition Height="10*" ></RowDefinition>
+            <RowDefinition Height="80*" ></RowDefinition>
+            <RowDefinition Height="10*" ></RowDefinition>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="3.24*" ></ColumnDefinition>
+            <ColumnDefinition Width="93.52*" ></ColumnDefinition>
+            <ColumnDefinition Width="3.24*" ></ColumnDefinition>
+        </Grid.ColumnDefinitions>
+        <Grid Grid.Row="1" Grid.Column="1" Margin="0" Padding="0" RowSpacing="0" ColumnSpacing="0">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="8.14*" ></RowDefinition>
+                <RowDefinition Height="91.86*" ></RowDefinition>
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="25*"></ColumnDefinition>
+                <ColumnDefinition Width="25*"></ColumnDefinition>
+                <ColumnDefinition Width="25*"></ColumnDefinition>
+                <ColumnDefinition Width="25*"></ColumnDefinition>
+            </Grid.ColumnDefinitions>
+
+            <Image Grid.Row="1"  Grid.Column="0" Grid.ColumnSpan="4" Source="popup_bg.png" Aspect="Fill"  HorizontalOptions="Fill" VerticalOptions="Fill"/>
+            <Image Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="4" Source="popup_header.png" Aspect="Fill"  HorizontalOptions="Fill" VerticalOptions="Fill"/>
+
+            <ImageButton Grid.Row="0" Grid.Column="0"  Grid.ColumnSpan="4" Source="icon_close.png" HorizontalOptions="End" VerticalOptions="Center" Aspect="AspectFit" BackgroundColor="Transparent"
+                         HeightRequest="{OnPlatform Default=30, WinUI=35}"  WidthRequest="{OnPlatform Default=30, WinUI=35}"
+             Margin="0,0,7,0"   Command="{Binding QuickBtnCLickCommand}" CommandParameter="CLOSEPAGE" />
+
+            <Label Text="{Binding  PageHeading}" FontSize="20" TextColor="#9096d4" Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="4" VerticalOptions="Center" HorizontalOptions="Center" />
+            <ScrollView Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="4" Margin="0" Padding="0" IsVisible="{Binding IsVisibleAddPanel}">
+                <Grid x:Name="GrdAddCustomer" Margin="0" Padding="0" RowSpacing="0" ColumnSpacing="0" >
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="15" ></RowDefinition>
+                        <RowDefinition Height="50" ></RowDefinition>
+                        <RowDefinition Height="7" ></RowDefinition>
+                        <RowDefinition Height="50" ></RowDefinition>
+                        <RowDefinition Height="7" ></RowDefinition>
+                        <RowDefinition Height="50" ></RowDefinition>
+                        <RowDefinition Height="7" ></RowDefinition>
+                        <RowDefinition Height="50" ></RowDefinition>
+                        <RowDefinition Height="7" ></RowDefinition>
+                        <RowDefinition Height="50" ></RowDefinition>
+                        <RowDefinition Height="7" ></RowDefinition>
+                        <RowDefinition Height="50" ></RowDefinition>
+                        <RowDefinition Height="7" ></RowDefinition>
+                        <RowDefinition Height="50" ></RowDefinition>
+                        <RowDefinition Height="7" ></RowDefinition>
+                        <RowDefinition Height="50" ></RowDefinition>
+                        <RowDefinition Height="7" ></RowDefinition>
+                        <RowDefinition Height="50" ></RowDefinition>
+                        <RowDefinition Height="10" ></RowDefinition>
+                        <RowDefinition Height="50" ></RowDefinition>
+                        <RowDefinition Height="10" ></RowDefinition>
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="1*"></ColumnDefinition>
+                        <ColumnDefinition Width="32.34*"></ColumnDefinition>
+                        <ColumnDefinition Width="32.33*"></ColumnDefinition>
+                        <ColumnDefinition Width="1*"></ColumnDefinition>
+                        <ColumnDefinition Width="32.33*"></ColumnDefinition>
+                        <ColumnDefinition Width="1*"></ColumnDefinition>
+                    </Grid.ColumnDefinitions>
+
+                    <Label Text="Code :" Grid.Row="1" Grid.Column="1"  Style="{StaticResource lblCustHeading}" SemanticProperties.HeadingLevel="Level1"  />
+
+                    <Image Grid.Column="2" Grid.Row="1" Source="textbox_bg.png"  Aspect="Fill" VerticalOptions="Fill"></Image>
+                    
+                    <Border StrokeThickness="2" Stroke="Honeydew" Padding="0" Grid.Column="2"  Grid.Row="1" HorizontalOptions="Fill" VerticalOptions="Fill" StrokeShape="RoundRectangle 5,5,5,5" >
+                        <custom:BorderlessEntry Text="{Binding NewCustomer.Code}" Placeholder="Cust Code"  TextColor="WhiteSmoke" HorizontalOptions="Fill" VerticalOptions="Fill" FontAutoScalingEnabled="True" Keyboard="Text" IsEnabled="{Binding IsEnableCode}"  />
+                    </Border>
+                    <Image Grid.Column="4" Grid.Row="1" Source="textbox_bg.png"  Aspect="Fill" VerticalOptions="Fill"></Image>
+
+                    <Border StrokeThickness="2" Stroke="Honeydew" Padding="0" Grid.Column="4"  Grid.Row="1" HorizontalOptions="Fill" VerticalOptions="Fill" StrokeShape="RoundRectangle 5,5,5,5" >
+                        <custom:BorderlessEntry Text="{Binding NewCustomer.Nationalty}" Placeholder="Nationalty"  TextColor="WhiteSmoke" HorizontalOptions="Fill" VerticalOptions="Fill" FontAutoScalingEnabled="True" Keyboard="Text" />
+                    </Border>
+
+
+                    <Label Text="Name :" Grid.Row="3" Grid.Column="1"  Style="{StaticResource lblCustHeading}" SemanticProperties.HeadingLevel="Level2"  />
+                    <Image Grid.Column="2" Grid.Row="3" Source="textbox_bg.png"  Aspect="Fill" VerticalOptions="Fill"></Image>
+                    <Border StrokeThickness="2" Stroke="Honeydew" Padding="0" Grid.Column="2" Grid.Row="3" HorizontalOptions="Fill" VerticalOptions="Fill" StrokeShape="RoundRectangle 5,5,5,5" >
+                        <custom:BorderlessEntry Text="{Binding NewCustomer.FirstName}" Placeholder="First Name" TextColor="WhiteSmoke" HorizontalOptions="Fill" VerticalOptions="Fill"  FontAutoScalingEnabled="True" Keyboard="Text"/>
+                    </Border>
+                    
+                    <Image Grid.Column="4" Grid.Row="3" Source="textbox_bg.png"  Aspect="Fill" VerticalOptions="Fill"></Image>
+                    <Border StrokeThickness="2" Stroke="Honeydew" Padding="0" Grid.Column="4" Grid.Row="3" HorizontalOptions="Fill" VerticalOptions="Fill" StrokeShape="RoundRectangle 5,5,5,5" >
+                        <custom:BorderlessEntry Text="{Binding NewCustomer.LastName}" Placeholder="Last Name" TextColor="WhiteSmoke" HorizontalOptions="Fill" VerticalOptions="Fill"  FontAutoScalingEnabled="True"  Keyboard="Text"/>
+                    </Border>
+
+
+                    <Label Text="Contact :" Grid.Row="5" Grid.Column="1"  Style="{StaticResource lblCustHeading}" SemanticProperties.HeadingLevel="Level2"  />
+                    <Image Grid.Column="2" Grid.ColumnSpan="3" Grid.Row="5" Source="textbox_bg.png"  Aspect="Fill" VerticalOptions="Fill"></Image>
+                    <Border StrokeThickness="2" Stroke="Honeydew" Padding="0" Grid.Column="2" Grid.ColumnSpan="3" Grid.Row="5" HorizontalOptions="Fill" VerticalOptions="Fill" StrokeShape="RoundRectangle 5,5,5,5" >
+                        <custom:BorderlessEntry Text="{Binding NewCustomer.Contact}" Placeholder="Contact" TextColor="WhiteSmoke" HorizontalOptions="Fill" VerticalOptions="Fill"  FontAutoScalingEnabled="True"  Keyboard="Telephone"/>
+                    </Border>
+
+                    <Label Text="Address :" Grid.Row="7" Grid.Column="1"  Style="{StaticResource lblCustHeading}" SemanticProperties.HeadingLevel="Level2"  />
+                    <Image Grid.Column="2"  Grid.Row="7" Source="textbox_bg.png"  Aspect="Fill" VerticalOptions="Fill"></Image>
+                    <Border StrokeThickness="2" Stroke="Honeydew" Padding="0" Grid.Column="2" Grid.Row="7" HorizontalOptions="Fill" VerticalOptions="Fill" StrokeShape="RoundRectangle 5,5,5,5" >
+                        <custom:BorderlessEntry Text="{Binding NewCustomer.Address1}" Placeholder="Address 1" TextColor="WhiteSmoke" HorizontalOptions="Fill" VerticalOptions="Fill"  FontAutoScalingEnabled="True" Keyboard="Text"/>
+                    </Border>
+                    <Image Grid.Column="4"  Grid.Row="7" Source="textbox_bg.png"  Aspect="Fill" VerticalOptions="Fill"></Image>
+                    <Border StrokeThickness="2" Stroke="Honeydew" Padding="0" Grid.Column="4" Grid.Row="7" HorizontalOptions="Fill" VerticalOptions="Fill" StrokeShape="RoundRectangle 5,5,5,5" >
+                        <custom:BorderlessEntry Text="{Binding NewCustomer.Address2}" Placeholder="Address 2" TextColor="WhiteSmoke" HorizontalOptions="Fill" VerticalOptions="Fill"  FontAutoScalingEnabled="True" Keyboard="Text"/>
+                    </Border>
+                    <Image Grid.Column="2" Grid.ColumnSpan="3" Grid.Row="9" Source="textbox_bg.png"  Aspect="Fill" VerticalOptions="Fill"></Image>
+                    <Border StrokeThickness="2" Grid.ColumnSpan="3" Stroke="Honeydew" Padding="0" Grid.Column="2" Grid.Row="9" HorizontalOptions="Fill" VerticalOptions="Fill" StrokeShape="RoundRectangle 5,5,5,5" >
+                        <custom:BorderlessEntry Text="{Binding NewCustomer.Address3}" Placeholder="Address 3" TextColor="WhiteSmoke" HorizontalOptions="Fill" VerticalOptions="Fill"  FontAutoScalingEnabled="True"  Keyboard="Text"/>
+                    </Border>
+
+                    <Label Text="Tel :" Grid.Row="11" Grid.Column="1"  Style="{StaticResource lblCustHeading}" SemanticProperties.HeadingLevel="Level2"  />
+                    <Image Grid.Column="2" Grid.ColumnSpan="3" Grid.Row="11" Source="textbox_bg.png"  Aspect="Fill" VerticalOptions="Fill"></Image>
+                    <Border StrokeThickness="2" Stroke="Honeydew" Padding="0" Grid.Column="2" Grid.ColumnSpan="3" Grid.Row="11" HorizontalOptions="Fill" VerticalOptions="Fill" StrokeShape="RoundRectangle 5,5,5,5" >
+                        <custom:BorderlessEntry Text="{Binding NewCustomer.Telephone}" Placeholder="Tel" TextColor="WhiteSmoke" HorizontalOptions="Fill" VerticalOptions="Fill"  FontAutoScalingEnabled="True"  Keyboard="Telephone"/>
+                    </Border>
+                   
+                   
+                    <Label Text="Fax :" Grid.Row="13" Grid.Column="1"  Style="{StaticResource lblCustHeading}" SemanticProperties.HeadingLevel="Level2"  />
+                    <Image Grid.Column="2" Grid.ColumnSpan="3" Grid.Row="13" Source="textbox_bg.png"  Aspect="Fill" VerticalOptions="Fill"></Image>
+                    <Border StrokeThickness="2" Stroke="Honeydew" Padding="0" Grid.Column="2" Grid.ColumnSpan="3" Grid.Row="13" HorizontalOptions="Fill" VerticalOptions="Fill" StrokeShape="RoundRectangle 5,5,5,5" >
+                        <custom:BorderlessEntry Text="{Binding NewCustomer.Fax}" Placeholder="Fax" TextColor="WhiteSmoke" HorizontalOptions="Fill" VerticalOptions="Fill"  FontAutoScalingEnabled="True" Keyboard="Telephone"/>
+                    </Border>
+
+                    <Label Text="Mobile :" Grid.Row="15" Grid.Column="1"  Style="{StaticResource lblCustHeading}" SemanticProperties.HeadingLevel="Level2"  />
+                    <Image Grid.Column="2" Grid.ColumnSpan="3" Grid.Row="15" Source="textbox_bg.png"  Aspect="Fill" VerticalOptions="Fill"></Image>
+                    <Border StrokeThickness="2" Stroke="Honeydew" Padding="0" Grid.Column="2" Grid.ColumnSpan="3" Grid.Row="15" HorizontalOptions="Fill" VerticalOptions="Fill" StrokeShape="RoundRectangle 5,5,5,5" >
+                        <custom:BorderlessEntry Text="{Binding NewCustomer.Mobile}" Placeholder="Mobile" TextColor="WhiteSmoke" HorizontalOptions="Fill" VerticalOptions="Fill"  FontAutoScalingEnabled="True"  Keyboard="Telephone"/>
+                    </Border>
+
+                    <Label Text="Email :" Grid.Row="17" Grid.Column="1"  Style="{StaticResource lblCustHeading}" SemanticProperties.HeadingLevel="Level2"  />
+                    <Image Grid.Column="2" Grid.ColumnSpan="3" Grid.Row="17" Source="textbox_bg.png"  Aspect="Fill" VerticalOptions="Fill"></Image>
+                    <Border StrokeThickness="2" Stroke="Honeydew" Padding="0" Grid.Column="2" Grid.ColumnSpan="3" Grid.Row="17" HorizontalOptions="Fill" VerticalOptions="Fill" StrokeShape="RoundRectangle 5,5,5,5" >
+                        <custom:BorderlessEntry Text="{Binding NewCustomer.Email}" Placeholder="Email" TextColor="WhiteSmoke" HorizontalOptions="Fill" VerticalOptions="Fill"  FontAutoScalingEnabled="True"  Keyboard="Email"/>
+                    </Border>
+
+                    <Button  TextColor="Black" FontAttributes="Bold" FontSize="14" Margin="0" BackgroundColor="#7CFF72" Grid.Column="2"  Grid.Row="19" 
+                             CornerRadius="5" Text="Save"  BorderColor="Honeydew" BorderWidth="2" HorizontalOptions="Fill"  VerticalOptions="Fill" 
+                             Command="{Binding QuickBtnCLickCommand}" CommandParameter="SAVECUSTOMER"/>
+                   
+                    <Button  TextColor="Black" FontAttributes="Bold" FontSize="14" Margin="0" BackgroundColor="#7CFF72" Grid.Column="4"  Grid.Row="19" 
+                             CornerRadius="5" Text="Cancel"  BorderColor="Honeydew" BorderWidth="2" HorizontalOptions="Fill"  VerticalOptions="Fill" 
+                             Command="{Binding QuickBtnCLickCommand}" CommandParameter="CLOSEADDEDITMODE"/>
+                </Grid>
+            </ScrollView>
+
+
+            <Grid Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="4" Margin="0" Padding="0" RowSpacing="0" ColumnSpacing="0" IsVisible="{Binding IsVisibleAddPanel ,Converter={StaticResource InverseBoolConverter}}"  BackgroundColor="Transparent">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="1*" ></RowDefinition>
+                    <RowDefinition Height="76*" ></RowDefinition>
+                    <RowDefinition Height="3*" ></RowDefinition>
+                    <RowDefinition Height="16*" ></RowDefinition>
+                    <RowDefinition Height="4*" ></RowDefinition>
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="1*"></ColumnDefinition>
+                    <ColumnDefinition Width="32.34*"></ColumnDefinition>
+                    <ColumnDefinition Width="1*"></ColumnDefinition>
+                    <ColumnDefinition Width="32.33*"></ColumnDefinition>
+                    <ColumnDefinition Width="1*"></ColumnDefinition>
+                    <ColumnDefinition Width="32.33*"></ColumnDefinition>
+                    <ColumnDefinition Width="1*"></ColumnDefinition>
+                </Grid.ColumnDefinitions>
+                <ScrollView Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="5" HorizontalOptions="Fill" VerticalOptions="Fill" Orientation="Horizontal" Margin="0" Padding="0" Background="Transparent" MaximumWidthRequest="600">
+                    <Grid Padding="0" Margin="0" ColumnSpacing="0" RowSpacing="0" HorizontalOptions="Fill" VerticalOptions="Fill"  ColumnDefinitions="1*"  RowDefinitions="30,*">
+                        <Grid Grid.Row="0" Grid.Column="0" Padding="0" Margin="0" ColumnSpacing="0" RowSpacing="0"  ColumnDefinitions="9*,14*,14*,14*,22*,27*" BackgroundColor="Gray">
+                            <Label Text="Code" FontSize="14" TextColor="#a8d5f0" Grid.Row="0" Grid.Column="0" Padding="0" Margin="0" HorizontalOptions="Fill" VerticalOptions="Fill" HorizontalTextAlignment="Center" VerticalTextAlignment="Center"/>
+                            <Label Text="First Name" FontSize="14" TextColor="#a8d5f0" Grid.Row="0" Grid.Column="1" Padding="0" Margin="0" HorizontalOptions="Fill" VerticalOptions="Fill" HorizontalTextAlignment="Center" VerticalTextAlignment="Center"/>
+                            <Label Text="Last Name" FontSize="14" TextColor="#a8d5f0" Grid.Row="0" Grid.Column="2" Padding="0" Margin="0" HorizontalOptions="Fill" VerticalOptions="Fill" HorizontalTextAlignment="Center" VerticalTextAlignment="Center"/>
+                            <Label Text="Mobile"  FontSize="14" TextColor="#a8d5f0" Grid.Row="0" Grid.Column="3" Padding="0" Margin="0" HorizontalOptions="Fill" VerticalOptions="Fill" HorizontalTextAlignment="Center" VerticalTextAlignment="Center"/>
+                            <Label Text="Email"  FontSize="14" TextColor="#a8d5f0" Grid.Row="0" Grid.Column="4" Padding="0" Margin="0" HorizontalOptions="Fill" VerticalOptions="Fill" HorizontalTextAlignment="Center" VerticalTextAlignment="Center"/>
+                            <Label Text="Address"  FontSize="14" TextColor="#a8d5f0" Grid.Row="0" Grid.Column="5" Padding="0" Margin="0" HorizontalOptions="Fill" VerticalOptions="Fill" HorizontalTextAlignment="Center" VerticalTextAlignment="Center"/>
+
+                        </Grid>
+
+                        <CollectionView  Grid.Row="1" Grid.Column="0" Margin="0"  HorizontalOptions="Fill" VerticalOptions="Fill" 
+                                         ItemsSource="{Binding AllCustomerList}" ItemSizingStrategy="MeasureAllItems" SelectionMode="Single"
+                                         SelectionChangedCommand="{Binding CustomerSelectedCommand}" SelectedItem="{Binding SelectedCustomer, Mode=TwoWay}">
+                            <CollectionView.ItemsLayout>
+                                <GridItemsLayout Orientation="Vertical" VerticalItemSpacing="2"/>
+                            </CollectionView.ItemsLayout>
+                            <!--<CollectionView.Header>
+                <Grid Padding="0" Margin="0" ColumnSpacing="0" RowSpacing="0" RowDefinitions="50" ColumnDefinitions="9*,14*,14*,14*,22*,27*">
+                    <Label Text="Code" FontSize="14" TextColor="#a8d5f0" Grid.Row="0" Grid.Column="0" Padding="0" Margin="0" HorizontalOptions="Fill" VerticalOptions="Fill" HorizontalTextAlignment="Center" VerticalTextAlignment="Center"/>
+                    <Label Text="FirstName" FontSize="14" TextColor="#a8d5f0" Grid.Row="0" Grid.Column="1" Padding="0" Margin="0" HorizontalOptions="Fill" VerticalOptions="Fill" HorizontalTextAlignment="Center" VerticalTextAlignment="Center"/>
+                    <Label Text="LastName" FontSize="14" TextColor="#a8d5f0" Grid.Row="0" Grid.Column="2" Padding="0" Margin="0" HorizontalOptions="Fill" VerticalOptions="Fill" HorizontalTextAlignment="Center" VerticalTextAlignment="Center"/>
+                    <Label Text="Mobile"  FontSize="14" TextColor="#a8d5f0" Grid.Row="0" Grid.Column="3" Padding="0" Margin="0" HorizontalOptions="Fill" VerticalOptions="Fill" HorizontalTextAlignment="Center" VerticalTextAlignment="Center"/>
+                    <Label Text="Email"  FontSize="14" TextColor="#a8d5f0" Grid.Row="0" Grid.Column="4" Padding="0" Margin="0" HorizontalOptions="Fill" VerticalOptions="Fill" HorizontalTextAlignment="Center" VerticalTextAlignment="Center"/>
+                    <Label Text="Address"  FontSize="14" TextColor="#a8d5f0" Grid.Row="0" Grid.Column="5" Padding="0" Margin="0" HorizontalOptions="Fill" VerticalOptions="Fill" HorizontalTextAlignment="Center" VerticalTextAlignment="Center"/>
+
+                </Grid>
+            </CollectionView.Header>-->
+                            <CollectionView.ItemTemplate>
+                                <DataTemplate x:DataType="Models:Customer" >
+
+
+                                    <Grid Padding="0" Margin="0" ColumnSpacing="0" RowSpacing="0" RowDefinitions="50" ColumnDefinitions="9*,14*,14*,14*,22*,27*">
+                                        <VisualStateManager.VisualStateGroups>
+                                            <VisualStateGroup Name="CommonStates">
+                                                <VisualState Name="Normal" />
+                                                <VisualState Name="Selected">
+                                                    <VisualState.Setters>
+                                                        <Setter Property="BackgroundColor" Value="Orange" />
+                                                    </VisualState.Setters>
+                                                </VisualState>
+                                            </VisualStateGroup>
+                                        </VisualStateManager.VisualStateGroups>
+
+                                        <Image Source="newrowbg.png" HorizontalOptions="Fill" VerticalOptions="Fill" Aspect="Fill"  Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="6"/>
+
+                                        <Label Text="{Binding Code}" FontSize="14" TextColor="#a8d5f0" Grid.Row="0" Grid.Column="0" Padding="0" Margin="0" HorizontalOptions="Fill" VerticalOptions="Fill" HorizontalTextAlignment="Center" VerticalTextAlignment="Center"/>
+                                        <Label Text="{Binding FirstName}" FontSize="14" TextColor="#a8d5f0" Grid.Row="0" Grid.Column="1" Padding="0" Margin="0" HorizontalOptions="Fill" VerticalOptions="Fill" HorizontalTextAlignment="Center" VerticalTextAlignment="Center"/>
+                                        <Label Text="{Binding LastName}" FontSize="14" TextColor="#a8d5f0" Grid.Row="0" Grid.Column="2" Padding="0" Margin="0" HorizontalOptions="Fill" VerticalOptions="Fill" HorizontalTextAlignment="Center" VerticalTextAlignment="Center"/>
+                                        <Label Text="{Binding Mobile}"  FontSize="14" TextColor="#a8d5f0" Grid.Row="0" Grid.Column="3" Padding="0" Margin="0" HorizontalOptions="Fill" VerticalOptions="Fill" HorizontalTextAlignment="Center" VerticalTextAlignment="Center"/>
+                                        <Label Text="{Binding Email}"  FontSize="14" TextColor="#a8d5f0" Grid.Row="0" Grid.Column="4" Padding="0" Margin="0" HorizontalOptions="Fill" VerticalOptions="Fill" HorizontalTextAlignment="Center" VerticalTextAlignment="Center"/>
+                                        <Label Text="{Binding FullAddress}"  FontSize="14" TextColor="#a8d5f0" Grid.Row="0" Grid.Column="5" Padding="0" Margin="0" HorizontalOptions="Fill" VerticalOptions="Fill" HorizontalTextAlignment="Center" VerticalTextAlignment="Center"/>
+
+                                    </Grid>
+                                </DataTemplate>
+                            </CollectionView.ItemTemplate>
+                        </CollectionView>
+                    </Grid>
+                </ScrollView>
+
+                <Button  TextColor="Black" FontAttributes="Bold" FontSize="14" Margin="0" BackgroundColor="#7CFF72" Grid.Column="1"  Grid.Row="3" 
+                         CornerRadius="5" Text="Add"  BorderColor="Honeydew" BorderWidth="2" HorizontalOptions="Fill"  VerticalOptions="Fill" 
+                         Command="{Binding QuickBtnCLickCommand}" CommandParameter="ADD"/>
+
+                
+                
+
+                <Button  TextColor="Black" FontAttributes="Bold" FontSize="14" Margin="0" BackgroundColor="#7CFF72" Grid.Column="3"  Grid.Row="3" 
+                         CornerRadius="5" Text="Edit"  BorderColor="Honeydew" BorderWidth="2" HorizontalOptions="Fill"  VerticalOptions="Fill" 
+                         Command="{Binding QuickBtnCLickCommand}" CommandParameter="EDIT"/>
+
+
+                <Button  TextColor="Black" FontAttributes="Bold" FontSize="14" Margin="0" BackgroundColor="#7CFF72" Grid.Column="5"  Grid.Row="3" 
+                         CornerRadius="5" Text="Select"  BorderColor="Honeydew" BorderWidth="2" HorizontalOptions="Fill"  VerticalOptions="Fill"
+                         Clicked="SelectCustomer_Clicked"/>
+
+            </Grid>
+       
+            </Grid>
+    </Grid>
+</pages:PopupPage>

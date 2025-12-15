@@ -22,13 +22,33 @@ public partial class NewOrderTaking : ContentPage
         {
             base.OnAppearing();
             NewOrderVM.IsVisibleOrder = false;
-            NewOrderVM.IsCallbillsPage = false; 
-            NewOrderVM.CurrentOpenBill = null;
-            NewOrderVM.CurrentOpenBillDetails = null;
+            NewOrderVM.IsCallbillsPage = false;
+
+            NewOrderVM.INVHEADDETAILS.CurrentOpenBill = null; 
+            NewOrderVM.INVHEADDETAILS.CurrentOpenBillDetails = null; 
+            NewOrderVM.INVHEADDETAILS = null;
         }
         catch (Exception ex)
         {
             // Handle exception
+        }
+    }
+
+    private async void OnLogoutClicked(object sender, EventArgs e)
+    {
+        bool confirm = await Application.Current.MainPage.DisplayAlert(
+            "Confirm Logout",          // Title
+            "Are you sure you want to log out?", // Message
+            "Yes",                     // Accept button
+            "Cancel"                   // Cancel button
+        );
+
+        if (confirm)
+        {
+           // DependencyService.Get<ICloseAppService>()?.CloseApp();
+            var closeService = IPlatformApplication.Current.Services.GetService<ICloseAppService>();
+            closeService?.CloseApp();
+
         }
     }
 
@@ -94,7 +114,7 @@ public partial class NewOrderTaking : ContentPage
             NewOrderVM.IsMoreKeysVisible = false;
             _NewOrederPage = new NewOrderPage(NewOrderVM);
             await Navigation.PushModalAsync(_NewOrederPage, true);
-           
+            //_ = NewOrderVM.LoadAllOpenBillsList();
         }
         catch (Exception ex)
         {
@@ -122,10 +142,15 @@ public partial class NewOrderTaking : ContentPage
             NewOrderVM.IsCategoryListVisible = false;
             NewOrderVM.IsItemListVisible = false;
             NewOrderVM.IsMoreKeysVisible = false;
-            NewOrderVM.CurrentOpenBill = new();
-            NewOrderVM.CurrentOpenBill.TABLENO = VM.TableNo;
-            NewOrderVM.CurrentOpenBill.TOTCOSTAMT = VM.TotalGuest;
-            NewOrderVM.CurrentOpenBillDetails = new();
+            NewOrderVM.INVHEADDETAILS = new();
+            NewOrderVM.INVHEADDETAILS.CurrentOpenBill = new();
+            NewOrderVM.INVHEADDETAILS.CurrentOpenBill.TABLENO = VM.TableNo;
+            NewOrderVM.INVHEADDETAILS.CurrentOpenBill.TOTCOSTAMT = VM.TotalGuest;
+            NewOrderVM.INVHEADDETAILS.CurrentOpenBill.STATUS = "O";
+            NewOrderVM.INVHEADDETAILS.CurrentOpenBill.USER = App.ObjMainUserViewModel.UserEmail;
+            NewOrderVM.INVHEADDETAILS.CurrentOpenBill.LASTUSER = App.ObjMainUserViewModel.UserEmail;
+            NewOrderVM.INVHEADDETAILS.CurrentOpenBillDetails = new();
+            //NewOrderVM.CurrentOpenBillDetails = new();
             _NewOrederPage = new NewOrderPage(NewOrderVM);
             await Navigation.PushModalAsync(_NewOrederPage, true);
         }

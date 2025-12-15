@@ -35,6 +35,7 @@ public partial class NewOrderPage : ContentPage
 
         }
     }
+   
     private async void ImageCloseButton_Clicked(object sender, EventArgs e)
     {
         try
@@ -42,8 +43,9 @@ public partial class NewOrderPage : ContentPage
             if (NewOrderPageVM.IsCallbillsPage && NewOrderPageVM.IsVisibleOrder)
             {
                 NewOrderPageVM.IsVisibleOrder = false;
-                NewOrderPageVM.CurrentOpenBill = null;
-                NewOrderPageVM.CurrentOpenBillDetails = null;
+                NewOrderPageVM.INVHEADDETAILS.CurrentOpenBill = null;
+                NewOrderPageVM.INVHEADDETAILS.CurrentOpenBillDetails = null;
+                NewOrderPageVM.INVHEADDETAILS = null;
             }
             else
             {

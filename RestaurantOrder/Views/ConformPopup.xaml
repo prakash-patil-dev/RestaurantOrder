@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<pages:PopupPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+                 xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+                 xmlns:pages="clr-namespace:Mopups.Pages;assembly=Mopups"
+                 xmlns:animations="clr-namespace:Mopups.Animations;assembly=Mopups"
+                 x:Class="RestaurantOrder.Views.ConformPopup"
+                 xmlns:vm="clr-namespace:RestaurantOrder.Views"
+                 x:DataType="vm:ConformPopup"
+                 Title="CustomerPopup"  BackgroundColor="#9907080A">
+    <pages:PopupPage.Animation>
+        <animations:ScaleAnimation 
+          PositionIn="Center"
+          PositionOut="Center"
+          ScaleIn="1.0"
+          ScaleOut="1.0"
+          DurationIn="200"
+          DurationOut="200"
+          EasingIn="SinOut"
+          EasingOut="SinIn"
+          HasBackgroundAnimation="True"/>
+    </pages:PopupPage.Animation>
+   
+    <Grid RowSpacing="0" ColumnSpacing="0"   Style="{StaticResource PopupPageStyle}">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="8*"></ColumnDefinition>
+            <ColumnDefinition Width="84*"></ColumnDefinition>
+            <ColumnDefinition Width="8*"></ColumnDefinition>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="20*"></RowDefinition>
+            <RowDefinition Height="60*"></RowDefinition>
+            <RowDefinition Height="20*"></RowDefinition>
+        </Grid.RowDefinitions>
+
+        <Grid RowSpacing="0" Grid.Row="1" Grid.Column="1" Padding="0" BackgroundColor="Transparent" 
+                      HorizontalOptions="Fill" VerticalOptions="Fill">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="16.276*"></RowDefinition>
+                <RowDefinition Height="67.44*"></RowDefinition>
+                <RowDefinition Height="16.276*"></RowDefinition>
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="3*"></ColumnDefinition>
+                <ColumnDefinition Width="47*"></ColumnDefinition>
+                <ColumnDefinition Width="47*"></ColumnDefinition>
+                <ColumnDefinition Width="3*"></ColumnDefinition>
+            </Grid.ColumnDefinitions>
+            <!--==========================Popup Header========================-->
+
+            <Image Grid.Row="0" Grid.RowSpan="3" Grid.Column="0" Grid.ColumnSpan="4" Source="popup_bg.png" Aspect="Fill" />
+            <Image Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="4" Source="popup_header.png" Aspect="Fill" />
+
+            <Label Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="4" HorizontalOptions="Center" VerticalOptions="Center"
+                           TextColor="#B9B9B9" Text="{Binding PageHeader}" FontSize="20" />
+
+            <Image x:Name="ImgClosePopup" Grid.Row="0" Grid.Column="2" Grid.ColumnSpan="2" Source="icon_close.png"  WidthRequest="35"  HeightRequest="35" HorizontalOptions="End" VerticalOptions="Center" TranslationX="-10">
+                <Image.GestureRecognizers>
+                    <TapGestureRecognizer Tapped="OnBtnClosePopup" />
+                </Image.GestureRecognizers>
+            </Image>
+
+            <!--=========================Popup Body==============================-->
+
+            <!--<Label x:Name="TableExitMessage" IsVisible="False" Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="2" Text="You are in the middle of a hand.&#10;Are you sure want to leave the table." TextColor="White" HorizontalOptions="Center" VerticalOptions="Center" FontSize="16" />
+                <Label x:Name="TableExitMessage1" IsVisible="False" Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="2" Text="Are you sure want to leave the table." TextColor="White" HorizontalOptions="Center" VerticalOptions="Center" FontSize="16" />-->
+
+            <Label x:Name="lblTableExitMessage" Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="2" TextColor="White" Text="{Binding PageMessage}" HorizontalTextAlignment="Center" VerticalTextAlignment="Center" HorizontalOptions="Center" VerticalOptions="Center" FontSize="17" />
+
+            <!--========================================================================-->
+
+
+            <Image x:Name="ImgFooterBG" Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="4" Source="popup_footer.png" Aspect="Fill" Margin="0"  />
+
+            <Button x:Name="ImgExit" Grid.Row="2" Grid.RowSpan="2" Grid.Column="1" BackgroundColor="#808487"  CornerRadius="5" Margin="15,5" FontAttributes="Bold"
+                    BorderColor="Honeydew" BorderWidth="2" HorizontalOptions="Fill"  VerticalOptions="Fill" FontSize="14"  Text="✅ Yes, Save" Clicked="ImgYes_Clicked" />
+
+            <Button x:Name="ImgCancel" Grid.Row="2" Grid.RowSpan="2" Grid.Column="2"  BackgroundColor="#808487"  CornerRadius="5" Margin="15,5" FontAttributes="Bold"
+                    BorderColor="Honeydew" BorderWidth="2" HorizontalOptions="Fill"  VerticalOptions="Fill" FontSize="14"  Text="❌ No, Cancel" Clicked="ImgCancel_Clicked" />
+
+        </Grid>
+        <!--</Frame>-->
+    </Grid>
+</pages:PopupPage>

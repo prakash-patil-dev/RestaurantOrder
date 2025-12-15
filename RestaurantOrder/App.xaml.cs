@@ -5,6 +5,7 @@ namespace RestaurantOrder
 {
     public partial class App : Application
     {
+        public static CancellationTokenSource cancellationTokenSource;
         public static MainUserViewModel ObjMainUserViewModel;
         public App()
         {
