@@ -502,6 +502,20 @@
             </Setter.Value>
         </Setter>
     </Style>
+
+
+    <Style x:Key="MenuButtonStyle" TargetType="Button">
+        <Setter Property="BackgroundColor" Value="#CBBC7B"/>
+        <Setter Property="FontSize" Value="13"/>
+        <Setter Property="FontAttributes" Value="Bold"/>
+        <Setter Property="CornerRadius" Value="4"/>
+        <Setter Property="BorderWidth" Value="2"/>
+        <Setter Property="BorderColor" Value="RosyBrown"/>
+        <Setter Property="HeightRequest" Value="40"/>
+        <Setter Property="Margin" Value="0,0,0,4"/>
+        <Setter Property="Padding" Value="0"/>
+    </Style>
+
     
     <Style TargetType="Page" ApplyToDerivedTypes="True">
         <Setter Property="Padding" Value="0"/>

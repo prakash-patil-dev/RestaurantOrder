@@ -38,7 +38,7 @@
             VerticalOptions="Center" Aspect="AspectFit" BackgroundColor="Transparent" TranslationX="-10" Clicked="ImageCloseButton_Clicked" />
 
 
-        <Label Text="Open Bills" FontSize="25" TextColor="#9096d4" Grid.Row="0" Grid.Column="1" VerticalOptions="Center" HorizontalOptions="Center"/>
+        <Label Text="Open Bills" FontSize="25" TextColor="#9096d4" Grid.Row="0" Grid.Column="1" VerticalOptions="Center" HorizontalOptions="Center" IsEnabled="False" IsVisible="False"/>
 
         <ScrollView Orientation="Horizontal" Grid.Row="2" Grid.Column="1" HorizontalOptions="Fill" VerticalOptions="Fill" IsVisible="{Binding IsVisibleOrder ,Converter={StaticResource InverseBoolConverter}}">
             <Grid RowSpacing="0" ColumnSpacing="0" Padding="5" Margin="0" >
@@ -211,7 +211,9 @@
                     </ImageButton>-->
 
                     <CollectionView  Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="4" HorizontalOptions="Fill" VerticalOptions="Fill" MaximumHeightRequest="140" 
-                                     ItemsSource="{Binding AllCATEGORYList}" IsVisible="{Binding IsCategoryListVisible}" ItemSizingStrategy="MeasureAllItems"   >
+                                     ItemsSource="{Binding AllCATEGORYList}" IsVisible="{Binding IsCategoryListVisible}" IsEnabled="{Binding IsCategoryListVisible}" ItemSizingStrategy="MeasureAllItems" 
+                                     SelectionMode="Single" SelectionChangedCommand="{Binding CategorySelectedCommand}" SelectedItem="{Binding CategorySelectedItem, Mode=TwoWay}">
+                        
                         <CollectionView.ItemsLayout>
                             <GridItemsLayout Orientation="Vertical" Span="{OnPlatform  iOS=4, Android=4, WinUI=7}" VerticalItemSpacing="1" HorizontalItemSpacing="1"/>
                         </CollectionView.ItemsLayout>
@@ -220,7 +222,7 @@
                                 <Grid Padding="0" Margin="0" ColumnSpacing="0" RowSpacing="0">
                                     <Button Text="{Binding NAME}" Grid.Row="0" Grid.Column="0" Padding="0" Margin="0"
                                             HeightRequest="50" FontAutoScalingEnabled="True" TextColor="{StaticResource PrimaryDarkText}" Background="#81FF81"  BackgroundColor="#81FF81"
-                                            HorizontalOptions="Fill"  FontSize="12"  FontAttributes="Bold"  LineBreakMode="WordWrap" CornerRadius="2" BorderWidth="1" BorderColor="RosyBrown"
+                                            HorizontalOptions="Fill"  FontSize="12" InputTransparent="True"   FontAttributes="Bold"  LineBreakMode="WordWrap" CornerRadius="2" BorderWidth="1" BorderColor="RosyBrown"
                                             VerticalOptions="Fill"/>
                                 </Grid>
 
@@ -229,7 +231,7 @@
                     </CollectionView>
 
                     <CollectionView  Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="4" HorizontalOptions="Fill" VerticalOptions="Fill" MaximumHeightRequest="140" 
-                                     ItemsSource="{Binding AllItemList}" IsVisible="{Binding IsItemListVisible}" ItemSizingStrategy="MeasureAllItems"
+                                     ItemsSource="{Binding AllItemList}" IsVisible="{Binding IsItemListVisible}" IsEnabled="{Binding IsItemListVisible}" ItemSizingStrategy="MeasureAllItems"
                                      SelectionMode="Single" SelectionChangedCommand="{Binding ItemSelectedCommand}" SelectedItem="{Binding ListSelectedItem, Mode=TwoWay}">
 
                         <CollectionView.ItemsLayout>
@@ -430,8 +432,14 @@
                                 
                                 <Button Padding="0" Grid.Row="3" Grid.Column="3" Grid.ColumnSpan="2" Margin="0.5,0.5" TextColor="#f4f0f7" FontAttributes="Bold" FontSize="14" FontAutoScalingEnabled="True" BackgroundColor="#7a2fc4" CornerRadius="2" 
                                         Text="CLR" Command="{Binding QuickNumKeysClickCommand}" CommandParameter="CLR" BorderColor="#f4f0f7" BorderWidth="1" HorizontalOptions="Fill" VerticalOptions="Fill" />
-                                <Button Padding="0" Grid.Row="4" Grid.Column="3" Grid.ColumnSpan="2" Margin="0.5,0.5" TextColor="#f4f0f7" FontAttributes="Bold" FontSize="14" FontAutoScalingEnabled="True" BackgroundColor="#7a2fc4" CornerRadius="2" 
-                                        Text="VOID" Command="{Binding QuickNumKeysClickCommand}" CommandParameter="VOID" BorderColor="#f4f0f7" BorderWidth="1" HorizontalOptions="Fill" VerticalOptions="Fill" />
+                                <!--<Button Padding="0" Grid.Row="4" Grid.Column="3" Grid.ColumnSpan="2" Margin="0.5,0.5" TextColor="#f4f0f7" FontAttributes="Bold" FontSize="14" FontAutoScalingEnabled="True" BackgroundColor="#7a2fc4" CornerRadius="2" 
+                                        Text="VOID" Command="{Binding QuickNumKeysClickCommand}" CommandParameter="VOID" BorderColor="#f4f0f7" BorderWidth="1" HorizontalOptions="Fill" VerticalOptions="Fill" />-->
+                              
+                                <custom:BlinkingButton Padding="0" Grid.Row="4" Grid.Column="3" Grid.ColumnSpan="2" Margin="0.5,0.5" TextColor="#f4f0f7" FontAttributes="Bold" FontSize="14" FontAutoScalingEnabled="True" BackgroundColor="#7a2fc4"
+                                                       CornerRadius="2" Text="VOID"  Command="{Binding QuickNumKeysClickCommand}"  CommandParameter="VOID" BorderColor="#f4f0f7"  BorderWidth="1"  HorizontalOptions="Fill" VerticalOptions="Fill"
+                                                       IsBlinking="{Binding INVHEADDETAILS.ISVoidMode}"  BlinkColor="Red"/>
+
+
                                 <Button Padding="0" Grid.Row="5" Grid.Column="3" Grid.ColumnSpan="2" Margin="0.5,0.5" TextColor="#f4f0f7" FontAttributes="Bold" FontSize="14" FontAutoScalingEnabled="True" BackgroundColor="#7a2fc4" CornerRadius="2"
                                         Text="SAVE" Command="{Binding QuickNumKeysClickCommand}" CommandParameter="SAVE" BorderColor="#f4f0f7" BorderWidth="1" HorizontalOptions="Fill" VerticalOptions="Fill" />
                                 <Button Padding="0" Grid.Row="6" Grid.Column="3" Grid.ColumnSpan="2" Margin="0.5,0.5" TextColor="#f4f0f7" FontAttributes="Bold" FontSize="14" FontAutoScalingEnabled="True" BackgroundColor="#7a2fc4" CornerRadius="2" 
@@ -482,8 +490,10 @@
                                 <ColumnDefinition Width="13.1*"/>
                                 <ColumnDefinition Width="13.1*"/>
                                 <ColumnDefinition Width="16.7*"/>
-                                <ColumnDefinition Width="44*"/>
+                                <ColumnDefinition Width="1.5*"/>
+                                <ColumnDefinition Width="42.5*"/>
                             </Grid.ColumnDefinitions>
+                            
                             <Button Padding="0" Grid.Row="1" Grid.Column="0"  Margin="0.5,0.5" TextColor="#f4f0f7" FontAttributes="Bold" FontSize="14" FontAutoScalingEnabled="True" BackgroundColor="#7a2fc4" CornerRadius="2" 
                                     Text="{Binding CurrentSelectedBillItem.EATTAKE}" Command="{Binding QuickNumKeysClickCommand}" CommandParameter="EATTAKE"  BorderColor="#f4f0f7" BorderWidth="1" HorizontalOptions="Fill" VerticalOptions="Fill" />
                             <Button Padding="0" Grid.Row="1" Grid.Column="1"  Margin="0.5,0.5" TextColor="#f4f0f7" FontAttributes="Bold" FontSize="14" FontAutoScalingEnabled="True" BackgroundColor="#7a2fc4" CornerRadius="2"
@@ -492,6 +502,9 @@
                                     Text="I Disc" Command="{Binding QuickNumKeysClickCommand}" CommandParameter="ITEMDISC" BorderColor="#f4f0f7" BorderWidth="1" HorizontalOptions="Fill" VerticalOptions="Fill" />
                             <Button Padding="0" Grid.Row="1" Grid.Column="3"  Margin="0.5,0.5" TextColor="#f4f0f7" FontAttributes="Bold" FontSize="14" FontAutoScalingEnabled="True" BackgroundColor="#7a2fc4" CornerRadius="2" 
                                     Text="Bill Disc" Command="{Binding QuickNumKeysClickCommand}" CommandParameter="BILLDISC" BorderColor="#f4f0f7" BorderWidth="1" HorizontalOptions="Fill" VerticalOptions="Fill" />
+
+                            <Button Padding="0" Grid.Row="1" Grid.Column="5" Margin="0.5,0.5" BackgroundColor="#CBBC7B" Background="#CBBC7B"  FontSize="14" FontAttributes="Bold" CornerRadius="3" BorderWidth="2" 
+                                    BorderColor="RosyBrown" Text="PLU"  Command="{Binding QuickBtnCLickCommand}" CommandParameter="PLU"  />
 
                         </Grid>
                     </Grid>

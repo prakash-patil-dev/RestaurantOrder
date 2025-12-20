@@ -9,7 +9,7 @@
                  xmlns:vm="clr-namespace:RestaurantOrder.Views"
                  x:DataType="vm:MenuPopup">
     <pages:PopupPage.Animation>
-        <animations:ScaleAnimation 
+        <!--<animations:ScaleAnimation 
       PositionIn="Center"
       PositionOut="Center"
       ScaleIn="1.0"
@@ -18,7 +18,16 @@
       DurationOut="200"
       EasingIn="SinOut"
       EasingOut="SinIn"
-      HasBackgroundAnimation="True"/>
+      HasBackgroundAnimation="True"/>-->
+        <animations:MoveAnimation
+        PositionIn="Left"
+        PositionOut="Left"
+        DurationIn="250"
+        DurationOut="250"
+        EasingIn="SinOut"
+        EasingOut="SinIn"
+        HasBackgroundAnimation="True" />
+
     </pages:PopupPage.Animation>
     <Grid  Style="{StaticResource PopupPageStyle}"  >
         <Grid.GestureRecognizers>
@@ -27,11 +36,11 @@
         </Grid.GestureRecognizers>
 
 
-        <Grid.RowDefinitions>
-            <RowDefinition Height="8*" ></RowDefinition>
+        <Grid.RowDefinitions >
+            <RowDefinition Height="7*" ></RowDefinition>
             <RowDefinition Height="1*" ></RowDefinition>
-            <RowDefinition Height="40.5*" ></RowDefinition>
-            <RowDefinition Height="50.5*" ></RowDefinition>
+            <RowDefinition Height="86.5*" ></RowDefinition>
+            <RowDefinition Height="3.5*" ></RowDefinition>
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="2*" ></ColumnDefinition>
@@ -47,7 +56,43 @@
                 Margin="0,0,7,0"   Command="{Binding QuickBtnCLickCommand}" CommandParameter="CLOSEMENU" />-->
 
 
-        <Grid Grid.Row="1" Grid.RowSpan="2" Grid.Column="1" Margin="5" Padding="0" RowSpacing="0" ColumnSpacing="0" HorizontalOptions="Fill" VerticalOptions="Fill">
+        <VerticalStackLayout  Grid.Row="1"  Grid.RowSpan="2"  Grid.Column="1" Margin="5" Spacing="4"  HorizontalOptions="Fill" VerticalOptions="Fill">
+
+            <Button Text="CAT HELP" Command="{Binding QuickBtnCLickCommand}" CommandParameter="CAT HELP" Style="{StaticResource MenuButtonStyle}" />
+
+            <Button Text="ITEM HELP" Command="{Binding QuickBtnCLickCommand}" CommandParameter="ITEM HELP" Style="{StaticResource MenuButtonStyle}" />
+
+            <Button Text="BILL TYPE" IsVisible="False" Command="{Binding QuickBtnCLickCommand}" CommandParameter="BILL TYPE" Style="{StaticResource MenuButtonStyle}" />
+
+            <Button Text="COMBO PACK" Command="{Binding QuickBtnCLickCommand}" CommandParameter="COMBO PACK" Style="{StaticResource MenuButtonStyle}" />
+
+            <Button Text="TOPPING" Command="{Binding QuickBtnCLickCommand}" CommandParameter="TOPPING" Style="{StaticResource MenuButtonStyle}" />
+
+            <Button Text="KOT MESSAGE" Command="{Binding QuickBtnCLickCommand}" CommandParameter="KOT MESSAGE" Style="{StaticResource MenuButtonStyle}" />
+
+            <Button Text="OPEN PRICE" Command="{Binding QuickBtnCLickCommand}" CommandParameter="OPEN PRICE" Style="{StaticResource MenuButtonStyle}" />
+
+            <Button Text="BILL DISC" IsVisible="False" Command="{Binding QuickBtnCLickCommand}" CommandParameter="BILL DISC" Style="{StaticResource MenuButtonStyle}" />
+
+            <Button Text="HOLD BILL" IsVisible="False" Command="{Binding QuickBtnCLickCommand}" CommandParameter="HOLD BILL" Style="{StaticResource MenuButtonStyle}" />
+
+            <Button Text="PRINT N HOLD BILL" Command="{Binding QuickBtnCLickCommand}" CommandParameter="PRINT N HOLD BILL" Style="{StaticResource MenuButtonStyle}" />
+
+            <Button Text="OPEN BILLS" IsVisible="False" Command="{Binding QuickBtnCLickCommand}" CommandParameter="OPEN BILLS" Style="{StaticResource MenuButtonStyle}" />
+
+            <Button Text="PRICE TYPE" Command="{Binding QuickBtnCLickCommand}" CommandParameter="PRICE TYPE" Style="{StaticResource MenuButtonStyle}" />
+
+            <Button Text="PLU" IsVisible="False" Command="{Binding QuickBtnCLickCommand}" CommandParameter="PLU" Style="{StaticResource MenuButtonStyle}" />
+
+            <Button Text="SETTLEMENT" Command="{Binding QuickBtnCLickCommand}" CommandParameter="SETTLEMENT" Style="{StaticResource MenuButtonStyle}" />
+
+            <Button Text="DISPLAY TOTAL" Command="{Binding QuickBtnCLickCommand}" CommandParameter="DISPLAY TOTAL" Style="{StaticResource MenuButtonStyle}" />
+
+            <Button Text="ESC" IsVisible="False"  Command="{Binding QuickBtnCLickCommand}" CommandParameter="ESC" Style="{StaticResource MenuButtonStyle}" />
+
+        </VerticalStackLayout>
+
+        <!--<Grid Grid.Row="1" Grid.RowSpan="2" Grid.Column="1" Margin="5" Padding="0" RowSpacing="0" ColumnSpacing="0" HorizontalOptions="Fill" VerticalOptions="Fill">
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto" ></RowDefinition>
                 <RowDefinition Height="Auto" ></RowDefinition>
@@ -70,28 +115,28 @@
             <Button BackgroundColor="#CBBC7B" Background="#CBBC7B" Padding="0" Margin="0,0,0,0.6" FontSize="11" FontAttributes="Bold" CornerRadius="3" BorderWidth="2" HeightRequest="40" BorderColor="RosyBrown" Text="CAT HELP" Grid.Row="0" Grid.Column="0" Command="{Binding QuickBtnCLickCommand}" CommandParameter="CAT HELP" />
             <Button BackgroundColor="#CBBC7B" Background="#CBBC7B" Padding="0" Margin="0,0,0,0.6" FontSize="11" FontAttributes="Bold" CornerRadius="3" BorderWidth="2" HeightRequest="40" BorderColor="RosyBrown" Text="ITEM HELP" Grid.Row="0" Grid.Column="2" Command="{Binding QuickBtnCLickCommand}" CommandParameter="ITEM HELP"/>
 
-            <Button BackgroundColor="#CBBC7B" Background="#CBBC7B" Padding="0"  Margin="0,0.6,0,0.6" FontSize="11" FontAttributes="Bold" CornerRadius="3" BorderWidth="2" HeightRequest="40" BorderColor="RosyBrown" Text="BILL TYPE" Grid.Row="1" Grid.Column="0" Command="{Binding QuickBtnCLickCommand}" CommandParameter="BILL TYPE"/>
+            <Button BackgroundColor="#CBBC7B" Background="#CBBC7B" Padding="0"  Margin="0,0.6,0,0.6" FontSize="11" FontAttributes="Bold" CornerRadius="3" BorderWidth="2" HeightRequest="40" BorderColor="RosyBrown" Text="BILL TYPE" Grid.Row="1" Grid.Column="0" Command="{Binding QuickBtnCLickCommand}" CommandParameter="BILL TYPE" IsVisible="False"/>
             <Button BackgroundColor="#CBBC7B" Background="#CBBC7B" Padding="0"  Margin="0,0.6,0,0.6" FontSize="11" FontAttributes="Bold" CornerRadius="3" BorderWidth="2" HeightRequest="40" BorderColor="RosyBrown" Text="COMBO PACK" Grid.Row="1" Grid.Column="2" Command="{Binding QuickBtnCLickCommand}" CommandParameter="COMBO PACK" />
 
             <Button BackgroundColor="#CBBC7B" Background="#CBBC7B" Padding="0" Margin="0,0.6,0,0.6" FontSize="11" FontAttributes="Bold" CornerRadius="3" BorderWidth="2" HeightRequest="40" BorderColor="RosyBrown" Text="TOPPING" Grid.Row="2" Grid.Column="0" Command="{Binding QuickBtnCLickCommand}" CommandParameter="TOPPING"/>
             <Button BackgroundColor="#CBBC7B" Background="#CBBC7B" Padding="0" Margin="0,0.6,0,0.6" FontSize="11" FontAttributes="Bold" CornerRadius="3" BorderWidth="2" HeightRequest="40" BorderColor="RosyBrown" Text="KOT MESSAGE" Grid.Row="2" Grid.Column="2" Command="{Binding QuickBtnCLickCommand}" CommandParameter="KOT MESSAGE" />
 
-            <!--<Button BackgroundColor="#CBBC7B" Background="#CBBC7B" Padding="0" Margin="0,0.6,0,0.6" FontSize="11" FontAttributes="Bold" CornerRadius="3" BorderWidth="2" HeightRequest="40" BorderColor="RosyBrown" Text="CLEAR LINE" Grid.Row="3" Grid.Column="0" Command="{Binding QuickBtnCLickCommand}" CommandParameter="CLEAR LINE"/>-->
+            --><!--<Button BackgroundColor="#CBBC7B" Background="#CBBC7B" Padding="0" Margin="0,0.6,0,0.6" FontSize="11" FontAttributes="Bold" CornerRadius="3" BorderWidth="2" HeightRequest="40" BorderColor="RosyBrown" Text="CLEAR LINE" Grid.Row="3" Grid.Column="0" Command="{Binding QuickBtnCLickCommand}" CommandParameter="CLEAR LINE"/>--><!--
             <Button BackgroundColor="#CBBC7B" Background="#CBBC7B" Padding="0" Margin="0,0.6,0,0.6" FontSize="11" FontAttributes="Bold" CornerRadius="3" BorderWidth="2" HeightRequest="40" BorderColor="RosyBrown" Text="OPEN PRICE" Grid.Row="3" Grid.Column="0" Command="{Binding QuickBtnCLickCommand}" CommandParameter="OPEN PRICE" />
-            <Button BackgroundColor="#CBBC7B" Background="#CBBC7B" Padding="0" Margin="0,0.6,0,0.6" FontSize="11" FontAttributes="Bold" CornerRadius="3" BorderWidth="2" HeightRequest="40" BorderColor="RosyBrown" Text="BILL DISC" Grid.Row="3" Grid.Column="2" Command="{Binding QuickBtnCLickCommand}" CommandParameter="BILL DISC"  />
+            <Button BackgroundColor="#CBBC7B" Background="#CBBC7B" Padding="0" Margin="0,0.6,0,0.6" FontSize="11" FontAttributes="Bold" CornerRadius="3" BorderWidth="2" HeightRequest="40" BorderColor="RosyBrown" Text="BILL DISC" Grid.Row="3" Grid.Column="2" Command="{Binding QuickBtnCLickCommand}" CommandParameter="BILL DISC" IsVisible="False"  />
 
-            <Button BackgroundColor="#CBBC7B" Background="#CBBC7B" Padding="0" Margin="0,0.6,0,0.6" FontSize="11" FontAttributes="Bold" CornerRadius="3" BorderWidth="2" HeightRequest="40" BorderColor="RosyBrown" Text="HOLD BILL" Grid.Row="4" Grid.Column="0" Command="{Binding QuickBtnCLickCommand}" CommandParameter="HOLD BILL"  />
+            <Button BackgroundColor="#CBBC7B" Background="#CBBC7B" Padding="0" Margin="0,0.6,0,0.6" FontSize="11" FontAttributes="Bold" CornerRadius="3" BorderWidth="2" HeightRequest="40" BorderColor="RosyBrown" Text="HOLD BILL" Grid.Row="4" Grid.Column="0" Command="{Binding QuickBtnCLickCommand}" CommandParameter="HOLD BILL" IsVisible="False" />
             <Button BackgroundColor="#CBBC7B" Background="#CBBC7B" Padding="0" Margin="0,0.6,0,0.6" FontSize="11" FontAttributes="Bold" CornerRadius="3" BorderWidth="2" HeightRequest="40" BorderColor="RosyBrown" Text="PRINT N HOLD BILL" Grid.Row="4" Grid.Column="2" Command="{Binding QuickBtnCLickCommand}" CommandParameter="PRINT N HOLD BILL"  />
-            
-            <Button BackgroundColor="#CBBC7B" Background="#CBBC7B" Padding="0" Margin="0,0.6,0,0.6" FontSize="11" FontAttributes="Bold" CornerRadius="3" BorderWidth="2" HeightRequest="40" BorderColor="RosyBrown" Text="OPEN BILLS" Grid.Row="5" Grid.Column="0" Command="{Binding QuickBtnCLickCommand}" CommandParameter="OPEN BILLS"  />
+
+            <Button BackgroundColor="#CBBC7B" Background="#CBBC7B" Padding="0" Margin="0,0.6,0,0.6" FontSize="11" FontAttributes="Bold" CornerRadius="3" BorderWidth="2" HeightRequest="40" BorderColor="RosyBrown" Text="OPEN BILLS" Grid.Row="5" Grid.Column="0" Command="{Binding QuickBtnCLickCommand}" CommandParameter="OPEN BILLS"  IsVisible="False"/>
             <Button BackgroundColor="#CBBC7B" Background="#CBBC7B" Padding="0" Margin="0,0.6,0,0.6" FontSize="11" FontAttributes="Bold" CornerRadius="3" BorderWidth="2" HeightRequest="40" BorderColor="RosyBrown" Text="PRICE TYPE" Grid.Row="5" Grid.Column="2" Command="{Binding QuickBtnCLickCommand}" CommandParameter="PRICE TYPE"  />
-            
-            <Button BackgroundColor="#CBBC7B" Background="#CBBC7B" Padding="0" Margin="0,0.6,0,0.6" FontSize="11" FontAttributes="Bold" CornerRadius="3" BorderWidth="2" HeightRequest="40" BorderColor="RosyBrown" Text="PLU" Grid.Row="6" Grid.Column="0" Command="{Binding QuickBtnCLickCommand}" CommandParameter="PLU"  />
+
+            <Button BackgroundColor="#CBBC7B" Background="#CBBC7B" Padding="0" Margin="0,0.6,0,0.6" FontSize="11" FontAttributes="Bold" CornerRadius="3" BorderWidth="2" HeightRequest="40" BorderColor="RosyBrown" Text="PLU" Grid.Row="6" Grid.Column="0" Command="{Binding QuickBtnCLickCommand}" CommandParameter="PLU" IsVisible="False" />
             <Button BackgroundColor="#CBBC7B" Background="#CBBC7B" Padding="0" Margin="0,0.6,0,0.6" FontSize="11" FontAttributes="Bold" CornerRadius="3" BorderWidth="2" HeightRequest="40" BorderColor="RosyBrown" Text="SETTLEMENT" Grid.Row="6" Grid.Column="2" Command="{Binding QuickBtnCLickCommand}" CommandParameter="SETTLEMENT"  />
             
             <Button BackgroundColor="#CBBC7B" Background="#CBBC7B" Padding="0" Margin="0,0.6,0,0.6" FontSize="11" FontAttributes="Bold" CornerRadius="3" BorderWidth="2" HeightRequest="40" BorderColor="RosyBrown" Text="DISPLAY TOTAL" Grid.Row="7" Grid.Column="0" Command="{Binding QuickBtnCLickCommand}" CommandParameter="DISPLAY TOTAL"  />
 
-            <Button BackgroundColor="#CBBC7B" Background="#CBBC7B" Padding="0" Margin="0,0.6,0,0.6" FontSize="11" FontAttributes="Bold" CornerRadius="3" BorderWidth="2" HeightRequest="40" BorderColor="RosyBrown" Text="ESC" Grid.Row="7" Grid.Column="2" Command="{Binding QuickBtnCLickCommand}" CommandParameter="ESC"/>
-        </Grid>
+            <Button BackgroundColor="#CBBC7B" Background="#CBBC7B" Padding="0" Margin="0,0.6,0,0.6" FontSize="11" FontAttributes="Bold" CornerRadius="3" BorderWidth="2" HeightRequest="40" BorderColor="RosyBrown" Text="ESC" Grid.Row="7" Grid.Column="2" Command="{Binding QuickBtnCLickCommand}" CommandParameter="ESC" IsVisible="False"/>
+        </Grid>-->
     </Grid>
 </pages:PopupPage>

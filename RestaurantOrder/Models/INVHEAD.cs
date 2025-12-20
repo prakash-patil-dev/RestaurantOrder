@@ -196,6 +196,10 @@ namespace RestaurantOrder.Models
 
         private ObservableCollection<INVLINE> _CurrentOpenBillDetails = new();
         public ObservableCollection<INVLINE> CurrentOpenBillDetails { get => _CurrentOpenBillDetails; set { SetProperty(ref _CurrentOpenBillDetails, value); OnPropertyChanged(); } }
+       
+        private bool _ISVoidMode = false;
+        public bool ISVoidMode { get => _ISVoidMode; set => SetProperty(ref _ISVoidMode, value); }
+
 
     }
 }

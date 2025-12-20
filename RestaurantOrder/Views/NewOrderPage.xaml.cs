@@ -11,6 +11,20 @@ public partial class NewOrderPage : ContentPage
 		try
 		{
             BindingContext = NewOrderPageVM = NewOrderVM;
+            NewOrderPageVM.RequestClose += async () =>
+            {
+                try
+                {
+                    BindingContext = null;
+                    NewOrderPageVM = null;
+                    await Navigation.PopModalAsync(true);
+                }
+                catch
+                {
+
+                }
+            };
+
             InitializeComponent();
         }
 		catch (Exception ex)

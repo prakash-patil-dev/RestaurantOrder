@@ -145,7 +145,8 @@ public partial class NewOrderTaking : ContentPage
             NewOrderVM.INVHEADDETAILS = new();
             NewOrderVM.INVHEADDETAILS.CurrentOpenBill = new();
             NewOrderVM.INVHEADDETAILS.CurrentOpenBill.TABLENO = VM.TableNo;
-            NewOrderVM.INVHEADDETAILS.CurrentOpenBill.TOTCOSTAMT = VM.TotalGuest;
+            NewOrderVM.INVHEADDETAILS.CurrentOpenBill.NOOFPERSNS = VM.TotalGuest;
+            //NewOrderVM.INVHEADDETAILS.CurrentOpenBill.TOTCOSTAMT = VM.TotalGuest;
             NewOrderVM.INVHEADDETAILS.CurrentOpenBill.STATUS = "O";
             NewOrderVM.INVHEADDETAILS.CurrentOpenBill.USER = App.ObjMainUserViewModel.UserEmail;
             NewOrderVM.INVHEADDETAILS.CurrentOpenBill.LASTUSER = App.ObjMainUserViewModel.UserEmail;

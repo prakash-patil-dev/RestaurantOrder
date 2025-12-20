@@ -1,4 +1,5 @@
-﻿using Mopups.Services;
+﻿using Microsoft.Maui.Controls;
+using Mopups.Services;
 using RestaurantOrder.ApiService;
 using RestaurantOrder.Models;
 using RestaurantOrder.Views;
@@ -21,6 +22,7 @@ namespace RestaurantOrder.ViewModels
                 QuickBtnCLickCommand = new Command<string>(QuickBtnClicked);
                 QuickNumKeysClickCommand = new Command<string>(QuickKeysClicked);
                 ItemSelectedCommand = new Command(OnItemSelected);
+                CategorySelectedCommand = new Command(OnCategorySelected);
                 //AllOpenBillsSelectionChangedCommand = new Command<INVHEAD>(OnAllOpenBillSelectionChanged);
                 // AllOpenBillsListRefreshCommand = new Command(async () => await LoadAllOpenBillsList());
 
@@ -105,7 +107,7 @@ namespace RestaurantOrder.ViewModels
                 IsBusy = true;
                 IsVisibleIndicator = true;
 
-                AllItemList = await ApiClient.GetAsync<ObservableCollection<item>>("Item/GetItems") ?? new ObservableCollection<item>();
+                _allItemsBackup = await ApiClient.GetAsync<ObservableCollection<item>>("Item/GetItems") ?? new ObservableCollection<item>();
             }
             catch (Exception ex)
             {
@@ -119,7 +121,7 @@ namespace RestaurantOrder.ViewModels
             }
         }
 
-        private void QuickBtnClicked(string parameter)
+        private async void QuickBtnClicked(string parameter)
         {
             try
             {
@@ -133,6 +135,11 @@ namespace RestaurantOrder.ViewModels
                         IsCategoryListVisible = !IsCategoryListVisible;
                         break;
                     case "ITEM HELP":
+                        if (IsItemListVisible)
+                        {
+                            AllItemList.Clear();
+                            AllItemList = new ObservableCollection<item>(_allItemsBackup.ToList());
+                        }
                         IsCategoryListVisible = false;
                         IsItemListVisible = !IsItemListVisible;
                         break;
@@ -158,9 +165,9 @@ namespace RestaurantOrder.ViewModels
                         break;
                     case "ESC":
                         // clear bindings / state
-                        Application.Current.MainPage.BindingContext = null;
-                        Application.Current.MainPage.Navigation.PopModalAsync(animated: true);
-
+                        //Application.Current.MainPage.BindingContext = null;
+                        //Application.Current.MainPage.Navigation.PopModalAsync(animated: true);
+                        await ClosePageAsync();
                         // dispose VM if needed
                         // NewOrderPageVM = null; // not needed inside itself
 
@@ -168,8 +175,12 @@ namespace RestaurantOrder.ViewModels
                     case "CLOSEMENU":
                         try
                         {
-                            if (MopupService.Instance.PopupStack.Count > 0)
-                                MopupService.Instance.PopAsync(animate: true);
+                            await MainThread.InvokeOnMainThreadAsync(async () =>
+                            {
+                                await MopupService.Instance.PopAsync(true);
+                            });
+                            //if (MopupService.Instance.PopupStack.Count > 0)
+                            //    MopupService.Instance.PopAsync(animate: true);
                         }
                         catch
                         {
@@ -185,8 +196,12 @@ namespace RestaurantOrder.ViewModels
                 {
                     try
                     {
-                        if (MopupService.Instance.PopupStack.Count > 0)
-                            MopupService.Instance.PopAsync(animate: true);
+                        await MainThread.InvokeOnMainThreadAsync(async () =>
+                        {
+                            await MopupService.Instance.PopAsync(true);
+                        });
+                        //if (MopupService.Instance.PopupStack.Count > 0)
+                        //    MopupService.Instance.PopAsync(animate: true);
                     }
                     catch
                     {
@@ -366,84 +381,85 @@ namespace RestaurantOrder.ViewModels
                         //QuickQtyEntryValue = string.Empty;
                         break;
                     case "VOID":
-                        if (CurrentSelectedBillItem == null)
+                        if (INVHEADDETAILS == null)
                             break;
+                        INVHEADDETAILS.ISVoidMode = !INVHEADDETAILS.ISVoidMode;
                         //CurrentSelectedBillItem.ISVoidItem = !CurrentSelectedBillItem.ISVoidItem;
-                        double VoidQty = Math.Abs(Convert.ToDouble(CurrentSelectedBillItem.QUANTITY));
-                        if (!CurrentSelectedBillItem.ISVoidItem)
-                        {
-                            //CurrentSelectedBillItem.QUANTITY = -VoidQty;
+                        //double VoidQty = Math.Abs(Convert.ToDouble(CurrentSelectedBillItem.QUANTITY));
+                        //if (!CurrentSelectedBillItem.ISVoidItem)
+                        //{
+                        //    //CurrentSelectedBillItem.QUANTITY = -VoidQty;
 
-                            INVHEADDETAILS.CurrentOpenBillDetails.Add(new INVLINE
-                            {
-                                BRANCHCODE = "HQ",
-                                TXNNO = INVHEADDETAILS.CurrentOpenBill.TXNNO,
-                                TXNDT = DateTime.Now, 
-                                VIPNO = INVHEADDETAILS.CurrentOpenBill.VIPNO,
-                                SHIFT = string.Empty,
-                                USER = App.ObjMainUserViewModel.UserEmail,
-                                STAFF = INVHEADDETAILS.CurrentOpenBill.STAFF,
-                                LINE = 0,
-                                ITEMCODE = CurrentSelectedBillItem.ITEMCODE,
-                                ITEMNAME1 = CurrentSelectedBillItem.ITEMNAME1,
-                                ITEMNAME2 = CurrentSelectedBillItem.ITEMNAME2,
-                                CATCODE = CurrentSelectedBillItem.CATCODE,
-                                SUBCATCODE = CurrentSelectedBillItem.SUBCATCODE,
-                                BRANDCODE = CurrentSelectedBillItem.BRANDCODE,
-                                UNITCODE = CurrentSelectedBillItem.UNITCODE,
-                                QUANTITY = -VoidQty,
-                                UNITRATE = CurrentSelectedBillItem.UNITRATE,
-                                AMOUNT = CurrentSelectedBillItem.AMOUNT * 1,
-                                TAXPERC = 0,
-                                TAXVALUE = 0,
-                                COSTAMT = CurrentSelectedBillItem.COSTAMT,
-                                COSTAMTSPA = CurrentSelectedBillItem.COSTAMTSPA,
-                                SPLDISC = null,
-                                DISCPERC = 0,
-                                DISCOUNT = 0,
-                                LESSAMT = 0,
-                                PRINTED = null,
-                                BPRINTED = "N",
-                                KPRINTED = "Y",
-                                EATTAKE = "E",
-                                STATUS = "O",
-                                UPDATED = "Y",
-                                STYLECODE = CurrentSelectedBillItem.STYLECODE,
-                                COLORCODE = CurrentSelectedBillItem.COLORCODE,
-                                SIZECODE = CurrentSelectedBillItem.SIZECODE,
-                                PACKAGEID = 0,
-                                PACKLINE = 0,
-                                LASTUSER = App.ObjMainUserViewModel.UserEmail,
-                                LASTDATE = DateTime.Now,
-                                LASTTIME = DateTime.Now.ToString("HH:mm:ss"),
-                                KOT = null,
-                                SCANITEMCODE = CurrentSelectedBillItem.ITEMCODE,
-                                PRICETYPE = "SP",
-                                TOPPING = null,
-                                DEPTCODE = "0",
-                                SEASONCODE = string.Empty,
-                                ISVoidItem = true
-                            });
-                            CurrentSelectedBillItem = INVHEADDETAILS.CurrentOpenBillDetails?.LastOrDefault();
-                        }
-                        else
-                        {
-                           // CurrentSelectedBillItem.ISVoidItem = !CurrentSelectedBillItem.ISVoidItem;
-                           // CurrentSelectedBillItem.QUANTITY = VoidQty;
+                        //    INVHEADDETAILS.CurrentOpenBillDetails.Add(new INVLINE
+                        //    {
+                        //        BRANCHCODE = "HQ",
+                        //        TXNNO = INVHEADDETAILS.CurrentOpenBill.TXNNO,
+                        //        TXNDT = DateTime.Now, 
+                        //        VIPNO = INVHEADDETAILS.CurrentOpenBill.VIPNO,
+                        //        SHIFT = string.Empty,
+                        //        USER = App.ObjMainUserViewModel.UserEmail,
+                        //        STAFF = INVHEADDETAILS.CurrentOpenBill.STAFF,
+                        //        LINE = 0,
+                        //        ITEMCODE = CurrentSelectedBillItem.ITEMCODE,
+                        //        ITEMNAME1 = CurrentSelectedBillItem.ITEMNAME1,
+                        //        ITEMNAME2 = CurrentSelectedBillItem.ITEMNAME2,
+                        //        CATCODE = CurrentSelectedBillItem.CATCODE,
+                        //        SUBCATCODE = CurrentSelectedBillItem.SUBCATCODE,
+                        //        BRANDCODE = CurrentSelectedBillItem.BRANDCODE,
+                        //        UNITCODE = CurrentSelectedBillItem.UNITCODE,
+                        //        QUANTITY = -VoidQty,
+                        //        UNITRATE = CurrentSelectedBillItem.UNITRATE,
+                        //        AMOUNT = CurrentSelectedBillItem.AMOUNT * 1,
+                        //        TAXPERC = 0,
+                        //        TAXVALUE = 0,
+                        //        COSTAMT = CurrentSelectedBillItem.COSTAMT,
+                        //        COSTAMTSPA = CurrentSelectedBillItem.COSTAMTSPA,
+                        //        SPLDISC = null,
+                        //        DISCPERC = 0,
+                        //        DISCOUNT = 0,
+                        //        LESSAMT = 0,
+                        //        PRINTED = null,
+                        //        BPRINTED = "N",
+                        //        KPRINTED = "Y",
+                        //        EATTAKE = "E",
+                        //        STATUS = "O",
+                        //        UPDATED = "Y",
+                        //        STYLECODE = CurrentSelectedBillItem.STYLECODE,
+                        //        COLORCODE = CurrentSelectedBillItem.COLORCODE,
+                        //        SIZECODE = CurrentSelectedBillItem.SIZECODE,
+                        //        PACKAGEID = 0,
+                        //        PACKLINE = 0,
+                        //        LASTUSER = App.ObjMainUserViewModel.UserEmail,
+                        //        LASTDATE = DateTime.Now,
+                        //        LASTTIME = DateTime.Now.ToString("HH:mm:ss"),
+                        //        KOT = null,
+                        //        SCANITEMCODE = CurrentSelectedBillItem.ITEMCODE,
+                        //        PRICETYPE = "SP",
+                        //        TOPPING = null,
+                        //        DEPTCODE = "0",
+                        //        SEASONCODE = string.Empty,
+                        //        ISVoidItem = true
+                        //    });
+                        //    CurrentSelectedBillItem = INVHEADDETAILS.CurrentOpenBillDetails?.LastOrDefault();
+                        //}
+                        //else
+                        //{
+                        //   // CurrentSelectedBillItem.ISVoidItem = !CurrentSelectedBillItem.ISVoidItem;
+                        //   // CurrentSelectedBillItem.QUANTITY = VoidQty;
 
-                            if (CurrentSelectedBillItem.QUANTITY > 0)
-                            {
-                                CurrentSelectedBillItem.QUANTITY = -VoidQty;
-                            }
-                            else if (CurrentSelectedBillItem.QUANTITY < 0)
-                            {
-                                CurrentSelectedBillItem.QUANTITY = VoidQty;
-                            }
+                        //    if (CurrentSelectedBillItem.QUANTITY > 0)
+                        //    {
+                        //        CurrentSelectedBillItem.QUANTITY = -VoidQty;
+                        //    }
+                        //    else if (CurrentSelectedBillItem.QUANTITY < 0)
+                        //    {
+                        //        CurrentSelectedBillItem.QUANTITY = VoidQty;
+                        //    }
 
-                        }
-                        CurrentSelectedBillItem.DISCOUNT = (CurrentSelectedBillItem.UNITRATE * CurrentSelectedBillItem.QUANTITY * CurrentSelectedBillItem.DISCPERC) / 100.0;
-                        CurrentSelectedBillItem.AMOUNT = (CurrentSelectedBillItem.UNITRATE * CurrentSelectedBillItem.QUANTITY) - CurrentSelectedBillItem.DISCOUNT;
-                        CalculateTotalAmout();
+                        //}
+                        //CurrentSelectedBillItem.DISCOUNT = (CurrentSelectedBillItem.UNITRATE * CurrentSelectedBillItem.QUANTITY * CurrentSelectedBillItem.DISCPERC) / 100.0;
+                        //CurrentSelectedBillItem.AMOUNT = (CurrentSelectedBillItem.UNITRATE * CurrentSelectedBillItem.QUANTITY) - CurrentSelectedBillItem.DISCOUNT;
+                        //CalculateTotalAmout();
                         QuickQtyEntryValue = string.Empty;
                         break;
                     case "SAVE":
@@ -566,14 +582,40 @@ namespace RestaurantOrder.ViewModels
                                 item.LASTUSER = App.ObjMainUserViewModel.UserEmail;
                                 item.LASTDATE = DateTime.Now;
                                 item.LASTTIME = DateTime.Now.ToString("hh:mm:ss tt");
-
-
-
                             });
 
                             var response = await ApiClient.PostAsync<INVHEADDETAILS, string>("INVHEAD/SaveCurrentBill", INVHEADDETAILS, 1);
                             if (response != null)
                             {
+                                var StrArray = response.Split(':'); 
+                                 string ReturnValue = StrArray[1].Trim(); // "Inserted"
+
+                                if (ReturnValue == "Inserted")
+                                {
+                                    App.cancellationTokenSource = new();
+                                    await Toast.Make("Bill Saved Successfully.", ToastDuration.Short, 10).Show(App.cancellationTokenSource.Token);
+                                    await ClosePageAsync();
+                                }
+                                else if(ReturnValue == "Updated")
+                                {
+                                    try
+                                    {
+                                        App.cancellationTokenSource = new();
+                                        await Toast.Make("Bill Updated Successfully.", ToastDuration.Short, 10).Show(App.cancellationTokenSource.Token);
+
+                                        await ClosePageAsync();
+                                    }
+                                    catch (Exception ex)
+                                    {
+
+                                    }
+                                    
+                                }
+                                else
+                                {
+                                    App.cancellationTokenSource = new();
+                                    await Toast.Make("Something Went Wrong!.", ToastDuration.Short, 10).Show(App.cancellationTokenSource.Token);
+                                }
                                 _ = LoadAllOpenBillsList();
                             }
                         }
@@ -592,6 +634,30 @@ namespace RestaurantOrder.ViewModels
             }
             catch (Exception ex)
             {
+            }
+        }
+        public event Func<Task> RequestClose;
+
+        public async Task ClosePageAsync()
+        {
+            try
+            {
+                if (IsCallbillsPage && IsVisibleOrder)
+                {
+                    IsVisibleOrder = false;
+                    INVHEADDETAILS.CurrentOpenBill = null;
+                    INVHEADDETAILS.CurrentOpenBillDetails = null;
+                    INVHEADDETAILS = null;
+                }
+                else
+                {
+                    if (RequestClose != null)
+                        await RequestClose.Invoke();
+                }
+            }
+            catch (Exception ex)
+            {
+
             }
         }
 
@@ -673,20 +739,49 @@ namespace RestaurantOrder.ViewModels
             {
             }
         }
+
+        private void OnCategorySelected()
+        {
+            try
+            {
+                if (CategorySelectedItem == null)
+                    return;
+                AllItemList.Clear();
+                AllItemList = new ObservableCollection<item>(_allItemsBackup.Where(x => x.CATCODE == CategorySelectedItem.CODE).ToList());
+                IsCategoryListVisible = false;
+                IsItemListVisible = true;
+                CategorySelectedItem = null;
+            }
+            catch (Exception ex)
+            {
+                CategorySelectedItem = null;
+            }
+        }
+
         private void OnItemSelected()
         {
             try
             {
                 if (ListSelectedItem == null)
                     return;
-               
 
-                var existingItem = INVHEADDETAILS.CurrentOpenBillDetails.FirstOrDefault(x => x.ITEMCODE == ListSelectedItem.ITEMCODE);
-                if (existingItem != null)
+
+                // var existingItem = INVHEADDETAILS.CurrentOpenBillDetails.FirstOrDefault(x => x.ITEMCODE == ListSelectedItem.ITEMCODE);
+                //if (existingItem != null)
+                //{
+                //    //CurrentSelectedBillItem = null;
+                //    CurrentSelectedBillItem = existingItem;
+                //    CurrentSelectedBillItem.QUANTITY += CurrentSelectedBillItem.ISVoidItem ? -1 : 1;
+                //    CurrentSelectedBillItem.AMOUNT = ListSelectedItem.SALEPRIC * existingItem.QUANTITY;
+                //}
+
+
+                var existingItem = INVHEADDETAILS.CurrentOpenBillDetails.LastOrDefault();
+                if (existingItem != null && existingItem.ITEMCODE == ListSelectedItem.ITEMCODE)
                 {
                     //CurrentSelectedBillItem = null;
                     CurrentSelectedBillItem = existingItem;
-                    CurrentSelectedBillItem.QUANTITY += 1;
+                    CurrentSelectedBillItem.QUANTITY += CurrentSelectedBillItem.ISVoidItem ? -1 : 1;
                     CurrentSelectedBillItem.AMOUNT = ListSelectedItem.SALEPRIC * existingItem.QUANTITY;
                 }
                 else
@@ -707,7 +802,7 @@ namespace RestaurantOrder.ViewModels
                         SUBCATCODE = ListSelectedItem.SUBCATCODE,
                         BRANDCODE = ListSelectedItem.BRANDCODE,
                         UNITCODE = ListSelectedItem.UNITCODE,
-                        QUANTITY = 1,
+                        QUANTITY = INVHEADDETAILS.ISVoidMode ? -1 : 1,
                         UNITRATE = ListSelectedItem.SALEPRIC,
                         AMOUNT = ListSelectedItem.SALEPRIC * 1,
                         TAXPERC = 0,
@@ -738,7 +833,7 @@ namespace RestaurantOrder.ViewModels
                         TOPPING = null,
                         DEPTCODE = "0",
                         SEASONCODE = string.Empty,
-                        ISVoidItem = false
+                        ISVoidItem = INVHEADDETAILS.ISVoidMode ? true : false,
                     });
                     CurrentSelectedBillItem = INVHEADDETAILS.CurrentOpenBillDetails?.LastOrDefault();
                 }
@@ -794,6 +889,14 @@ namespace RestaurantOrder.ViewModels
 
         private ObservableCollection<CATEGORY> _AllCATEGORYList = new();
         public ObservableCollection<CATEGORY> AllCATEGORYList { get => _AllCATEGORYList; set { SetProperty(ref _AllCATEGORYList, value); } }
+        public ICommand CategorySelectedCommand { get; set; }
+
+        private CATEGORY? _CategorySelectedItem;
+        public CATEGORY? CategorySelectedItem { get => _CategorySelectedItem; set { SetProperty(ref _CategorySelectedItem, value); } }
+
+
+        private IReadOnlyList<item> _allItemsBackup;
+
 
         private ObservableCollection<item> _AllItemList = new();
         public ObservableCollection<item> AllItemList { get => _AllItemList; set { SetProperty(ref _AllItemList, value); } }

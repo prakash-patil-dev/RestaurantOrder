@@ -58,7 +58,7 @@
                 <custom:BorderlessEntry Text="{Binding TotalGuest}" TextColor="WhiteSmoke" HorizontalOptions="Fill" VerticalOptions="Fill"  FontAutoScalingEnabled="True"
                         TextChanged="OnTotalGuestEntryTextChanged" Keyboard="Numeric"/>
             </Border>
-            <Button x:Name="BtnCall" TextColor="Black" FontAttributes="Bold" FontSize="19" Margin="5,0" BackgroundColor="#7CFF72" Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="4"  CornerRadius="5" Text="CALL"  BorderColor="Honeydew" BorderWidth="2" HorizontalOptions="Fill"  VerticalOptions="Fill" Clicked="BtnCall_Clicked"/>
+            <Button x:Name="BtnCall" TextColor="Black" FontAttributes="Bold" FontSize="19" Margin="5,0" BackgroundColor="#7CFF72" Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="4"  CornerRadius="5" Text="Open Bills"  BorderColor="Honeydew" BorderWidth="2" HorizontalOptions="Fill"  VerticalOptions="Fill" Clicked="BtnCall_Clicked"/>
         </Grid>
 
         <Grid Grid.Row="5"  Grid.Column="1"  ColumnSpacing="0" RowSpacing="0">
