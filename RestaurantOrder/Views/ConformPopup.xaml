@@ -27,9 +27,9 @@
             <ColumnDefinition Width="8*"></ColumnDefinition>
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
-            <RowDefinition Height="20*"></RowDefinition>
-            <RowDefinition Height="60*"></RowDefinition>
-            <RowDefinition Height="20*"></RowDefinition>
+            <RowDefinition Height="25*"></RowDefinition>
+            <RowDefinition Height="50*"></RowDefinition>
+            <RowDefinition Height="25*"></RowDefinition>
         </Grid.RowDefinitions>
 
         <Grid RowSpacing="0" Grid.Row="1" Grid.Column="1" Padding="0" BackgroundColor="Transparent" 
@@ -71,11 +71,19 @@
 
             <Image x:Name="ImgFooterBG" Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="4" Source="popup_footer.png" Aspect="Fill" Margin="0"  />
 
-            <Button x:Name="ImgExit" Grid.Row="2" Grid.RowSpan="2" Grid.Column="1" BackgroundColor="#808487"  CornerRadius="5" Margin="15,5" FontAttributes="Bold"
-                    BorderColor="Honeydew" BorderWidth="2" HorizontalOptions="Fill"  VerticalOptions="Fill" FontSize="14"  Text="✅ Yes, Save" Clicked="ImgYes_Clicked" />
+            <Button x:Name="ImgExit" Grid.Row="2" Grid.RowSpan="2" Grid.Column="1" BackgroundColor="#808487"  CornerRadius="5" Margin="10,5" FontAttributes="Bold"
+                    BorderColor="Honeydew" BorderWidth="2" HorizontalOptions="Fill"  VerticalOptions="Fill" FontSize="14"  Clicked="ImgYes_Clicked" >
+                <Button.ImageSource>
+                    <FontImageSource  Glyph="✅" FontFamily="Segoe UI Symbol"  Size="14" />
+                </Button.ImageSource>
+            </Button>
 
-            <Button x:Name="ImgCancel" Grid.Row="2" Grid.RowSpan="2" Grid.Column="2"  BackgroundColor="#808487"  CornerRadius="5" Margin="15,5" FontAttributes="Bold"
-                    BorderColor="Honeydew" BorderWidth="2" HorizontalOptions="Fill"  VerticalOptions="Fill" FontSize="14"  Text="❌ No, Cancel" Clicked="ImgCancel_Clicked" />
+            <Button x:Name="ImgCancel" Grid.Row="2" Grid.RowSpan="2" Grid.Column="2"  BackgroundColor="#808487"  CornerRadius="5" Margin="10,5" FontAttributes="Bold"
+                    BorderColor="Honeydew" BorderWidth="2" HorizontalOptions="Fill" FontFamily="Segoe UI Symbol" VerticalOptions="Fill" FontSize="14"  Clicked="ImgCancel_Clicked" >
+                <Button.ImageSource>
+                    <FontImageSource  Glyph="❌" FontFamily="Segoe UI Symbol"  Size="14" />
+                </Button.ImageSource>
+            </Button>
 
         </Grid>
         <!--</Frame>-->

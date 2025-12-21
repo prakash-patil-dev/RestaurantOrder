@@ -1,4 +1,5 @@
-﻿using Microsoft.Maui.Controls;
+﻿using Android.App.Admin;
+using Microsoft.Maui.Controls;
 using Mopups.Services;
 using RestaurantOrder.ApiService;
 using RestaurantOrder.Models;
@@ -34,8 +35,8 @@ namespace RestaurantOrder.ViewModels
         // Replace all instances of "Isbussy" with "IsBusy" for correct spelling
 
         private CustomerPopup ObjCustomerPopup; 
-        private MenuPopup ObjMenuPopup; 
-        private ConformPopup ObjBillSavePopup; 
+        private MenuPopup ObjMenuPopup;
+        private ConformPopup ObjConformPopup = new ConformPopup();
         public async Task LoadAllOpenBillsList()
         {
             try
@@ -374,10 +375,25 @@ namespace RestaurantOrder.ViewModels
                     case "CLR":
                         if (CurrentSelectedBillItem != null)
                         {
-                            INVHEADDETAILS.CurrentOpenBillDetails.Remove(CurrentSelectedBillItem);
-                            CurrentSelectedBillItem = null;
+                            if (ObjConformPopup != null)
+                            {
+                                ObjConformPopup = new ConformPopup();
+                                ObjConformPopup.PageType = "REMOVEITEM";
+                                ObjConformPopup.PageMessage = "Do you want to Remove item from bill?";
+                                ObjConformPopup.PopupCommand = new Command<string[]>(ExecutePopupCommand);
+                            }
+
+                            ObjConformPopup.IsPageOpen = true;
+                            MopupService.Instance.PushAsync(ObjConformPopup, animate: true);
+                            QuickQtyEntryValue = string.Empty;
+
                         }
-                        CalculateTotalAmout();
+                        else
+                        {
+                            App.cancellationTokenSource = new();
+                            Toast.Make("Please Select Valid Item to Remove.", ToastDuration.Short, 10).Show(App.cancellationTokenSource.Token);
+                        }
+                          
                         //QuickQtyEntryValue = string.Empty;
                         break;
                     case "VOID":
@@ -464,15 +480,16 @@ namespace RestaurantOrder.ViewModels
                         break;
                     case "SAVE":
                         //MopupService.Instance.PushAsync(new YesNoPopup(), animate: true);
-                        if (ObjBillSavePopup == null)
+                        if (ObjConformPopup != null)
                         {
-                            ObjBillSavePopup = new ConformPopup();
-                            ObjBillSavePopup.PageMessage = "Do you want to save this bill?";
-                            ObjBillSavePopup.PopupCommand = new Command<string[]>(ExecutePopupCommand);
+                           // ObjConformPopup = new ConformPopup();
+                            ObjConformPopup.PageType = "SAVEBILL";
+                            ObjConformPopup.PageMessage = "Do you want to save this bill?";
+                            ObjConformPopup.PopupCommand = new Command<string[]>(ExecutePopupCommand);
                         }
 
-                        ObjBillSavePopup.IsPageOpen = true;
-                        MopupService.Instance.PushAsync(ObjBillSavePopup, animate: true);
+                        ObjConformPopup.IsPageOpen = true;
+                        MopupService.Instance.PushAsync(ObjConformPopup, animate: true);
                         QuickQtyEntryValue = string.Empty;
                         break;
                     case "CUST":
@@ -538,6 +555,81 @@ namespace RestaurantOrder.ViewModels
                     case "W":
                         break;
                     case "SETTLE":
+                        break;
+
+                    case "PLU":
+                        if (!string.IsNullOrEmpty(QuickQtyEntryValue))
+                        {
+                            var selectedItem = _allItemsBackup.FirstOrDefault(x => x.ITEMCODE == QuickQtyEntryValue);
+                            //INVHEADDETAILS.CurrentOpenBillDetails.LastOrDefault();
+                            if (selectedItem != null)
+                            {
+                               
+                                INVHEADDETAILS.CurrentOpenBillDetails.Add(new INVLINE
+                                {
+                                    BRANCHCODE = "HQ",
+                                    TXNNO = INVHEADDETAILS.CurrentOpenBill.TXNNO,
+                                    VIPNO = INVHEADDETAILS.CurrentOpenBill.VIPNO,
+                                    SHIFT = string.Empty,
+                                    USER = App.ObjMainUserViewModel.UserEmail,
+                                    STAFF = INVHEADDETAILS.CurrentOpenBill.STAFF,
+                                    LINE = 0,
+                                    ITEMCODE = selectedItem.ITEMCODE,
+                                    ITEMNAME1 = selectedItem.ITEMNAME1,
+                                    ITEMNAME2 = selectedItem.ITEMNAME2,
+                                    CATCODE = selectedItem.CATCODE,
+                                    SUBCATCODE = selectedItem.SUBCATCODE,
+                                    BRANDCODE = selectedItem.BRANDCODE,
+                                    UNITCODE = selectedItem.UNITCODE,
+                                    QUANTITY = INVHEADDETAILS.ISVoidMode ? -1 : 1,
+                                    UNITRATE = selectedItem.SALEPRIC,
+                                    AMOUNT = selectedItem.SALEPRIC * 1,
+                                    TAXPERC = 0,
+                                    TAXVALUE = 0,
+                                    COSTAMT = selectedItem.COSTPRIC,
+                                    COSTAMTSPA = selectedItem.COSTPRIC,
+                                    SPLDISC = null,
+                                    DISCPERC = 0,
+                                    DISCOUNT = 0,
+                                    LESSAMT = 0,
+                                    PRINTED = null,
+                                    BPRINTED = "N",
+                                    KPRINTED = "Y",
+                                    EATTAKE = "E",
+                                    STATUS = "O",
+                                    UPDATED = "Y",
+                                    STYLECODE = selectedItem.STYLECODE,
+                                    COLORCODE = selectedItem.COLORCODE,
+                                    SIZECODE = selectedItem.SIZECODE,
+                                    PACKAGEID = 0,
+                                    PACKLINE = 0,
+                                    LASTUSER = App.ObjMainUserViewModel.UserEmail,
+                                    LASTDATE = DateTime.Now,
+                                    LASTTIME = DateTime.Now.ToString("HH:mm:ss"),
+                                    KOT = null,
+                                    SCANITEMCODE = selectedItem.ITEMCODE,
+                                    PRICETYPE = "SP",
+                                    TOPPING = null,
+                                    DEPTCODE = "0",
+                                    SEASONCODE = string.Empty,
+                                    ISVoidItem = INVHEADDETAILS.ISVoidMode ? true : false,
+                                });
+                                CurrentSelectedBillItem = INVHEADDETAILS.CurrentOpenBillDetails?.LastOrDefault();
+                                QuickQtyEntryValue = string.Empty;
+                            }
+                            else
+                            {
+                                App.cancellationTokenSource = new();
+                                Toast.Make("Please Enter Valid ITEMCODE.", ToastDuration.Short, 10).Show(App.cancellationTokenSource.Token);
+                            }
+
+                        }
+                        else
+                        {
+                            App.cancellationTokenSource = new();
+                            Toast.Make("Please Enter Valid ITEMCODE.", ToastDuration.Short, 10).Show(App.cancellationTokenSource.Token);
+                            break;
+                        }
                         break;
                     default:
                         // Handle default
@@ -626,6 +718,41 @@ namespace RestaurantOrder.ViewModels
                         }
                         break;
 
+                    case "REMOVEITEM":
+                        if (CurrentSelectedBillItem != null)
+                        {
+                            if (CurrentSelectedBillItem.LINE == 0)
+                            {
+                                INVHEADDETAILS.CurrentOpenBillDetails.Remove(CurrentSelectedBillItem);
+                                CurrentSelectedBillItem = null;
+                                CalculateTotalAmout();
+                            }
+                            else
+                            {
+                                var response = await ApiClient.PostAsync<INVLINE, string>("INVHEAD/RemoveItemFromCurrentBill", CurrentSelectedBillItem, 1);
+                                 if (response != null)
+                                {
+                                    if(response == "Item removed successfully!")
+                                    {
+                                        INVHEADDETAILS.CurrentOpenBillDetails.Remove(CurrentSelectedBillItem);
+                                        CurrentSelectedBillItem = null;
+                                        CalculateTotalAmout();
+                                    }
+                                    //else
+                                    //{
+
+                                    //}
+                                    App.cancellationTokenSource = new();
+                                    await Toast.Make(response, ToastDuration.Short, 10).Show(App.cancellationTokenSource.Token);
+                                }
+                                else
+                                {
+                                    App.cancellationTokenSource = new();
+                                    await Toast.Make("Something Went Wrong!.", ToastDuration.Short, 10).Show(App.cancellationTokenSource.Token);
+                                }
+                            }
+                        }
+                            break;
                     case "CANCELBILL":
                         break;
                 }

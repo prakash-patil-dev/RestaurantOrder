@@ -22,7 +22,7 @@ namespace RestaurantOrder.Views
         {
             try
             {
-                var SaveArry = new string[] { "SAVEBILL" };
+                var SaveArry = new string[] { PageType == "SAVEBILL" ? "SAVEBILL" : "REMOVEITEM" };//: new string[] { "REMOVEITEM" };
                 if (PopupCommand?.CanExecute(SaveArry) == true)
                 {
                     PopupCommand.Execute(SaveArry);
@@ -125,6 +125,27 @@ namespace RestaurantOrder.Views
                                                          declaringType: typeof(ConformPopup),
                                                          defaultValue: "Notice",
                                                          defaultBindingMode: BindingMode.TwoWay);
+
+        public string PageType 
+        {
+            get { return (string)base.GetValue(_PageType); }
+            set { base.SetValue(_PageType, value); }
+        }
+
+        private static readonly BindableProperty _PageType = BindableProperty.Create(
+                                                         propertyName: "PageType",
+                                                         returnType: typeof(string),
+                                                         declaringType: typeof(ConformPopup),
+                                                         defaultValue: "SAVEBILL",
+                                                         defaultBindingMode: BindingMode.TwoWay, propertyChanged: (b, o, n) =>
+                                                         {
+                                                             var page = (ConformPopup)b;
+                                                             //page.ImgCancel.Text = (string)n == "SAVEBILL" ? "? Yes, Save" : "? Yes";
+                                                             //page.ImgExit.Text = (string)n == "SAVEBILL" ? "? No, Cancel": "? No" ;
+
+                                                             page.ImgExit.Text = (string)n == "SAVEBILL" ? "Yes, Save" : "Yes";
+                                                             page.ImgCancel.Text = (string)n == "SAVEBILL" ? "No, Cancel" : "No";
+                                                         });
 
     }
 

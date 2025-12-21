@@ -504,7 +504,7 @@
                                     Text="Bill Disc" Command="{Binding QuickNumKeysClickCommand}" CommandParameter="BILLDISC" BorderColor="#f4f0f7" BorderWidth="1" HorizontalOptions="Fill" VerticalOptions="Fill" />
 
                             <Button Padding="0" Grid.Row="1" Grid.Column="5" Margin="0.5,0.5" BackgroundColor="#CBBC7B" Background="#CBBC7B"  FontSize="14" FontAttributes="Bold" CornerRadius="3" BorderWidth="2" 
-                                    BorderColor="RosyBrown" Text="PLU"  Command="{Binding QuickBtnCLickCommand}" CommandParameter="PLU"  />
+                                    BorderColor="RosyBrown" Text="PLU"  Command="{Binding QuickNumKeysClickCommand}" CommandParameter="PLU"  />
 
                         </Grid>
                     </Grid>

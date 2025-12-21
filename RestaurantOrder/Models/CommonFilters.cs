@@ -10,3 +10,9 @@ public class CustomerFilter
     public string? Mode { get; set; }
     public Customer? ObjCustomer { get; set; }
 }
+
+//public class CustomerFilter
+//{
+//    public string? Mode { get; set; }
+//    public Customer? ObjCustomer { get; set; }
+//}
