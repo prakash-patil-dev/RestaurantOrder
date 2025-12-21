@@ -1,6 +1,4 @@
-﻿using Android.App.Admin;
-using Microsoft.Maui.Controls;
-using Mopups.Services;
+﻿using Mopups.Services;
 using RestaurantOrder.ApiService;
 using RestaurantOrder.Models;
 using RestaurantOrder.Views;
