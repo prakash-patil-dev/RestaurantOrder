@@ -110,6 +110,7 @@ public partial class NewOrderTaking : ContentPage
             NewOrderVM.IsVisibleOrder = false;
             NewOrderVM.IsCategoryListVisible = false;
             NewOrderVM.IsItemListVisible = false;
+            NewOrderVM.IsComboListVisible  = false;
             NewOrderVM.IsCallbillsPage = true;
             NewOrderVM.IsMoreKeysVisible = false;
             _NewOrederPage = new NewOrderPage(NewOrderVM);
@@ -123,6 +124,8 @@ public partial class NewOrderTaking : ContentPage
         }
         finally
         {
+            VM.TableNo = 0;
+            VM.TotalGuest = 0;
             VM.IsBusy = false;
             VM.IsVisibleIndicator = false;
         }
@@ -141,6 +144,7 @@ public partial class NewOrderTaking : ContentPage
             NewOrderVM.IsCallbillsPage = false;
             NewOrderVM.IsCategoryListVisible = false;
             NewOrderVM.IsItemListVisible = false;
+            NewOrderVM.IsComboListVisible = false;
             NewOrderVM.IsMoreKeysVisible = false;
             NewOrderVM.INVHEADDETAILS = new();
             NewOrderVM.INVHEADDETAILS.CurrentOpenBill = new();
@@ -154,6 +158,8 @@ public partial class NewOrderTaking : ContentPage
             //NewOrderVM.CurrentOpenBillDetails = new();
             _NewOrederPage = new NewOrderPage(NewOrderVM);
             await Navigation.PushModalAsync(_NewOrederPage, true);
+
+
         }
         catch (Exception ex)
         {
@@ -162,6 +168,8 @@ public partial class NewOrderTaking : ContentPage
         }
         finally
         {
+            VM.TableNo = 0;
+            VM.TotalGuest = 0;
             VM.IsBusy = false;
             VM.IsVisibleIndicator = false;
         }

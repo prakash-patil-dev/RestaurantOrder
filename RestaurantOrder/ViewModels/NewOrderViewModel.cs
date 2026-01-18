@@ -17,11 +17,15 @@ namespace RestaurantOrder.ViewModels
                 _ = LoadAllOpenBillsList();
                 _ = LoadAllCATEGORYList();
                 _ = LoadAllItemList();
-
+                _ = LoadComboList();
                 QuickBtnCLickCommand = new Command<string>(QuickBtnClicked);
                 QuickNumKeysClickCommand = new Command<string>(QuickKeysClicked);
                 ItemSelectedCommand = new Command(OnItemSelected);
                 CategorySelectedCommand = new Command(OnCategorySelected);
+                ComboSelectedCommand = new Command(OnComboSelected);
+                if (ObjConformPopup != null)
+                    ObjConformPopup.PopupCommand = new Command<string[]>(ExecutePopupCommand);
+
                 //AllOpenBillsSelectionChangedCommand = new Command<INVHEAD>(OnAllOpenBillSelectionChanged);
                 // AllOpenBillsListRefreshCommand = new Command(async () => await LoadAllOpenBillsList());
 
@@ -35,6 +39,7 @@ namespace RestaurantOrder.ViewModels
         private CustomerPopup ObjCustomerPopup; 
         private MenuPopup ObjMenuPopup;
         private ConformPopup ObjConformPopup = new ConformPopup();
+        private SettlementPopup? ObjSettlementPopup;// = new SettlementPopup();
         public async Task LoadAllOpenBillsList()
         {
             try
@@ -120,6 +125,28 @@ namespace RestaurantOrder.ViewModels
             }
         }
 
+
+        public async Task LoadComboList()
+        {
+            try
+            {
+                IsBusy = true;
+                IsVisibleIndicator = true;
+                ComboList = await ApiClient.GetAsync<ObservableCollection<ComboDto>>("Item/GetComboList") ?? new ObservableCollection<ComboDto>();
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine($"LoadComboList error: {ex}");
+                // Optionally show alert message here
+            }
+            finally
+            {
+                IsBusy = false;
+                IsVisibleIndicator = false;
+            }
+        }
+
+
         private async void QuickBtnClicked(string parameter)
         {
             try
@@ -130,17 +157,24 @@ namespace RestaurantOrder.ViewModels
                 switch (parameter)
                 {
                     case "CAT HELP":
+                        IsComboListVisible = false;
                         IsItemListVisible = false;
                         IsCategoryListVisible = !IsCategoryListVisible;
                         break;
                     case "ITEM HELP":
+                        IsComboListVisible = false;
+                        IsCategoryListVisible = false;
+                        IsItemListVisible = !IsItemListVisible;
                         if (IsItemListVisible)
                         {
                             AllItemList.Clear();
                             AllItemList = new ObservableCollection<item>(_allItemsBackup.ToList());
                         }
+                        break;
+                    case "COMBO PACK":
                         IsCategoryListVisible = false;
-                        IsItemListVisible = !IsItemListVisible;
+                        IsItemListVisible = false;
+                        IsComboListVisible = !IsComboListVisible;
                         break;
                     case "BILL TYPE":
                         // Handle BILL TYPE
@@ -151,8 +185,7 @@ namespace RestaurantOrder.ViewModels
                     case "OPENOPTION":
                         if (ObjMenuPopup == null)
                         {
-                            ObjMenuPopup = new MenuPopup();
-                           // ObjMenuPopup.PopupCommand = new Command<string[]>(ExecutePopupCommand); 
+                            ObjMenuPopup = new MenuPopup(); 
                             ObjMenuPopup.QuickBtnCLickCommand = new Command<string>(QuickBtnClicked);
                             //ObjMenuPopup.QuickBtnCLickCommand = new Command<string>(async (param) => await QuickBtnClicked(param));
                             //(async (param) => await QuickBtnClicked(param));
@@ -170,7 +203,8 @@ namespace RestaurantOrder.ViewModels
                         // dispose VM if needed
                         // NewOrderPageVM = null; // not needed inside itself
 
-                        break;
+                        break; 
+                   
                     case "CLOSEMENU":
                         try
                         {
@@ -375,10 +409,10 @@ namespace RestaurantOrder.ViewModels
                         {
                             if (ObjConformPopup != null)
                             {
-                                ObjConformPopup = new ConformPopup();
+                                //ObjConformPopup = new ConformPopup();
                                 ObjConformPopup.PageType = "REMOVEITEM";
                                 ObjConformPopup.PageMessage = "Do you want to Remove item from bill?";
-                                ObjConformPopup.PopupCommand = new Command<string[]>(ExecutePopupCommand);
+                                // ObjConformPopup.PopupCommand = new Command<string[]>(ExecutePopupCommand);
                             }
 
                             ObjConformPopup.IsPageOpen = true;
@@ -480,10 +514,10 @@ namespace RestaurantOrder.ViewModels
                         //MopupService.Instance.PushAsync(new YesNoPopup(), animate: true);
                         if (ObjConformPopup != null)
                         {
-                           // ObjConformPopup = new ConformPopup();
+                             //ObjConformPopup = new ConformPopup();
                             ObjConformPopup.PageType = "SAVEBILL";
                             ObjConformPopup.PageMessage = "Do you want to save this bill?";
-                            ObjConformPopup.PopupCommand = new Command<string[]>(ExecutePopupCommand);
+                            // ObjConformPopup.PopupCommand = new Command<string[]>(ExecutePopupCommand);
                         }
 
                         ObjConformPopup.IsPageOpen = true;
@@ -553,8 +587,35 @@ namespace RestaurantOrder.ViewModels
                     case "W":
                         break;
                     case "SETTLE":
-                        break;
+                        if (INVHEADDETAILS.CurrentOpenBill.TXNNO > 0)
+                        {
+                            ObjSettlementPopup = null;
 
+                            SettlementViewModel SVModel = new SettlementViewModel();
+                            SVModel.TXNNO = INVHEADDETAILS.CurrentOpenBill.TXNNO;
+                            SVModel.BillAmount = INVHEADDETAILS.CurrentOpenBill.BILLAMOUNT;
+                            SVModel.IsVisibleCurrencyMode = false;
+                            SVModel.IsVisibleCardMode = false;
+                            SVModel.IsVisibleCashMode = true;
+                            SVModel.CashTotal = INVHEADDETAILS.CurrentOpenBill.BILLAMOUNT;
+                            SVModel.ReceivedAmount = 0;
+                            SVModel.ChangeAmount = 0;
+                            ObjSettlementPopup = new SettlementPopup(SVModel);
+                            
+                            if (ObjSettlementPopup != null)
+                            {
+                                ObjSettlementPopup.PopupCommand = new Command<string[]>(ExecutePopupCommand);
+                            }
+                            ObjSettlementPopup.IsPageOpen = true;
+                            MopupService.Instance.PushAsync(ObjSettlementPopup, animate: true);
+                        }
+                        else
+                        {
+                            App.cancellationTokenSource = new();
+                            Toast.Make("Please Save Bill First.", ToastDuration.Short, 10).Show(App.cancellationTokenSource.Token);
+                        }
+                        break;
+                  
                     case "PLU":
                         if (!string.IsNullOrEmpty(QuickQtyEntryValue))
                         {
@@ -628,6 +689,18 @@ namespace RestaurantOrder.ViewModels
                             Toast.Make("Please Enter Valid ITEMCODE.", ToastDuration.Short, 10).Show(App.cancellationTokenSource.Token);
                             break;
                         }
+                        break;
+
+                    case "CLOSEBILL":
+                        if (ObjConformPopup != null)
+                        {
+                           // ObjConformPopup = new ConformPopup();
+                            ObjConformPopup.PageType = "CLOSEBILL";
+                            ObjConformPopup.PageMessage =IsCallbillsPage && !IsVisibleOrder ? "Do you want to Close All Open Bills?" : "Do you want to Canel this Transatin?";
+                            //ObjConformPopup.PopupCommand = new Command<string[]>(ExecutePopupCommand);
+                        } 
+                        ObjConformPopup.IsPageOpen = true;
+                        MopupService.Instance.PushAsync(ObjConformPopup, animate: true);
                         break;
                     default:
                         // Handle default
@@ -706,7 +779,7 @@ namespace RestaurantOrder.ViewModels
                                     App.cancellationTokenSource = new();
                                     await Toast.Make("Something Went Wrong!.", ToastDuration.Short, 10).Show(App.cancellationTokenSource.Token);
                                 }
-                                _ = LoadAllOpenBillsList();
+                                await LoadAllOpenBillsList();
                             }
                         }
                         else
@@ -724,6 +797,7 @@ namespace RestaurantOrder.ViewModels
                                 INVHEADDETAILS.CurrentOpenBillDetails.Remove(CurrentSelectedBillItem);
                                 CurrentSelectedBillItem = null;
                                 CalculateTotalAmout();
+                                CurrentSelectedBillItem = INVHEADDETAILS.CurrentOpenBillDetails.FirstOrDefault();
                             }
                             else
                             {
@@ -735,6 +809,7 @@ namespace RestaurantOrder.ViewModels
                                         INVHEADDETAILS.CurrentOpenBillDetails.Remove(CurrentSelectedBillItem);
                                         CurrentSelectedBillItem = null;
                                         CalculateTotalAmout();
+                                        CurrentSelectedBillItem = INVHEADDETAILS.CurrentOpenBillDetails.FirstOrDefault();
                                     }
                                     //else
                                     //{
@@ -751,7 +826,16 @@ namespace RestaurantOrder.ViewModels
                             }
                         }
                             break;
+
                     case "CANCELBILL":
+                        break;
+                    case "CLOSEBILL":
+                        await ClosePageAsync();
+                        break;
+
+                    case "CLOSESETTLEDBILL":
+                        await LoadAllOpenBillsList();
+                        await ClosePageAsync();
                         break;
                 }
 
@@ -761,6 +845,7 @@ namespace RestaurantOrder.ViewModels
             {
             }
         }
+        
         public event Func<Task> RequestClose;
 
         public async Task ClosePageAsync()
@@ -864,7 +949,24 @@ namespace RestaurantOrder.ViewModels
             {
             }
         }
-
+        private void OnComboSelected()
+        {
+            try
+            {
+                if (ComboSelectedItem == null)
+                    return;
+                //AllItemList.Clear();
+                //AllItemList = new ObservableCollection<item>(_allItemsBackup.Where(x => x.CATCODE == ComboSelectedItem.Code).ToList());
+                IsComboListVisible = false;
+                IsCategoryListVisible = false;
+                IsItemListVisible = false;
+                ComboSelectedItem = null;
+            }
+            catch (Exception ex)
+            {
+                ComboSelectedItem = null;
+            }
+        }
         private void OnCategorySelected()
         {
             try
@@ -873,6 +975,7 @@ namespace RestaurantOrder.ViewModels
                     return;
                 AllItemList.Clear();
                 AllItemList = new ObservableCollection<item>(_allItemsBackup.Where(x => x.CATCODE == CategorySelectedItem.CODE).ToList());
+                IsComboListVisible = false;
                 IsCategoryListVisible = false;
                 IsItemListVisible = true;
                 CategorySelectedItem = null;
@@ -1007,6 +1110,11 @@ namespace RestaurantOrder.ViewModels
         public bool IsItemListVisible { get => _IsItemListVisible; set { _IsItemListVisible = value; OnPropertyChanged(); } }
 
 
+
+        private bool _IsComboListVisible = false;
+        public bool IsComboListVisible { get => _IsComboListVisible; set { _IsComboListVisible = value; OnPropertyChanged(); } }
+
+
         private bool _IsMoreKeysVisible = false;
         public bool IsMoreKeysVisible { get => _IsMoreKeysVisible; set { _IsMoreKeysVisible = value; OnPropertyChanged(); } }
 
@@ -1031,12 +1139,24 @@ namespace RestaurantOrder.ViewModels
         public item? ListSelectedItem { get => _ListSelectedItem; set { SetProperty(ref _ListSelectedItem, value); } }
 
 
+
+        private ObservableCollection<ComboDto> _ComboList = new();
+        public ObservableCollection<ComboDto> ComboList { get => _ComboList; set { SetProperty(ref _ComboList, value); } }
+        public ICommand ComboSelectedCommand { get; set; }
+
+        private ComboDto? _ComboSelectedItem;
+        public ComboDto? ComboSelectedItem { get => _ComboSelectedItem; set { SetProperty(ref _ComboSelectedItem, value); } }
+
+
+
+
         private ObservableCollection<INVHEAD> _AllOpenBillsList = new();
         public ObservableCollection<INVHEAD> AllOpenBillsList { get => _AllOpenBillsList; set { SetProperty(ref _AllOpenBillsList, value); } }
 
+     
         //private INVHEAD _CurrentOpenBill = new();
         //public INVHEAD CurrentOpenBill { get => _CurrentOpenBill; set { SetProperty(ref _CurrentOpenBill, value); } }
-      
+
         //private ObservableCollection<INVLINE> _CurrentOpenBillDetails = new();
         //public ObservableCollection<INVLINE> CurrentOpenBillDetails { get => _CurrentOpenBillDetails; set { SetProperty(ref _CurrentOpenBillDetails, value); OnPropertyChanged(); } }
 
@@ -1056,7 +1176,8 @@ namespace RestaurantOrder.ViewModels
                 if (SetProperty(ref _CurrentSelectedOpenBill, value) && value != null)
                 {
                     IsCategoryListVisible = false;
-                    IsItemListVisible = false;
+                    IsItemListVisible = false; 
+                    IsComboListVisible = false;
                     IsMoreKeysVisible = false;
                     IsVisibleOrder = true;
                     INVHEADDETAILS = new();

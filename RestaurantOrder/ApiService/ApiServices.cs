@@ -14,7 +14,7 @@ public static class ApiClient
     static ApiClient()
     {
 #if ANDROID
-        _baseUrl = "http://10.182.218.220:4545";
+        _baseUrl = "http://10.82.189.220:4545";
 #else
         _baseUrl = "http://localhost:4545";
 #endif

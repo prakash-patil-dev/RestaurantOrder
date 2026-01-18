@@ -17,7 +17,7 @@ public partial class NewOrderPage : ContentPage
                 {
                     BindingContext = null;
                     NewOrderPageVM = null;
-                    await Navigation.PopModalAsync(true);
+                    await Navigation.PopModalAsync(animated: true);
                 }
                 catch
                 {

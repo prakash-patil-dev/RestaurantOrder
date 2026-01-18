@@ -1,0 +1,293 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<pages:PopupPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+                 xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+                 xmlns:pages="clr-namespace:Mopups.Pages;assembly=Mopups"
+                 xmlns:animations="clr-namespace:Mopups.Animations;assembly=Mopups"
+                 xmlns:ComboBox="clr-namespace:Syncfusion.Maui.Inputs;assembly=Syncfusion.Maui.Inputs"
+                 x:Class="RestaurantOrder.Views.SettlementPopup"
+                 CloseWhenBackgroundIsClicked="False" HasKeyboardOffset="False"
+                 xmlns:vm="clr-namespace:RestaurantOrder.ViewModels"
+                 xmlns:Models="clr-namespace:RestaurantOrder.Models"
+                 xmlns:local="clr-namespace:RestaurantOrder.Converters"
+                 xmlns:custom="clr-namespace:RestaurantOrder.CustomControls"   
+                 x:DataType="vm:SettlementViewModel"
+                 BackgroundColor="#9907080A">
+    <pages:PopupPage.Animation>
+        <animations:ScaleAnimation 
+         PositionIn="Center"
+         PositionOut="Center"
+         ScaleIn="1.0"
+         ScaleOut="1.0"
+         DurationIn="200"
+         DurationOut="200"
+         EasingIn="SinOut"
+         EasingOut="SinIn"
+         HasBackgroundAnimation="True"/>
+    </pages:PopupPage.Animation>
+    <pages:PopupPage.Resources>
+        <!--<ResourceDictionary>
+            <local:InverseBoolConverter x:Key="InverseBoolConverter" />
+        </ResourceDictionary>-->
+    </pages:PopupPage.Resources>
+    <Grid  Style="{StaticResource PopupPageStyle}" RowSpacing="0" ColumnSpacing="0"  >
+        <Grid.RowDefinitions>
+            <RowDefinition Height="15*" ></RowDefinition>
+            <RowDefinition Height="70*" ></RowDefinition>
+            <RowDefinition Height="15*" ></RowDefinition>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="3.24*" ></ColumnDefinition>
+            <ColumnDefinition Width="93.52*" ></ColumnDefinition>
+            <ColumnDefinition Width="3.24*" ></ColumnDefinition>
+        </Grid.ColumnDefinitions>
+
+        <Grid BackgroundColor="#1E1E1E" Grid.Row="1" Grid.Column="1" Margin="0" Padding="0" RowSpacing="0" ColumnSpacing="0">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <!-- Amount -->
+                <RowDefinition Height="Auto"/>
+                <!-- Dynamic Area -->
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <!-- Mode Buttons -->
+                <RowDefinition Height="*"/>
+                <!-- Keypad + Bill -->
+                <RowDefinition Height="Auto"/>
+                <!-- Footer -->
+            </Grid.RowDefinitions>
+
+            <!-- ================= AMOUNT DISPLAY ================= --><!--
+            <Border Background="#B00020" Padding="8" StrokeShape="RoundRectangle 6">
+                <Label Text="0   0   0   0" FontSize="22" FontAttributes="Bold" TextColor="White" HorizontalTextAlignment="Center"/>
+            </Border>-->
+
+            <!-- ================= DYNAMIC UPPER AREA ================= -->
+            <Grid Grid.Row="1"  MinimumHeightRequest="280" MaximumHeightRequest="280">
+
+                <!-- FAST CASH VIEW -->
+                <Grid x:Name="FastCashView" RowDefinitions="60*,20*,20*"    ColumnDefinitions="*,*,*,*"  Margin="10,5,10,5"  IsVisible="{Binding IsVisibleCashMode}">
+                   
+                    <Grid Grid.Row="0" ColumnDefinitions="*,*,*,*"  RowDefinitions="auto,5,auto"  Grid.Column="0" Grid.ColumnSpan="4"   ColumnSpacing="4"  Padding="4"  >
+
+                        <Button Text="0" CharacterSpacing="0"   Command="{Binding QuickNumKeysClickCommand}" CommandParameter="FAST0" Grid.Column="0" Grid.Row="0" Background="#C62828" TextColor="White" />
+                        <Button Text="0" CharacterSpacing="0"   Command="{Binding QuickNumKeysClickCommand}" CommandParameter="FAST0" Grid.Column="1" Grid.Row="0" Background="#C62828" TextColor="White"/>
+                        <Button Text="0" CharacterSpacing="0"   Command="{Binding QuickNumKeysClickCommand}" CommandParameter="FAST0" Grid.Column="2" Grid.Row="0" Background="#C62828" TextColor="White"/>
+                        <Button Text="0" CharacterSpacing="0"   Command="{Binding QuickNumKeysClickCommand}" CommandParameter="FAST0" Grid.Column="3" Grid.Row="0" Background="#C62828" TextColor="White"/>
+
+
+                        <Button Text="20" CharacterSpacing="0"   Command="{Binding QuickNumKeysClickCommand}" CommandParameter="FAST20" Grid.Column="0" Grid.Row="2" Background="#C62828" TextColor="White"/>
+                        <Button Text="10" CharacterSpacing="0"   Command="{Binding QuickNumKeysClickCommand}" CommandParameter="FAST10" Grid.Column="1" Grid.Row="2" Background="#C62828" TextColor="White"/>
+                        <Button Text="5"  CharacterSpacing="0"   Command="{Binding QuickNumKeysClickCommand}" CommandParameter="FAST5" Grid.Column="2" Grid.Row="2" Background="#C62828" TextColor="White"/>
+                        <Button Text="1"  CharacterSpacing="0"   Command="{Binding QuickNumKeysClickCommand}" CommandParameter="FAST1" Grid.Column="3" Grid.Row="2" Background="#C62828" TextColor="White"/>
+                    </Grid>
+
+                    <Grid  Grid.Row="2" Grid.Column="1" Grid.ColumnSpan="3" ColumnDefinitions="35*,65*" RowDefinitions="auto"  Padding="4" VerticalOptions="Center">
+                        <Label Text="Cash Total" Grid.Column="0" Grid.Row="0" Background="Transparent" TextColor="White" HorizontalOptions="Center" VerticalOptions="Center" HorizontalTextAlignment="Center"/>
+                        <Button Text="{Binding CashTotal}" Grid.Column="1" Grid.Row="0" Background="#385380" CornerRadius="2"  TextColor="White" IsEnabled="False"/>
+                    </Grid>
+                </Grid>
+
+                <!-- Currency VIEW -->
+                <Grid x:Name="CurrencyView" RowDefinitions="auto,50,auto"    ColumnDefinitions="*,*,*,*"  Margin="10,5,10,5"  IsVisible="{Binding IsVisibleCurrencyMode}">
+                    <Grid Grid.Row="0" ColumnDefinitions="*,*,*,*"  RowDefinitions="auto,5,auto"  Grid.Column="0" Grid.ColumnSpan="4"   ColumnSpacing="5"  Padding="4">
+
+                        <Button Text="0" Grid.Column="0" Grid.Row="0" Background="Blue" TextColor="White"/>
+                        <Button Text="0" Grid.Column="1" Grid.Row="0" Background="Blue" TextColor="White"/>
+                        <Button Text="0"  Grid.Column="2" Grid.Row="0" Background="Blue" TextColor="White"/>
+                        <Button Text="0"  Grid.Column="3" Grid.Row="0" Background="Blue" TextColor="White"/>
+
+
+                        <Button Text="20" Grid.Column="0" Grid.Row="2" Background="#C62828" TextColor="White"/>
+                        <Button Text="10" Grid.Column="1" Grid.Row="2" Background="#C62828" TextColor="White"/>
+                        <Button Text="5"  Grid.Column="2" Grid.Row="2" Background="#C62828" TextColor="White"/>
+                        <Button Text="1"  Grid.Column="3" Grid.Row="2" Background="#C62828" TextColor="White"/>
+                    </Grid>
+
+                    <!--<Grid  Grid.Row="2" Grid.Column="2" Grid.ColumnSpan="2" ColumnDefinitions="25*,75*" RowDefinitions="auto"  Padding="4">
+                        <Label Text="Fast Cash" Grid.Column="0" Grid.Row="0" Background="Transparent" TextColor="White" HorizontalOptions="Center" VerticalOptions="Center" HorizontalTextAlignment="Center"/>
+                        <Button Text="0" Grid.Column="1" Grid.Row="0" Background="#C62828" TextColor="White"/>
+                    </Grid>-->
+                </Grid>
+
+
+                <!-- CARD VIEW -->
+
+                <Grid x:Name="CardView"  RowDefinitions="10*,70*,20*"  ColumnDefinitions="*,*,*,*" Margin="10,5,10,5"  IsVisible="{Binding IsVisibleCardMode}">
+                    <!--<Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="10"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>-->
+
+                    <!-- CARD HEADER -->
+                    <Grid Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="4" ColumnDefinitions="2*,3*,2*"  Background="#6A1B9A" Padding="0" ColumnSpacing="3" Margin="0" HeightRequest="30">
+                        <Label Text="CARD" TextColor="White"  HorizontalOptions="Center" VerticalOptions="Center"/>
+                        <Label Text="CARD NO" Grid.Column="1" TextColor="White" HorizontalOptions="Center" VerticalOptions="Center"/>
+                        <Label Text="AMT" Grid.Column="2" TextColor="White" HorizontalOptions="Center" VerticalOptions="Center"/>
+                    </Grid>
+
+                    <!-- CARD BODY -->
+                    <Grid Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="4"  Padding="0" ColumnSpacing="3" Margin="0">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="2*"/>
+                            <ColumnDefinition Width="3*"/>
+                            <ColumnDefinition Width="2*"/>
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="6*"/>
+                            <RowDefinition Height="20*"/>
+                            <RowDefinition Height="64*"/>
+                            <RowDefinition Height="10*"/>
+                        </Grid.RowDefinitions>
+                        <!-- Card Type Dropdown -->
+                        <!--<Picker Grid.Column="0" Title="Select Card"  ItemsSource="{Binding CardTypes}"  SelectedItem="{Binding SelectedCardType}"  BackgroundColor="#F3E5F5"
+                                TextColor="Black" HeightRequest="40"/>-->
+
+                        <Image Grid.Row="1" Grid.Column="0" Source="textbox_bg.png"  Aspect="AspectFill" VerticalOptions="Fill"></Image>
+                        <Border    Background="Transparent" StrokeThickness="0"  Padding="0" Grid.Row="1" Grid.Column="0" HorizontalOptions="Fill" VerticalOptions="Center" StrokeShape="RoundRectangle 5,5,5,5">
+                            <ComboBox:SfComboBox   Style="{StaticResource ComboBoxStyle1}" x:Name="comboBox" Padding="12,0,0,0" Margin="0" IsClearButtonVisible="False"
+                                                   Placeholder="Card Type" ItemsSource="{Binding UsersList}" SelectedItem="{Binding SelectedUser}"  TextMemberPath="NAME" DisplayMemberPath="NAME" />
+                        </Border>
+
+                        <!-- Card Number -->
+                        <!--<Entry  Grid.Row="1" Grid.Column="1"    Keyboard="Numeric"/>-->
+
+                        <Border Grid.Row="1" Grid.Column="1" StrokeThickness="2" Stroke="Honeydew" Padding="0" HorizontalOptions="Fill" VerticalOptions="Fill" StrokeShape="RoundRectangle 5,5,5,5" >
+                            <custom:BorderlessEntry Text="{Binding CardNumber}" Placeholder="XXXX XXXX XXXX" TextColor="WhiteSmoke" HorizontalOptions="Fill" VerticalOptions="Fill"  FontAutoScalingEnabled="True" IsReadOnly="True"  Keyboard="Numeric"/>
+                        </Border>
+
+
+                        <!-- Amount -->
+                        <!--<Entry  Grid.Row="1" Grid.Column="2" Placeholder="Amount" Keyboard="Numeric"/>-->
+                        <Border Grid.Row="1" Grid.Column="2"  StrokeThickness="2" Stroke="Honeydew" Padding="0" HorizontalOptions="Fill" VerticalOptions="Fill" StrokeShape="RoundRectangle 5,5,5,5" >
+                            <custom:BorderlessEntry Text="{Binding CardTotal}" Placeholder="Amount" TextColor="WhiteSmoke" HorizontalOptions="Fill" VerticalOptions="Fill"  FontAutoScalingEnabled="True" IsReadOnly="True"  Keyboard="Numeric"/>
+                        </Border>
+                        
+                    </Grid>
+                    <Grid  Grid.Row="2" Grid.Column="1" Grid.ColumnSpan="3" ColumnDefinitions="35*,65*" RowDefinitions="auto"  Padding="4" VerticalOptions="Center">
+                        <Label Text="Card Total" Grid.Column="0" Grid.Row="0" Background="Transparent" TextColor="White" HorizontalOptions="Center" VerticalOptions="Center" HorizontalTextAlignment="Center"/>
+                        <Button Text="{Binding CardTotal}" Grid.Column="1" Grid.Row="0" Background="#385380" CornerRadius="2"  TextColor="White" IsEnabled="False"/>
+                    </Grid>
+                </Grid>
+
+               
+
+            </Grid>
+
+            <!-- ================= MODE BUTTONS ================= -->
+            <Grid Grid.Row="2" ColumnSpacing="3" RowSpacing="0" Margin="10,0,10,2" Padding="0">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition/>
+                    <ColumnDefinition/>
+                    <ColumnDefinition/>
+                </Grid.ColumnDefinitions>
+
+                <Button Text="FAST CASH" Clicked="OnFastCashClicked"/>
+                <Button Text="CURRENCY" Grid.Column="1"  Clicked="OnCurrencyClicked"/>
+                <Button Text="CARD" Grid.Column="2"  Clicked="OnCardClicked"/>
+            </Grid>
+            <Grid Grid.Row="3" ColumnSpacing="1" HeightRequest="34" RowSpacing="0" Margin="10,1,10,1" Padding="0">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition  Width="40*"/>
+                    <ColumnDefinition Width="10*"/>
+                    <ColumnDefinition Width="10*"/>
+                    <ColumnDefinition Width="10*"/>
+                    <ColumnDefinition Width="20*"/>
+                </Grid.ColumnDefinitions>
+
+                <Border StrokeThickness="2" Stroke="Honeydew" Padding="0" Grid.Column="0"   Grid.Row="0" HorizontalOptions="Fill" VerticalOptions="Fill" StrokeShape="RoundRectangle 5,5,5,5" >
+                    <custom:BorderlessEntry Text="{Binding QuickQtyEntryValue}" TextColor="WhiteSmoke" HorizontalOptions="Fill" VerticalOptions="Fill"  FontAutoScalingEnabled="True" IsReadOnly="True"  Keyboard="Numeric"/>
+                </Border>
+
+
+                <Button Padding="0,-2,0,6" Grid.Row="0" Grid.Column="1"  Margin="0.5" TextColor="#f4f0f7" FontAttributes="Bold" FontSize="22" FontAutoScalingEnabled="True" BackgroundColor="#7a2fc4" CornerRadius="2" 
+                        Text="&#x2190;" CharacterSpacing="0"  Command="{Binding QuickNumKeysClickCommand}" CommandParameter="C-" BorderColor="#f4f0f7" BorderWidth="1" HorizontalOptions="Fill" VerticalOptions="Fill"  />
+                
+                <Button Padding="0" Grid.Row="0" Grid.Column="2"  Margin="0.5" TextColor="#f4f0f7" FontAttributes="Bold" FontSize="14" FontAutoScalingEnabled="True" BackgroundColor="#7a2fc4" CornerRadius="2" 
+                        Text="OK" CharacterSpacing="0"  Command="{Binding QuickNumKeysClickCommand}" CommandParameter="SET" BorderColor="#f4f0f7" BorderWidth="1" HorizontalOptions="Fill" VerticalOptions="Fill"  />
+                
+                <Button Padding="0" Grid.Row="0" Grid.Column="3"  Margin="0.5" TextColor="#f4f0f7" FontAttributes="Bold" FontSize="14" FontAutoScalingEnabled="True" BackgroundColor="#7a2fc4" CornerRadius="2" 
+                        Text="NO" CharacterSpacing="0"   Command="{Binding QuickNumKeysClickCommand}" CommandParameter="SETCARDNO" BorderColor="#f4f0f7" BorderWidth="1" HorizontalOptions="Fill" VerticalOptions="Fill"  IsVisible="{Binding IsVisibleCardMode}" />
+
+                <Button Padding="0" Grid.Row="0" Grid.Column="3"  Margin="0.5" TextColor="#f4f0f7" FontAttributes="Bold" FontSize="14" FontAutoScalingEnabled="True" BackgroundColor="#7a2fc4" CornerRadius="2" 
+                        Text="R" CharacterSpacing="0"   Command="{Binding QuickNumKeysClickCommand}" CommandParameter="RECIVED" BorderColor="#f4f0f7" BorderWidth="1" HorizontalOptions="Fill" VerticalOptions="Fill"  IsVisible="{Binding IsVisibleCashMode}" />
+
+            </Grid>
+
+            <!-- ================= KEYPAD + BILL ================= -->
+            <Grid  Grid.Row="4" Margin="10,1,10,4" ColumnDefinitions="50*,50*" ColumnSpacing="2">
+
+                <!-- KEYPAD -->
+                <Grid RowSpacing="1" ColumnSpacing="1">
+                    <Grid.RowDefinitions>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                    </Grid.ColumnDefinitions>
+
+                    <Button Padding="0" Grid.Row="0" Grid.Column="0"  Margin="0.5,0.5" TextColor="#f4f0f7" FontAttributes="Bold" FontSize="14" FontAutoScalingEnabled="True" BackgroundColor="#7a2fc4" CornerRadius="2" 
+                                 Text="1" Command="{Binding QuickNumKeysClickCommand}" CommandParameter="1"  BorderColor="#f4f0f7" BorderWidth="1" HorizontalOptions="Fill" VerticalOptions="Fill" />
+                    <Button Padding="0" Grid.Row="0" Grid.Column="1"  Margin="0.5,0.5" TextColor="#f4f0f7" FontAttributes="Bold" FontSize="14" FontAutoScalingEnabled="True" BackgroundColor="#7a2fc4" CornerRadius="2"
+                                 Text="2" Command="{Binding QuickNumKeysClickCommand}" CommandParameter="2" BorderColor="#f4f0f7" BorderWidth="1" HorizontalOptions="Fill" VerticalOptions="Fill" />
+                    <Button Padding="0" Grid.Row="0" Grid.Column="2"  Margin="0.5,0.5" TextColor="#f4f0f7" FontAttributes="Bold" FontSize="14" FontAutoScalingEnabled="True" BackgroundColor="#7a2fc4" CornerRadius="2" 
+                                 Text="3" Command="{Binding QuickNumKeysClickCommand}" CommandParameter="3" BorderColor="#f4f0f7" BorderWidth="1" HorizontalOptions="Fill" VerticalOptions="Fill" />
+
+                    <Button Padding="0" Grid.Row="1" Grid.Column="0"  Margin="0.5,0.5" TextColor="#f4f0f7" FontAttributes="Bold" FontSize="14" FontAutoScalingEnabled="True" BackgroundColor="#7a2fc4" CornerRadius="2" 
+                                 Text="4" Command="{Binding QuickNumKeysClickCommand}" CommandParameter="4" BorderColor="#f4f0f7" BorderWidth="1" HorizontalOptions="Fill" VerticalOptions="Fill" />
+                    <Button Padding="0" Grid.Row="1" Grid.Column="1"  Margin="0.5,0.5" TextColor="#f4f0f7" FontAttributes="Bold" FontSize="14" FontAutoScalingEnabled="True" BackgroundColor="#7a2fc4" CornerRadius="2" 
+                                 Text="5" Command="{Binding QuickNumKeysClickCommand}" CommandParameter="5" BorderColor="#f4f0f7" BorderWidth="1" HorizontalOptions="Fill" VerticalOptions="Fill" />
+                    <Button Padding="0" Grid.Row="1" Grid.Column="2"  Margin="0.5,0.5" TextColor="#f4f0f7" FontAttributes="Bold" FontSize="14" FontAutoScalingEnabled="True" BackgroundColor="#7a2fc4" CornerRadius="2" 
+                                 Text="6" Command="{Binding QuickNumKeysClickCommand}" CommandParameter="6" BorderColor="#f4f0f7" BorderWidth="1" HorizontalOptions="Fill" VerticalOptions="Fill" />
+
+                    <Button Padding="0" Grid.Row="2" Grid.Column="0"  Margin="0.5,0.5" TextColor="#f4f0f7" FontAttributes="Bold" FontSize="14" FontAutoScalingEnabled="True" BackgroundColor="#7a2fc4" CornerRadius="2" 
+                                 Text="7" Command="{Binding QuickNumKeysClickCommand}" CommandParameter="7" BorderColor="#f4f0f7" BorderWidth="1" HorizontalOptions="Fill" VerticalOptions="Fill" />
+                    <Button Padding="0" Grid.Row="2" Grid.Column="1"  Margin="0.5,0.5" TextColor="#f4f0f7" FontAttributes="Bold" FontSize="14" FontAutoScalingEnabled="True" BackgroundColor="#7a2fc4" CornerRadius="2" 
+                                 Text="8" Command="{Binding QuickNumKeysClickCommand}" CommandParameter="8" BorderColor="#f4f0f7" BorderWidth="1" HorizontalOptions="Fill" VerticalOptions="Fill" />
+                    <Button Padding="0" Grid.Row="2" Grid.Column="2"  Margin="0.5,0.5" TextColor="#f4f0f7" FontAttributes="Bold" FontSize="14" FontAutoScalingEnabled="True" BackgroundColor="#7a2fc4" CornerRadius="2" 
+                                 Text="9" Command="{Binding QuickNumKeysClickCommand}" CommandParameter="9" BorderColor="#f4f0f7" BorderWidth="1" HorizontalOptions="Fill" VerticalOptions="Fill" />
+
+                    <Button Padding="0" Grid.Row="3" Grid.Column="0"  Margin="0.5,0.5" TextColor="#f4f0f7" FontAttributes="Bold" FontSize="14" FontAutoScalingEnabled="True" BackgroundColor="#7a2fc4" CornerRadius="2" 
+                                 Text="0" Command="{Binding QuickNumKeysClickCommand}" CommandParameter="0" BorderColor="#f4f0f7" BorderWidth="1" HorizontalOptions="Fill" VerticalOptions="Fill" />
+                    <Button Padding="0" Grid.Row="3" Grid.Column="1"  Margin="0.5,0.5" TextColor="#f4f0f7" FontAttributes="Bold" FontSize="14" FontAutoScalingEnabled="True" BackgroundColor="#7a2fc4" CornerRadius="2" 
+                                 Text="00" Command="{Binding QuickNumKeysClickCommand}" CommandParameter="00" BorderColor="#f4f0f7" BorderWidth="1" HorizontalOptions="Fill" VerticalOptions="Fill" />
+                    <Button Padding="0" Grid.Row="3" Grid.Column="2"  Margin="0.5,0.5" TextColor="#f4f0f7" FontAttributes="Bold" FontSize="14" FontAutoScalingEnabled="True" BackgroundColor="#7a2fc4" CornerRadius="2"
+                                 Text="." Command="{Binding QuickNumKeysClickCommand}" CommandParameter="." BorderColor="#f4f0f7" BorderWidth="1" HorizontalOptions="Fill" VerticalOptions="Fill" />
+
+                </Grid>
+
+                <!-- BILL SUMMARY -->
+                <Border Grid.Column="1" Background="#1E1E1E"  Padding="1,10,5,10"  StrokeShape="RoundRectangle 6">
+                    <Grid RowSpacing="1" ColumnSpacing="1" Padding="0" Margin="0" RowDefinitions="1*,1*,1*" ColumnDefinitions="31*,69*">
+
+                        <Label Text="BILL AMT" Grid.Row="0" FontSize="10" Grid.Column="0" TextColor="White"    HorizontalOptions="Fill" VerticalOptions="Center" HorizontalTextAlignment="Center" />
+                        <Label Text="RECEIVED" Grid.Row="1" FontSize="10" Grid.Column="0" TextColor="White"   HorizontalOptions="Fill" VerticalOptions="Center" HorizontalTextAlignment="Center" />
+                        <Label Text="CHANGE" Grid.Row="2" FontSize="10" Grid.Column="0" TextColor="White"   HorizontalOptions="Fill" VerticalOptions="Center" HorizontalTextAlignment="Center" />
+
+
+                        <Label Text="{Binding BillAmount}" FontSize="10" Padding="5,3,3,3" Grid.Row="0" Grid.Column="1" TextColor="White"   BackgroundColor="#385380"  HorizontalOptions="Fill" VerticalOptions="Center" HorizontalTextAlignment="Start" />
+                        <Label Text="{Binding ReceivedAmount}" FontSize="10" Padding="5,3,3,3" Grid.Row="1" Grid.Column="1" TextColor="#07e938"  BackgroundColor="#385380"  HorizontalOptions="Fill" VerticalOptions="Center" HorizontalTextAlignment="Start" />
+                        <Label Text="{Binding ChangeAmount}" FontSize="10" Padding="5,3,3,3" Grid.Row="2" Grid.Column="1" TextColor="#07e9e5"  BackgroundColor="#385380"  HorizontalOptions="Fill" VerticalOptions="Center" HorizontalTextAlignment="Start" />
+                    </Grid>
+                </Border>
+            </Grid>
+
+            <!-- ================= FOOTER ================= -->
+            <Grid Grid.Row="5" ColumnSpacing="5" Margin="10,0,10,5">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition/>
+                    <ColumnDefinition/>
+                </Grid.ColumnDefinitions>
+
+                <Button Text="OK"  Background="#08c93c" Grid.Column="0"  Margin="0" CornerRadius="3"  Command="{Binding QuickNumKeysClickCommand}" CommandParameter="SETTLE"  TextColor="White"/>
+                <Button Text="ESC" Background="#B71C1C" Grid.Column="1"  Margin="0" CornerRadius="3"    TextColor="White"  Clicked="Button_Clicked"/>
+
+            </Grid>
+        </Grid>
+    </Grid>
+</pages:PopupPage>

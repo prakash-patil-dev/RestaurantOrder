@@ -35,7 +35,25 @@
        
     </Style>
 
-  
+
+
+    <Style TargetType="editors:SfComboBox" x:Key="ComboBoxStyle1">
+        <Setter Property="BackgroundColor"  Value="Transparent"  />
+        <Setter Property="ShowBorder" Value="False"/>
+        <Setter Property="ItemPadding" Value="15,0,0,0"/>
+        <Setter Property="FontSize" Value="10" />
+        <Setter Property="TextColor" Value="White" />
+        <Setter Property="PlaceholderColor" Value="{AppThemeBinding Light={StaticResource Gray200}, Dark={StaticResource Gray500}}" />
+        <Setter Property="DropDownIconColor" Value="Teal"/>
+        <Setter Property="ClearButtonIconColor" Value="#d65cad"/>
+        <Setter Property="DropDownPlacement" Value="Bottom" />
+        <Setter Property="MaxDropDownHeight" Value="100" />
+        <Setter Property="DropDownItemFontSize" Value="11" />
+        <Setter Property="DropDownItemHeight" Value="30" />
+    </Style>
+
+    
+    
     <Style TargetType="Border">
        
         <Setter Property="Stroke">

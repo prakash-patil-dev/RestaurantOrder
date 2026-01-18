@@ -22,7 +22,27 @@ namespace RestaurantOrder.Views
         {
             try
             {
-                var SaveArry = new string[] { PageType == "SAVEBILL" ? "SAVEBILL" : "REMOVEITEM" };//: new string[] { "REMOVEITEM" };
+                // var SaveArry = new string[] { PageType == "SAVEBILL" ? "SAVEBILL" : "REMOVEITEM" };//: new string[] { "REMOVEITEM" };
+                string[] SaveArry;
+
+                switch (PageType)
+                {
+                    case "SAVEBILL":
+                        SaveArry = new[] { "SAVEBILL" };
+                        break;
+
+                    case "REMOVEITEM":
+                        SaveArry = new[] { "REMOVEITEM" };
+                        break;
+                    case "CLOSEBILL":
+                        SaveArry = new[] { "CLOSEBILL" };
+                        break;
+
+                    default:
+                        SaveArry = Array.Empty<string>();
+                        break;
+                }
+
                 if (PopupCommand?.CanExecute(SaveArry) == true)
                 {
                     PopupCommand.Execute(SaveArry);
@@ -136,7 +156,7 @@ namespace RestaurantOrder.Views
                                                          propertyName: "PageType",
                                                          returnType: typeof(string),
                                                          declaringType: typeof(ConformPopup),
-                                                         defaultValue: "SAVEBILL",
+                                                         defaultValue: "",
                                                          defaultBindingMode: BindingMode.TwoWay, propertyChanged: (b, o, n) =>
                                                          {
                                                              var page = (ConformPopup)b;

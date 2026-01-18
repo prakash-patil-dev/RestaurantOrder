@@ -1,10 +1,12 @@
 ﻿using CommunityToolkit.Maui;
 using Microsoft.Extensions.Logging;
 using Microsoft.Maui.Handlers;
+using Microsoft.Maui.LifecycleEvents;
 using Mopups.Hosting;
 using RestaurantOrder.CustomControls;
 using RestaurantOrder.Handlers;
 using Syncfusion.Maui.Core.Hosting;
+using System.Runtime.InteropServices;
 
 namespace RestaurantOrder
 {
@@ -19,8 +21,23 @@ namespace RestaurantOrder
                 .UseMauiCommunityToolkit(options =>
                 {
                     options.SetShouldEnableSnackbarOnWindows(true);
+                    
                 })
-                .ConfigureSyncfusionCore()
+                .ConfigureSyncfusionCore().ConfigureLifecycleEvents(events =>
+                {
+#if WINDOWS
+                events.AddWindows(windows =>
+                {
+                    windows.OnWindowCreated(window =>
+                    {
+                        var hwnd = WinRT.Interop.WindowNative.GetWindowHandle(window);
+
+                        // ✅ Maximize window (title bar stays)
+                        ShowWindow(hwnd, SW_MAXIMIZE);
+                    });
+                });
+#endif
+                })
                 .ConfigureFonts(fonts =>
                 {
                     fonts.AddFont("OpenSans-Regular.ttf", "OpenSansRegular");
@@ -52,5 +69,12 @@ namespace RestaurantOrder
 
             return builder.Build();
         }
+
+#if WINDOWS
+    [DllImport("user32.dll")]
+    private static extern bool ShowWindow(IntPtr hWnd, int nCmdShow);
+
+    private const int SW_MAXIMIZE = 3;
+#endif
     }
 }
