@@ -25,9 +25,8 @@
          HasBackgroundAnimation="True"/>
     </pages:PopupPage.Animation>
     <pages:PopupPage.Resources>
-        <!--<ResourceDictionary>
-            <local:InverseBoolConverter x:Key="InverseBoolConverter" />
-        </ResourceDictionary>-->
+        <local:BoolToOpacityConverter x:Key="BoolToOpacityConverter" TrueOpacity="1"  FalseOpacity="0.4"/>
+        <local:CurrencyConvertMultiConverter x:Key="CurrencyConvertMultiConverter"/>
     </pages:PopupPage.Resources>
     <Grid  Style="{StaticResource PopupPageStyle}" RowSpacing="0" ColumnSpacing="0"  >
         <Grid.RowDefinitions>
@@ -69,16 +68,16 @@
                    
                     <Grid Grid.Row="0" ColumnDefinitions="*,*,*,*"  RowDefinitions="auto,5,auto"  Grid.Column="0" Grid.ColumnSpan="4"   ColumnSpacing="4"  Padding="4"  >
 
-                        <Button Text="0" CharacterSpacing="0"   Command="{Binding QuickNumKeysClickCommand}" CommandParameter="FAST0" Grid.Column="0" Grid.Row="0" Background="#C62828" TextColor="White" />
-                        <Button Text="0" CharacterSpacing="0"   Command="{Binding QuickNumKeysClickCommand}" CommandParameter="FAST0" Grid.Column="1" Grid.Row="0" Background="#C62828" TextColor="White"/>
-                        <Button Text="0" CharacterSpacing="0"   Command="{Binding QuickNumKeysClickCommand}" CommandParameter="FAST0" Grid.Column="2" Grid.Row="0" Background="#C62828" TextColor="White"/>
-                        <Button Text="0" CharacterSpacing="0"   Command="{Binding QuickNumKeysClickCommand}" CommandParameter="FAST0" Grid.Column="3" Grid.Row="0" Background="#C62828" TextColor="White"/>
+                        <Button Text="{Binding FastCash.Cash1}" CharacterSpacing="0"   Command="{Binding QuickNumKeysClickCommand}" CommandParameter="FASTCASH1" Grid.Column="0" Grid.Row="0" Background="#C62828" TextColor="White" />
+                        <Button Text="{Binding FastCash.Cash2}" CharacterSpacing="0"   Command="{Binding QuickNumKeysClickCommand}" CommandParameter="FASTCASH2" Grid.Column="1" Grid.Row="0" Background="#C62828" TextColor="White"/>
+                        <Button Text="{Binding FastCash.Cash3}" CharacterSpacing="0"   Command="{Binding QuickNumKeysClickCommand}" CommandParameter="FASTCASH3" Grid.Column="2" Grid.Row="0" Background="#C62828" TextColor="White"/>
+                        <Button Text="{Binding FastCash.Cash4}" CharacterSpacing="0"   Command="{Binding QuickNumKeysClickCommand}" CommandParameter="FASTCASH4" Grid.Column="3" Grid.Row="0" Background="#C62828" TextColor="White"/>
 
 
-                        <Button Text="20" CharacterSpacing="0"   Command="{Binding QuickNumKeysClickCommand}" CommandParameter="FAST20" Grid.Column="0" Grid.Row="2" Background="#C62828" TextColor="White"/>
-                        <Button Text="10" CharacterSpacing="0"   Command="{Binding QuickNumKeysClickCommand}" CommandParameter="FAST10" Grid.Column="1" Grid.Row="2" Background="#C62828" TextColor="White"/>
-                        <Button Text="5"  CharacterSpacing="0"   Command="{Binding QuickNumKeysClickCommand}" CommandParameter="FAST5" Grid.Column="2" Grid.Row="2" Background="#C62828" TextColor="White"/>
-                        <Button Text="1"  CharacterSpacing="0"   Command="{Binding QuickNumKeysClickCommand}" CommandParameter="FAST1" Grid.Column="3" Grid.Row="2" Background="#C62828" TextColor="White"/>
+                        <Button Text="{Binding FastCash.Cash5}" CharacterSpacing="0"   Command="{Binding QuickNumKeysClickCommand}" CommandParameter="FASTCASH5" Grid.Column="0" Grid.Row="2" Background="#C62828" TextColor="White"/>
+                        <Button Text="{Binding FastCash.Cash6}" CharacterSpacing="0"   Command="{Binding QuickNumKeysClickCommand}" CommandParameter="FASTCASH6" Grid.Column="1" Grid.Row="2" Background="#C62828" TextColor="White"/>
+                        <Button Text="{Binding FastCash.Cash7}"  CharacterSpacing="0"   Command="{Binding QuickNumKeysClickCommand}" CommandParameter="FASTCASH7" Grid.Column="2" Grid.Row="2" Background="#C62828" TextColor="White"/>
+                        <Button Text="{Binding FastCash.Cash8}"  CharacterSpacing="0"   Command="{Binding QuickNumKeysClickCommand}" CommandParameter="FASTCASH8" Grid.Column="3" Grid.Row="2" Background="#C62828" TextColor="White"/>
                     </Grid>
 
                     <Grid  Grid.Row="2" Grid.Column="1" Grid.ColumnSpan="3" ColumnDefinitions="35*,65*" RowDefinitions="auto"  Padding="4" VerticalOptions="Center">
@@ -90,17 +89,64 @@
                 <!-- Currency VIEW -->
                 <Grid x:Name="CurrencyView" RowDefinitions="auto,50,auto"    ColumnDefinitions="*,*,*,*"  Margin="10,5,10,5"  IsVisible="{Binding IsVisibleCurrencyMode}">
                     <Grid Grid.Row="0" ColumnDefinitions="*,*,*,*"  RowDefinitions="auto,5,auto"  Grid.Column="0" Grid.ColumnSpan="4"   ColumnSpacing="5"  Padding="4">
+                        <Border   Stroke="Black" StrokeThickness="1"  Grid.Row="0" Grid.RowSpan="3" Grid.Column="0" Grid.ColumnSpan="4">
 
-                        <Button Text="0" Grid.Column="0" Grid.Row="0" Background="Blue" TextColor="White"/>
-                        <Button Text="0" Grid.Column="1" Grid.Row="0" Background="Blue" TextColor="White"/>
-                        <Button Text="0"  Grid.Column="2" Grid.Row="0" Background="Blue" TextColor="White"/>
-                        <Button Text="0"  Grid.Column="3" Grid.Row="0" Background="Blue" TextColor="White"/>
+                            <VerticalStackLayout Spacing="0">
+
+                                <!-- HEADER -->
+                                <Grid BackgroundColor="#B34700" ColumnDefinitions="1.2*,1.2*,1.2*,1.5*,1.2*"  Padding="6">
+
+                                    <Label Text="Currency" TextColor="White" FontAttributes="Bold" HorizontalOptions="Center" VerticalOptions="Center" />
+                                    <Label Text="Exchange Rate" Grid.Column="1" TextColor="White" FontAttributes="Bold" HorizontalOptions="Center" VerticalOptions="Center" />
+                                    <Label Text="Currency Amount" Grid.Column="2" TextColor="White" FontAttributes="Bold" HorizontalOptions="Center" VerticalOptions="Center"/>
+                                    <Label Text="Amount Received" Grid.Column="3" TextColor="White" FontAttributes="Bold" HorizontalOptions="Center" VerticalOptions="Center"/>
+                                    <Label Text="Balance Amount" Grid.Column="4" TextColor="White" FontAttributes="Bold" HorizontalOptions="Center" VerticalOptions="Center"/>
+                                </Grid>
+
+                                <!-- TABLE BODY -->
+                                <CollectionView  ItemsSource="{Binding CurrencyListWithRate}"  SelectionMode="None">
+
+                                    <CollectionView.ItemTemplate>
+                                        <DataTemplate x:DataType="Models:EXRATE">
+                                            <Border   Stroke="Black" StrokeThickness="0.5">
+
+                                                <Grid ColumnDefinitions="1.2*,1.2*,1.2*,1.5*,1.2*" Padding="6" BackgroundColor="White" >
+
+                                                    <Label Text="{Binding ERATE_CURR}" TextColor="Black" HorizontalOptions="Center" VerticalOptions="Center" />
+                                                    <Label Text="{Binding ERATE_RATE}" TextColor="Black" Grid.Column="1"  HorizontalTextAlignment="End" HorizontalOptions="Center" VerticalOptions="Center"/>
+
+                                                    <Label TextColor="Black"  Grid.Column="2"  HorizontalTextAlignment="End" HorizontalOptions="Center" VerticalOptions="Center">
+                                                        <Label.Text>
+                                                            <MultiBinding Converter="{StaticResource CurrencyConvertMultiConverter}"   StringFormat="{}{0:N2}">
+                                                                <Binding Source="{RelativeSource AncestorType={x:Type vm:SettlementViewModel}}"
+                                                                         Path="BillAmount"/>
+                                                                <Binding Path="ERATE_RATE"/>
+                                                            </MultiBinding>
+                                                        </Label.Text>
+                                                    </Label>
+                                                    
+
+                                                    <Entry  Text="{Binding Source={RelativeSource AncestorType={x:Type vm:SettlementViewModel}}, Path=DueBalance}" TextColor="Black"  Grid.Column="3"  Keyboard="Numeric" HorizontalTextAlignment="End" HorizontalOptions="Center" VerticalOptions="Center"/>
+
+                                                    <Label  Grid.Column="4"  TextColor="DarkRed"  HorizontalTextAlignment="End" HorizontalOptions="Center" VerticalOptions="Center">
+                                                        <Label.Text>
+                                                            <MultiBinding Converter="{StaticResource CurrencyConvertMultiConverter}"   StringFormat="{}{0:N2}">
+                                                                <Binding Source="{RelativeSource AncestorType={x:Type vm:SettlementViewModel}}"     Path="DueBalance"/>
+                                                                <Binding Path="ERATE_RATE"/>
+                                                            </MultiBinding>
+                                                        </Label.Text>
+                                                    </Label>
+
+                                                </Grid>
+                                            </Border>
+                                        </DataTemplate>
+                                    </CollectionView.ItemTemplate>
+                                </CollectionView>
+
+                            </VerticalStackLayout>
+                        </Border>
 
 
-                        <Button Text="20" Grid.Column="0" Grid.Row="2" Background="#C62828" TextColor="White"/>
-                        <Button Text="10" Grid.Column="1" Grid.Row="2" Background="#C62828" TextColor="White"/>
-                        <Button Text="5"  Grid.Column="2" Grid.Row="2" Background="#C62828" TextColor="White"/>
-                        <Button Text="1"  Grid.Column="3" Grid.Row="2" Background="#C62828" TextColor="White"/>
                     </Grid>
 
                     <!--<Grid  Grid.Row="2" Grid.Column="2" Grid.ColumnSpan="2" ColumnDefinitions="25*,75*" RowDefinitions="auto"  Padding="4">
@@ -153,7 +199,7 @@
                         <!--<Entry  Grid.Row="1" Grid.Column="1"    Keyboard="Numeric"/>-->
 
                         <Border Grid.Row="1" Grid.Column="1" StrokeThickness="2" Stroke="Honeydew" Padding="0" HorizontalOptions="Fill" VerticalOptions="Fill" StrokeShape="RoundRectangle 5,5,5,5" >
-                            <custom:BorderlessEntry Text="{Binding CardNumber}" Placeholder="XXXX XXXX XXXX" TextColor="WhiteSmoke" HorizontalOptions="Fill" VerticalOptions="Fill"  FontAutoScalingEnabled="True" IsReadOnly="True"  Keyboard="Numeric"/>
+                            <custom:BorderlessEntry Text="{Binding CardNumber}" Placeholder="XXXX" MaxLength="4" TextColor="WhiteSmoke" HorizontalOptions="Fill" VerticalOptions="Fill"  FontAutoScalingEnabled="True" IsReadOnly="True"  Keyboard="Numeric"/>
                         </Border>
 
 
@@ -182,9 +228,9 @@
                     <ColumnDefinition/>
                 </Grid.ColumnDefinitions>
 
-                <Button Text="FAST CASH" Clicked="OnFastCashClicked"/>
-                <Button Text="CURRENCY" Grid.Column="1"  Clicked="OnCurrencyClicked"/>
-                <Button Text="CARD" Grid.Column="2"  Clicked="OnCardClicked"/>
+                <Button Text="FAST CASH" Grid.Column="0"  Clicked="OnFastCashClicked"    IsEnabled="{Binding IsEnableCashMode}"  Opacity="{Binding IsEnableCashMode, Converter={StaticResource BoolToOpacityConverter}}" />
+                <Button Text="CURRENCY" Grid.Column="2"  Clicked="OnCurrencyClicked"   IsEnabled="{Binding IsEnableCurrencyMode}"  Opacity="{Binding IsEnableCurrencyMode, Converter={StaticResource BoolToOpacityConverter}}"/>
+                <Button Text="CARD" Grid.Column="1"  Clicked="OnCardClicked"  IsEnabled="{Binding IsEnableCardMode}"  Opacity="{Binding IsEnableCardMode, Converter={StaticResource BoolToOpacityConverter}}"/>
             </Grid>
             <Grid Grid.Row="3" ColumnSpacing="1" HeightRequest="34" RowSpacing="0" Margin="10,1,10,1" Padding="0">
                 <Grid.ColumnDefinitions>
@@ -263,16 +309,27 @@
 
                 <!-- BILL SUMMARY -->
                 <Border Grid.Column="1" Background="#1E1E1E"  Padding="1,10,5,10"  StrokeShape="RoundRectangle 6">
-                    <Grid RowSpacing="1" ColumnSpacing="1" Padding="0" Margin="0" RowDefinitions="1*,1*,1*" ColumnDefinitions="31*,69*">
+                    <Grid RowSpacing="1" ColumnSpacing="1" Padding="0" Margin="0" RowDefinitions="1*,1*,1*,1*,1*,1*,1*,1*" ColumnDefinitions="31*,69*">
 
-                        <Label Text="BILL AMT" Grid.Row="0" FontSize="10" Grid.Column="0" TextColor="White"    HorizontalOptions="Fill" VerticalOptions="Center" HorizontalTextAlignment="Center" />
-                        <Label Text="RECEIVED" Grid.Row="1" FontSize="10" Grid.Column="0" TextColor="White"   HorizontalOptions="Fill" VerticalOptions="Center" HorizontalTextAlignment="Center" />
-                        <Label Text="CHANGE" Grid.Row="2" FontSize="10" Grid.Column="0" TextColor="White"   HorizontalOptions="Fill" VerticalOptions="Center" HorizontalTextAlignment="Center" />
+                        <Label Text="Bill Amount" Grid.Row="0" FontSize="10" Grid.Column="0" TextColor="White"    HorizontalOptions="Fill" VerticalOptions="Center" HorizontalTextAlignment="Start" Padding="10,0,0,0" />
+                        <Label Text="Tendered Cash" Grid.Row="1" FontSize="10" Grid.Column="0" TextColor="White"   HorizontalOptions="Fill" VerticalOptions="Center" HorizontalTextAlignment="Start" Padding="10,0,0,0"/>
+                        <Label Text="Total Cash" Grid.Row="2" FontSize="10" Grid.Column="0" TextColor="White"   HorizontalOptions="Fill" VerticalOptions="Center" HorizontalTextAlignment="Start" Padding="10,0,0,0"/>
+                        <Label Text="Total Currency" Grid.Row="3" FontSize="10" Grid.Column="0" TextColor="White"   HorizontalOptions="Fill" VerticalOptions="Center" HorizontalTextAlignment="Start" Padding="10,0,0,0"/>
+                        <Label Text="Total Card" Grid.Row="4" FontSize="10" Grid.Column="0" TextColor="White"   HorizontalOptions="Fill" VerticalOptions="Center" HorizontalTextAlignment="Start" Padding="10,0,0,0"/>
+                        <Label Text="Total Payment" Grid.Row="5" FontSize="10" Grid.Column="0" TextColor="White"   HorizontalOptions="Fill" VerticalOptions="Center" HorizontalTextAlignment="Start" Padding="10,0,0,0"/>
+
+                        <Label Text="Change" Grid.Row="6"  FontSize="10" Grid.Column="0" TextColor="Red"   HorizontalOptions="Fill" VerticalOptions="Center" HorizontalTextAlignment="Start" Padding="10,0,0,0" />
+                        <Label Text="Balance" Grid.Row="7" FontSize="10" Grid.Column="0" TextColor="White"   HorizontalOptions="Fill" VerticalOptions="Center" HorizontalTextAlignment="Start" Padding="10,0,0,0"/>
 
 
                         <Label Text="{Binding BillAmount}" FontSize="10" Padding="5,3,3,3" Grid.Row="0" Grid.Column="1" TextColor="White"   BackgroundColor="#385380"  HorizontalOptions="Fill" VerticalOptions="Center" HorizontalTextAlignment="Start" />
-                        <Label Text="{Binding ReceivedAmount}" FontSize="10" Padding="5,3,3,3" Grid.Row="1" Grid.Column="1" TextColor="#07e938"  BackgroundColor="#385380"  HorizontalOptions="Fill" VerticalOptions="Center" HorizontalTextAlignment="Start" />
-                        <Label Text="{Binding ChangeAmount}" FontSize="10" Padding="5,3,3,3" Grid.Row="2" Grid.Column="1" TextColor="#07e9e5"  BackgroundColor="#385380"  HorizontalOptions="Fill" VerticalOptions="Center" HorizontalTextAlignment="Start" />
+                        <Label Text="{Binding TenderedAmount}" FontSize="10" Padding="5,3,3,3" Grid.Row="1" Grid.Column="1" TextColor="#07e938"  BackgroundColor="#385380"  HorizontalOptions="Fill" VerticalOptions="Center" HorizontalTextAlignment="Start" />
+                        <Label Text="{Binding CashTotal}" FontSize="10" Padding="5,3,3,3" Grid.Row="2" Grid.Column="1" TextColor="#07e938"  BackgroundColor="#385380"  HorizontalOptions="Fill" VerticalOptions="Center" HorizontalTextAlignment="Start" />
+                        <Label Text="{Binding CurrencyTotal}" FontSize="10" Padding="5,3,3,3" Grid.Row="3" Grid.Column="1" TextColor="#07e938"  BackgroundColor="#385380"  HorizontalOptions="Fill" VerticalOptions="Center" HorizontalTextAlignment="Start" />
+                        <Label Text="{Binding CardTotal}" FontSize="10" Padding="5,3,3,3" Grid.Row="4" Grid.Column="1" TextColor="#07e938"  BackgroundColor="#385380"  HorizontalOptions="Fill" VerticalOptions="Center" HorizontalTextAlignment="Start" />
+                        <Label Text="{Binding TotalAmount}" FontSize="10" Padding="5,3,3,3" Grid.Row="5" Grid.Column="1" TextColor="#07e938"  BackgroundColor="#385380"  HorizontalOptions="Fill" VerticalOptions="Center" HorizontalTextAlignment="Start" />
+                        <Label Text="{Binding ChangeAmount}" FontSize="10" Padding="5,3,3,3" Grid.Row="6" Grid.Column="1" TextColor="#07e9e5"  BackgroundColor="#385380"  HorizontalOptions="Fill" VerticalOptions="Center" HorizontalTextAlignment="Start" />
+                        <Label  Text="{Binding DueBalance, StringFormat='{0:F2}'}" FontSize="10" Padding="5,3,3,3" Grid.Row="7" Grid.Column="1" TextColor="#07e9e5"  BackgroundColor="#385380"  HorizontalOptions="Fill" VerticalOptions="Center" HorizontalTextAlignment="Start" />
                     </Grid>
                 </Border>
             </Grid>

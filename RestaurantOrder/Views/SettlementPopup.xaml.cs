@@ -44,6 +44,8 @@ public partial class SettlementPopup : PopupPage
         base.OnAppearing();
        await SettlementVM.LoadCardsType();
     }
+
+
     protected override bool OnBackButtonPressed()
     {
         return false;

@@ -597,8 +597,12 @@ namespace RestaurantOrder.ViewModels
                             SVModel.IsVisibleCurrencyMode = false;
                             SVModel.IsVisibleCardMode = false;
                             SVModel.IsVisibleCashMode = true;
-                            SVModel.CashTotal = INVHEADDETAILS.CurrentOpenBill.BILLAMOUNT;
-                            SVModel.ReceivedAmount = 0;
+                            //SVModel.IsEnableCardMode = true;
+                            //SVModel.IsEnableCashMode = true;
+                            //SVModel.IsEnableCurrencyMode = true;
+
+                            SVModel.CashTotal = 0;
+                            SVModel.TenderedAmount = 0;
                             SVModel.ChangeAmount = 0;
                             ObjSettlementPopup = new SettlementPopup(SVModel);
                             
@@ -810,6 +814,60 @@ namespace RestaurantOrder.ViewModels
                                         CurrentSelectedBillItem = null;
                                         CalculateTotalAmout();
                                         CurrentSelectedBillItem = INVHEADDETAILS.CurrentOpenBillDetails.FirstOrDefault();
+
+                                        INVHEADDETAILS.CurrentOpenBill.TXNDT = DateTime.Now;
+                                        //INVHEADDETAILS.CurrentOpenBill.USER = "ADMIN";
+                                        //INVHEADDETAILS.CurrentOpenBill.LASTUSER = "ADMIN";
+                                        INVHEADDETAILS.CurrentOpenBill.LASTDATE = DateTime.Now;
+                                        INVHEADDETAILS.CurrentOpenBill.LASTTIME = DateTime.Now.ToString("hh:mm:ss tt");
+                                        // INVHEADDETAILS.CurrentOpenBill.STATUS = "O";
+                                        INVHEADDETAILS.CurrentOpenBill.EATTAKE = "E";
+                                        INVHEADDETAILS.CurrentOpenBill.UPDATED = "Y";
+                                        INVHEADDETAILS.CurrentOpenBill.BRANCHCODE = "HQ";
+                                        INVHEADDETAILS.CurrentOpenBillDetails.ToList().ForEach(item =>
+                                        {
+                                            item.BRANCHCODE = "HQ";
+                                            item.UPDATED = "Y";
+                                            // item.VIPNO 
+                                            item.LASTUSER = App.ObjMainUserViewModel.UserEmail;
+                                            item.LASTDATE = DateTime.Now;
+                                            item.LASTTIME = DateTime.Now.ToString("hh:mm:ss tt");
+                                        });
+
+                                        var response1 = await ApiClient.PostAsync<INVHEADDETAILS, string>("INVHEAD/SaveCurrentBill", INVHEADDETAILS, 1);
+                                        if (response1 != null)
+                                        {
+                                            var StrArray = response1.Split(':');
+                                            string ReturnValue = StrArray[1].Trim(); // "Inserted"
+
+                                            if (ReturnValue == "Inserted")
+                                            {
+                                                //App.cancellationTokenSource = new();
+                                                //await Toast.Make("Bill Saved Successfully.", ToastDuration.Short, 10).Show(App.cancellationTokenSource.Token);
+                                              //  await ClosePageAsync();
+                                            }
+                                            else if (ReturnValue == "Updated")
+                                            {
+                                                try
+                                                {
+                                                    //App.cancellationTokenSource = new();
+                                                    //await Toast.Make("Bill Updated Successfully.", ToastDuration.Short, 10).Show(App.cancellationTokenSource.Token);
+
+                                                   // await ClosePageAsync();
+                                                }
+                                                catch (Exception ex)
+                                                {
+
+                                                }
+
+                                            }
+                                            else
+                                            {
+                                                App.cancellationTokenSource = new();
+                                                await Toast.Make("Something Went Wrong!.", ToastDuration.Short, 10).Show(App.cancellationTokenSource.Token);
+                                            }
+                                            await LoadAllOpenBillsList();
+                                        }
                                     }
                                     //else
                                     //{

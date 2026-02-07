@@ -1,12 +1,6 @@
-﻿using Mopups.Services;
-using RestaurantOrder.ApiService;
+﻿using RestaurantOrder.ApiService;
 using RestaurantOrder.Models;
-using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Input;
 
 namespace RestaurantOrder.ViewModels
@@ -153,7 +147,7 @@ namespace RestaurantOrder.ViewModels
                         }
                         break;
                     case "SETCARDNO":
-                        if(QuickQtyEntryValue.Length > 11 && QuickQtyEntryValue.Length < 13)
+                        if(QuickQtyEntryValue.Length > 3 && QuickQtyEntryValue.Length < 5)
                         {
                             if (QuickQtyEntryValue.Contains("."))
                             {
@@ -171,31 +165,48 @@ namespace RestaurantOrder.ViewModels
                         break;
 
                     case "RECIVED":
-                        ReceivedAmount = Convert.ToDouble(QuickQtyEntryValue);
+                        TenderedAmount = Convert.ToDouble(QuickQtyEntryValue);
                         CalculateChangeAmount();
                             break;
                     case "FAST0":
                        // ReceivedAmount = Convert.ToDouble(QuickQtyEntryValue);
                         break;
-                    case "FAST20":
-                        ReceivedAmount = 20;
+
+                    case "FASTCASH1":
+                        TenderedAmount = FastCash.Cash1;
+                        CalculateChangeAmount();                        
+                        break;
+                    case "FASTCASH2":
+                        TenderedAmount = FastCash.Cash2;
                         CalculateChangeAmount();
                         break;
-                    case "FAST10":
-                        ReceivedAmount = 10;
+                    case "FASTCASH3":
+                        TenderedAmount = FastCash.Cash3;
                         CalculateChangeAmount();
                         break;
-                    case "FAST5":
-                        ReceivedAmount = 5;
+                    case "FASTCASH4":
+                        TenderedAmount = FastCash.Cash4;
                         CalculateChangeAmount();
                         break;
-                    case "FAST1":
-                        ReceivedAmount = 1;
+                    case "FASTCASH5":
+                        TenderedAmount = FastCash.Cash5;
+                        CalculateChangeAmount();
+                        break;
+                    case "FASTCASH6":
+                        TenderedAmount = FastCash.Cash6;
+                        CalculateChangeAmount();
+                        break;
+                    case "FASTCASH7":
+                        TenderedAmount = FastCash.Cash7;
+                        CalculateChangeAmount();
+                        break;
+                    case "FASTCASH8":
+                        TenderedAmount = FastCash.Cash8;
                         CalculateChangeAmount();
                         break;
                     case "SETTLE":
                         // if (CashTotal + CardTotal == BillAmount)
-                        if (ReceivedAmount >= BillAmount)
+                        if (TotalAmount >= BillAmount)
                         {
                             if (CashTotal + CardTotal != BillAmount)
                             {
@@ -311,12 +322,14 @@ namespace RestaurantOrder.ViewModels
         {
             try
             {
-                if (ReceivedAmount > BillAmount)
+                if (TenderedAmount > BillAmount)
                 {
-                    ChangeAmount = ReceivedAmount - BillAmount;
+                    ChangeAmount = TenderedAmount - BillAmount;
+                    CashTotal = BillAmount;
                 }
                 else
                 {
+                    CashTotal = TenderedAmount;
                     ChangeAmount = 0;
                 }
             }
@@ -330,28 +343,22 @@ namespace RestaurantOrder.ViewModels
         {
             try
             {
-                //Isbussy = true;
-                //IsVisibleIndecator = true;
                 UsersList = await ApiClient.GetAsync<ObservableCollection<CardTypes>>("User/GetCrCards");
-                if (UsersList == null)
-                {
-                    //Isbussy = false;
-                    //IsVisibleIndecator = false;
-                    // RecivedMessageOnLoginpage(new string[] { $"DISPLAYALERT", $"Network Issue - Check your Setting." });
-                }
+                FastCash = await ApiClient.GetAsync<SysParam>("Settlement/GetSysParam");
+                CurrencyListWithRate = await ApiClient.GetAsync<ObservableCollection<EXRATE>>("Settlement/GetCurrencytypes");
             }
             catch (Exception ex)
             {
-                //RecivedMessageOnLoginpage(new string[] { $"DISPLAYALERT", $"Something went wrong - Check your Setting." });
-                //Isbussy = false;
-                //IsVisibleIndecator = false;
+
             }
             finally
             {
-                //Isbussy = false;
-                //IsVisibleIndecator = false;
             }
         }
+
+
+        private SysParam _FastCashModel = new ();
+        public SysParam FastCash { get => _FastCashModel; set { SetProperty(ref _FastCashModel, value); ; OnPropertyChanged(); } }
 
         public Action<bool>? ClosePopup { get; set; }
 
@@ -382,30 +389,49 @@ namespace RestaurantOrder.ViewModels
         public double TXNNO { get => _TXNNO; set { _TXNNO = value; OnPropertyChanged(); } }
 
         private double _CashTotal;
-        public double CashTotal { get => _CashTotal; set { _CashTotal = value; OnPropertyChanged(); } }
+        public double CashTotal { get => _CashTotal; set { _CashTotal = value; OnPropertyChanged(); UpdatesUIOnpropertyChanhes(); } }
 
         private double _CardTotal;
-        public double CardTotal { get => _CardTotal; set { _CardTotal = value; OnPropertyChanged(); } }
+        public double CardTotal { get => _CardTotal; set { _CardTotal = value; OnPropertyChanged(); UpdatesUIOnpropertyChanhes(); } }
 
         private double _CurrencyTotal;
-        public double CurrencyTotal { get => _CurrencyTotal; set { _CurrencyTotal = value; OnPropertyChanged(); } }
+        public double CurrencyTotal { get => _CurrencyTotal; set { _CurrencyTotal = value; OnPropertyChanged(); UpdatesUIOnpropertyChanhes(); } }
 
         private double _BillAmount;
         public double BillAmount { get => _BillAmount; set { _BillAmount = value; OnPropertyChanged(); } }
 
-        private double _ReceivedAmount;
-        public double ReceivedAmount { get => _ReceivedAmount; set { _ReceivedAmount = value; OnPropertyChanged(); } }
+        private double _TenderedAmount;
+        public double TenderedAmount { get => _TenderedAmount; set { _TenderedAmount = value; OnPropertyChanged(); } }
 
         private double _ChangeAmount;
         public double ChangeAmount { get => _ChangeAmount; set { _ChangeAmount = value; OnPropertyChanged(); } }
 
-        private double _DueBalance;
-        public double DueBalance { get => _DueBalance; set { _DueBalance = value; OnPropertyChanged(); } }
+      //  private double _DueBalance;
+        public double DueBalance { get => Math.Max(0d, BillAmount - TotalAmount); }
 
+        //private double _TotalAmount;
+        //public double TotalAmount { get => _TotalAmount; set { _TotalAmount = value; OnPropertyChanged(); } }
 
-        //private bool _IsCardNOFocus = false;
-        //public bool IsCardNOFocus { get => _IsCardNOFocus; set { _IsCardNOFocus = value; OnPropertyChanged(); } }
+        public double TotalAmount {   get => CashTotal + CardTotal + CurrencyTotal;  }
 
+        private void UpdatesUIOnpropertyChanhes()
+        {
+            try
+            {
+                OnPropertyChanged(nameof(TotalAmount)); 
+                OnPropertyChanged(nameof(DueBalance));
+                OnPropertyChanged(nameof(IsBillSettled));
+             
+                OnPropertyChanged(nameof(IsEnableCashMode));
+                OnPropertyChanged(nameof(IsEnableCurrencyMode));
+                OnPropertyChanged(nameof(IsEnableCardMode));
+            }
+            catch(Exception ex)
+            {
+
+            }
+
+        }
 
 
         private bool _IsVisibleCashMode = true;
@@ -416,6 +442,36 @@ namespace RestaurantOrder.ViewModels
 
         private bool _IsVisibleCardMode = false;
         public bool IsVisibleCardMode { get => _IsVisibleCardMode; set { _IsVisibleCardMode = value; OnPropertyChanged(); } }
+
+
+
+        //RemainingAmount > Tolerance &&
+        //CardTotal <= Tolerance;
+        public bool IsBillSettled =>  Math.Abs(TotalAmount - BillAmount) < 0.01;
+
+        public bool IsEnableCashMode => CashTotal > 0 || !IsBillSettled;
+        public bool IsEnableCurrencyMode => CurrencyTotal > 0 || !IsBillSettled;    
+        public bool IsEnableCardMode => CardTotal > 0 || !IsBillSettled;
+
+        //private bool _IsEnableCashMode = true;
+        //public bool IsEnableCashMode { get => _IsEnableCashMode; set { _IsEnableCashMode = value; OnPropertyChanged(); } }
+
+
+        //   private bool _IsEnableCurrencyMode = true;
+
+
+        //private bool _IsEnableCurrencyMode = true;
+        //public bool IsEnableCurrencyMode { get => _IsEnableCurrencyMode; set { _IsEnableCurrencyMode = value; OnPropertyChanged(); } }
+
+
+
+        //private bool _IsEnableCardMode = true;
+        //public bool IsEnableCardMode { get => _IsEnableCardMode; set { _IsEnableCardMode = value; OnPropertyChanged(); } }
+
+
+        private ObservableCollection<EXRATE> _CurrencyListWithRate = new();
+        public ObservableCollection<EXRATE> CurrencyListWithRate { get => _CurrencyListWithRate; set { SetProperty(ref _CurrencyListWithRate, value); } }
+
 
     }
 
