@@ -593,7 +593,7 @@ namespace RestaurantOrder.ViewModels
 
                             SettlementViewModel SVModel = new SettlementViewModel();
                             SVModel.TXNNO = INVHEADDETAILS.CurrentOpenBill.TXNNO;
-                            SVModel.BillAmount = INVHEADDETAILS.CurrentOpenBill.BILLAMOUNT;
+                            SVModel.BillAmount = (decimal)INVHEADDETAILS.CurrentOpenBill.BILLAMOUNT;
                             SVModel.IsVisibleCurrencyMode = false;
                             SVModel.IsVisibleCardMode = false;
                             SVModel.IsVisibleCashMode = true;
@@ -615,8 +615,19 @@ namespace RestaurantOrder.ViewModels
                         }
                         else
                         {
-                            App.cancellationTokenSource = new();
-                            Toast.Make("Please Save Bill First.", ToastDuration.Short, 10).Show(App.cancellationTokenSource.Token);
+
+                            if (ObjConformPopup != null)
+                            {
+                                //ObjConformPopup = new ConformPopup();
+                                ObjConformPopup.PageType = "SAVEANDSETTELDBILL";
+                                ObjConformPopup.PageMessage = "Do you want to save and settled this bill?";
+                                // ObjConformPopup.PopupCommand = new Command<string[]>(ExecutePopupCommand);
+                            }
+
+                            ObjConformPopup.IsPageOpen = true;
+                            MopupService.Instance.PushAsync(ObjConformPopup, animate: true);
+                            //App.cancellationTokenSource = new();
+                            //Toast.Make("Please Save Bill First.", ToastDuration.Short, 10).Show(App.cancellationTokenSource.Token);
                         }
                         break;
                   
@@ -729,12 +740,11 @@ namespace RestaurantOrder.ViewModels
             {
                 switch (parameter[0])
                 {
+                    case "SAVEANDSETTELDBILL":
                     case "SAVEBILL":
                         if (INVHEADDETAILS?.CurrentOpenBillDetails?.Count > 0)
                         {
                             INVHEADDETAILS.CurrentOpenBill.TXNDT = DateTime.Now;
-                            //INVHEADDETAILS.CurrentOpenBill.USER = "ADMIN";
-                            //INVHEADDETAILS.CurrentOpenBill.LASTUSER = "ADMIN";
                             INVHEADDETAILS.CurrentOpenBill.LASTDATE = DateTime.Now;
                             INVHEADDETAILS.CurrentOpenBill.LASTTIME = DateTime.Now.ToString("hh:mm:ss tt");
                            // INVHEADDETAILS.CurrentOpenBill.STATUS = "O";
@@ -745,7 +755,6 @@ namespace RestaurantOrder.ViewModels
                             {
                                 item.BRANCHCODE = "HQ";
                                 item.UPDATED = "Y";
-                               // item.VIPNO 
                                 item.LASTUSER = App.ObjMainUserViewModel.UserEmail;
                                 item.LASTDATE = DateTime.Now;
                                 item.LASTTIME = DateTime.Now.ToString("hh:mm:ss tt");
@@ -757,31 +766,96 @@ namespace RestaurantOrder.ViewModels
                                 var StrArray = response.Split(':'); 
                                  string ReturnValue = StrArray[1].Trim(); // "Inserted"
 
-                                if (ReturnValue == "Inserted")
+                                if (parameter[0] == "SAVEANDSETTELDBILL")
                                 {
-                                    App.cancellationTokenSource = new();
-                                    await Toast.Make("Bill Saved Successfully.", ToastDuration.Short, 10).Show(App.cancellationTokenSource.Token);
-                                    await ClosePageAsync();
-                                }
-                                else if(ReturnValue == "Updated")
-                                {
-                                    try
+                                    if (ReturnValue == "Inserted")
+                                    {
+                                        INVHEADDETAILS.CurrentOpenBill.TXNNO = Convert.ToDouble(StrArray[0].Trim());
+                                        _ = GetBillDetalsonTXNO(INVHEADDETAILS.CurrentOpenBill.TXNNO);
+
+
+                                        ObjSettlementPopup = null;
+
+                                        SettlementViewModel SVModel = new SettlementViewModel();
+                                        SVModel.TXNNO = INVHEADDETAILS.CurrentOpenBill.TXNNO;
+                                        SVModel.BillAmount = (decimal)INVHEADDETAILS.CurrentOpenBill.BILLAMOUNT;
+                                        SVModel.IsVisibleCurrencyMode = false;
+                                        SVModel.IsVisibleCardMode = false;
+                                        SVModel.IsVisibleCashMode = true;
+                                        SVModel.CashTotal = 0;
+                                        SVModel.TenderedAmount = 0;
+                                        SVModel.ChangeAmount = 0;
+                                        ObjSettlementPopup = new SettlementPopup(SVModel);
+
+                                        if (ObjSettlementPopup != null)
+                                        {
+                                            ObjSettlementPopup.PopupCommand = new Command<string[]>(ExecutePopupCommand);
+                                        }
+                                        ObjSettlementPopup.IsPageOpen = true;
+                                        await MopupService.Instance.PushAsync(ObjSettlementPopup, animate: true);
+
+                                    }
+                                    else if (ReturnValue == "Updated")
+                                    {
+                                        ObjSettlementPopup = null;
+
+                                        SettlementViewModel SVModel = new SettlementViewModel();
+                                        SVModel.TXNNO = INVHEADDETAILS.CurrentOpenBill.TXNNO;
+                                        SVModel.BillAmount = (decimal)INVHEADDETAILS.CurrentOpenBill.BILLAMOUNT;
+                                        SVModel.IsVisibleCurrencyMode = false;
+                                        SVModel.IsVisibleCardMode = false;
+                                        SVModel.IsVisibleCashMode = true;
+                                        SVModel.CashTotal = 0;
+                                        SVModel.TenderedAmount = 0;
+                                        SVModel.ChangeAmount = 0;
+                                        ObjSettlementPopup = new SettlementPopup(SVModel);
+
+                                        if (ObjSettlementPopup != null)
+                                        {
+                                            ObjSettlementPopup.PopupCommand = new Command<string[]>(ExecutePopupCommand);
+                                        }
+                                        ObjSettlementPopup.IsPageOpen = true;
+                                        await MopupService.Instance.PushAsync(ObjSettlementPopup, animate: true);
+                                    }
+                                    else
                                     {
                                         App.cancellationTokenSource = new();
-                                        await Toast.Make("Bill Updated Successfully.", ToastDuration.Short, 10).Show(App.cancellationTokenSource.Token);
-
-                                        await ClosePageAsync();
+                                        await Toast.Make("Something Went Wrong!.", ToastDuration.Short, 10).Show(App.cancellationTokenSource.Token);
                                     }
-                                    catch (Exception ex)
-                                    {
 
-                                    }
-                                    
                                 }
                                 else
                                 {
-                                    App.cancellationTokenSource = new();
-                                    await Toast.Make("Something Went Wrong!.", ToastDuration.Short, 10).Show(App.cancellationTokenSource.Token);
+
+                                    if (ReturnValue == "Inserted")
+                                    {
+
+                                        App.cancellationTokenSource = new();
+                                        await Toast.Make("Bill Saved Successfully.", ToastDuration.Short, 10).Show(App.cancellationTokenSource.Token);
+                                        await ClosePageAsync();
+
+                                    }
+                                    else if (ReturnValue == "Updated")
+                                    {
+                                        try
+                                        {
+                                            App.cancellationTokenSource = new();
+                                            await Toast.Make("Bill Updated Successfully.", ToastDuration.Short, 10).Show(App.cancellationTokenSource.Token);
+
+                                            await ClosePageAsync();
+                                        }
+                                        catch (Exception ex)
+                                        {
+
+                                        }
+
+                                    }
+                                    else
+                                    {
+                                        App.cancellationTokenSource = new();
+                                        await Toast.Make("Something Went Wrong!.", ToastDuration.Short, 10).Show(App.cancellationTokenSource.Token);
+                                    }
+                                  
                                 }
                                 await LoadAllOpenBillsList();
                             }

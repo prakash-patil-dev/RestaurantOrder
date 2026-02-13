@@ -1,5 +1,6 @@
 ﻿using RestaurantOrder.ApiService;
 using RestaurantOrder.Models;
+using System;
 using System.Collections.ObjectModel;
 using System.Windows.Input;
 
@@ -15,6 +16,7 @@ namespace RestaurantOrder.ViewModels
                 //_ = LoadCardsType();
                 QuickBtnCLickCommand = new Command<string>(QuickBtnClicked);
                 QuickNumKeysClickCommand = new Command<string>(QuickKeysClicked);
+                CurrencySelectedCommand = new Command(OnCurrencySelected);
             }
             catch (Exception ex)
             {
@@ -22,7 +24,24 @@ namespace RestaurantOrder.ViewModels
             }
 
         }
-
+        private void OnCurrencySelected()
+        {
+            try
+            {
+                if (CurrencySelectedItem == null)
+                    return;
+                //AllItemList.Clear();
+                //AllItemList = new ObservableCollection<item>(_allItemsBackup.Where(x => x.CATCODE == CategorySelectedItem.CODE).ToList());
+                //IsComboListVisible = false;
+                //IsCategoryListVisible = false;
+                //IsItemListVisible = true;
+               // CurrencySelectedItem = null;
+            }
+            catch (Exception ex)
+            {
+                CurrencySelectedItem = null;
+            }
+        }
         private async void QuickBtnClicked(string parameter)
         {
             try
@@ -128,10 +147,9 @@ namespace RestaurantOrder.ViewModels
                         break;
 
                     case "SET":
-
-                        if (string.IsNullOrEmpty(QuickQtyEntryValue) || Convert.ToDouble(QuickQtyEntryValue) > BillAmount)
+                        if (string.IsNullOrEmpty(QuickQtyEntryValue) || Convert.ToDecimal(QuickQtyEntryValue) > BillAmount && !IsVisibleCurrencyMode)
                         {
-                            string modeText = IsVisibleCashMode ? "cash total" : "card total";
+                            string modeText = IsVisibleCashMode ? "cash total" :  "card total";
                             App.cancellationTokenSource = new();
                             await Toast.Make($"Please enter valid {modeText}", ToastDuration.Short, 10).Show(App.cancellationTokenSource.Token);
                             break;
@@ -139,11 +157,34 @@ namespace RestaurantOrder.ViewModels
 
                         if (IsVisibleCashMode)
                         {
-                            CashTotal = Convert.ToDouble(QuickQtyEntryValue);
+                            CashTotal = Convert.ToDecimal(QuickQtyEntryValue);
                         }
                         else if (IsVisibleCardMode)
                         {
-                            CardTotal = Convert.ToDouble(QuickQtyEntryValue);
+                            CardTotal = Convert.ToDecimal(QuickQtyEntryValue);
+                        }
+                        else if (IsVisibleCurrencyMode)
+                        {
+                            if (CurrencySelectedItem != null)
+                            {
+
+                                decimal CurrTotal = (decimal)(CurrencySelectedItem.ERATE_RATE * Convert.ToDouble(QuickQtyEntryValue));
+                                if (CurrTotal > BillAmount)
+                                {
+                                    App.cancellationTokenSource = new();
+                                    await Toast.Make($"Please enter valid Currency Total", ToastDuration.Short, 10).Show(App.cancellationTokenSource.Token);
+                                }
+                                else
+                                {
+                                    CurrencySelectedItem.ERATE_PaidAmount = (float)Convert.ToDouble(QuickQtyEntryValue);
+                                    CurrencyTotal = CurrTotal;
+                                }
+                            }
+                            else
+                            {
+                                App.cancellationTokenSource = new();
+                                await Toast.Make($"Please Select Valid Currency", ToastDuration.Short, 10).Show(App.cancellationTokenSource.Token);
+                            }
                         }
                         break;
                     case "SETCARDNO":
@@ -165,7 +206,7 @@ namespace RestaurantOrder.ViewModels
                         break;
 
                     case "RECIVED":
-                        TenderedAmount = Convert.ToDouble(QuickQtyEntryValue);
+                        TenderedAmount = Convert.ToDecimal(QuickQtyEntryValue);
                         CalculateChangeAmount();
                             break;
                     case "FAST0":
@@ -206,9 +247,15 @@ namespace RestaurantOrder.ViewModels
                         break;
                     case "SETTLE":
                         // if (CashTotal + CardTotal == BillAmount)
-                        if (TotalAmount >= BillAmount)
+                        //if (TotalAmount >= BillAmount)
+                        if (DueBalance == 0m)
                         {
-                            if (CashTotal + CardTotal != BillAmount)
+                            //if (CashTotal + CardTotal + CurrencyTotal != BillAmount)
+                            var roundedTotal = Math.Round(CashTotal + CardTotal + CurrencyTotal,2,MidpointRounding.AwayFromZero);
+
+                            var roundedBill = Math.Round(BillAmount,2,MidpointRounding.AwayFromZero);
+
+                            if (roundedTotal != roundedBill)
                             {
                                 App.cancellationTokenSource = new();
                                 await Toast.Make("Settlement total must match bill amount", ToastDuration.Short, 10).Show(App.cancellationTokenSource.Token);
@@ -237,6 +284,7 @@ namespace RestaurantOrder.ViewModels
                                 BillAmount = BillAmount,
                                 CardTotal = CardTotal,
                                 CashTotal = CashTotal,
+                                CurrencyTotal = CurrencyTotal,
                                 CashEntry = new CASHDRAW
                                 {
                                     BRANCHCODE = "HQ",
@@ -263,6 +311,20 @@ namespace RestaurantOrder.ViewModels
                                     BRANCHCODE = "HQ",
                                     MODE = CashTotal > 0 && CardTotal > 0 ? "T" : CardTotal > 0 ? "N" : "N",
                                     UPDATED = "Y"
+                                },
+                                CurrencyEntry = new INVCURRENCY
+                                {
+                                    BranchCode = "HQ",
+                                    CurCode = CurrencySelectedItem?.ERATE_CURR,
+                                    TxnNo = TXNNO,
+                                    TxnDt = DateTime.Now,
+                                    Amount = Math.Round(CurrencySelectedItem?.ERATE_PaidAmount ?? 0d,2,MidpointRounding.AwayFromZero),
+                                    Status = "C",
+                                    LastUser = App.ObjMainUserViewModel.UserEmail,
+                                    LastDate =  DateTime.Now,
+                                    LastTime = DateTime.Now.ToString("hh:mm:ss tt"),
+                                    Updated ="Y",
+                                    ExchRate = Math.Round(CurrencySelectedItem?.ERATE_RATE ?? 0d, 2,  MidpointRounding.AwayFromZero)
                                 },
                                 LASTUSER = App.ObjMainUserViewModel.UserEmail,
                                 LASTDATE = DateTime.Now,
@@ -388,31 +450,46 @@ namespace RestaurantOrder.ViewModels
         private double _TXNNO;
         public double TXNNO { get => _TXNNO; set { _TXNNO = value; OnPropertyChanged(); } }
 
-        private double _CashTotal;
-        public double CashTotal { get => _CashTotal; set { _CashTotal = value; OnPropertyChanged(); UpdatesUIOnpropertyChanhes(); } }
+        private decimal _CashTotal;
+        public decimal CashTotal { get => _CashTotal; set { _CashTotal = value; OnPropertyChanged(); UpdatesUIOnpropertyChanhes(); } }
 
-        private double _CardTotal;
-        public double CardTotal { get => _CardTotal; set { _CardTotal = value; OnPropertyChanged(); UpdatesUIOnpropertyChanhes(); } }
+        private decimal _CardTotal;
+        public decimal CardTotal { get => _CardTotal; set { _CardTotal = value; OnPropertyChanged(); UpdatesUIOnpropertyChanhes(); } }
 
-        private double _CurrencyTotal;
-        public double CurrencyTotal { get => _CurrencyTotal; set { _CurrencyTotal = value; OnPropertyChanged(); UpdatesUIOnpropertyChanhes(); } }
+        private decimal _CurrencyTotal;
+        public decimal CurrencyTotal { get => _CurrencyTotal; set { _CurrencyTotal = value; OnPropertyChanged(); UpdatesUIOnpropertyChanhes(); } }
 
-        private double _BillAmount;
-        public double BillAmount { get => _BillAmount; set { _BillAmount = value; OnPropertyChanged(); } }
 
-        private double _TenderedAmount;
-        public double TenderedAmount { get => _TenderedAmount; set { _TenderedAmount = value; OnPropertyChanged(); } }
 
-        private double _ChangeAmount;
-        public double ChangeAmount { get => _ChangeAmount; set { _ChangeAmount = value; OnPropertyChanged(); } }
+        private decimal _BillAmount;
+        public decimal BillAmount { get => _BillAmount; set { _BillAmount = value; OnPropertyChanged(); } }
 
-      //  private double _DueBalance;
-        public double DueBalance { get => Math.Max(0d, BillAmount - TotalAmount); }
+        private decimal _TenderedAmount;
+        public decimal TenderedAmount { get => _TenderedAmount; set { _TenderedAmount = value; OnPropertyChanged(); } }
+
+        private decimal _ChangeAmount;
+        public decimal ChangeAmount { get => _ChangeAmount; set { _ChangeAmount = value; OnPropertyChanged(); } }
+
+        //  private double _DueBalance;
+        //        public double DueBalance { get => Math.Max(0d, BillAmount - TotalAmount); }
+
+        public decimal DueBalance
+        {
+            get
+            {
+                decimal due = BillAmount - TotalAmount;
+
+                return Math.Max(
+                    0m,
+                    Math.Round(due, 2, MidpointRounding.AwayFromZero)
+                );
+            }
+        }
 
         //private double _TotalAmount;
         //public double TotalAmount { get => _TotalAmount; set { _TotalAmount = value; OnPropertyChanged(); } }
 
-        public double TotalAmount {   get => CashTotal + CardTotal + CurrencyTotal;  }
+        public decimal TotalAmount {   get => CashTotal + CardTotal + CurrencyTotal;  }
 
         private void UpdatesUIOnpropertyChanhes()
         {
@@ -447,7 +524,9 @@ namespace RestaurantOrder.ViewModels
 
         //RemainingAmount > Tolerance &&
         //CardTotal <= Tolerance;
-        public bool IsBillSettled =>  Math.Abs(TotalAmount - BillAmount) < 0.01;
+        //public bool IsBillSettled =>  Math.Abs(TotalAmount - BillAmount) < 0.01;
+        public bool IsBillSettled => Math.Abs(TotalAmount - BillAmount) < 0.01m;
+
 
         public bool IsEnableCashMode => CashTotal > 0 || !IsBillSettled;
         public bool IsEnableCurrencyMode => CurrencyTotal > 0 || !IsBillSettled;    
@@ -471,6 +550,11 @@ namespace RestaurantOrder.ViewModels
 
         private ObservableCollection<EXRATE> _CurrencyListWithRate = new();
         public ObservableCollection<EXRATE> CurrencyListWithRate { get => _CurrencyListWithRate; set { SetProperty(ref _CurrencyListWithRate, value); } }
+
+        public ICommand CurrencySelectedCommand { get; set; }
+
+        private EXRATE? _CurrencySelectedItem;
+        public EXRATE? CurrencySelectedItem { get => _CurrencySelectedItem; set { SetProperty(ref _CurrencySelectedItem, value); } }
 
 
     }

@@ -27,6 +27,9 @@ namespace RestaurantOrder.Views
 
                 switch (PageType)
                 {
+                    case "SAVEANDSETTELDBILL":
+                         SaveArry = new[] { "SAVEANDSETTELDBILL" };
+                        break;
                     case "SAVEBILL":
                         SaveArry = new[] { "SAVEBILL" };
                         break;
@@ -163,8 +166,8 @@ namespace RestaurantOrder.Views
                                                              //page.ImgCancel.Text = (string)n == "SAVEBILL" ? "? Yes, Save" : "? Yes";
                                                              //page.ImgExit.Text = (string)n == "SAVEBILL" ? "? No, Cancel": "? No" ;
 
-                                                             page.ImgExit.Text = (string)n == "SAVEBILL" ? "Yes, Save" : "Yes";
-                                                             page.ImgCancel.Text = (string)n == "SAVEBILL" ? "No, Cancel" : "No";
+                                                             page.ImgExit.Text = (string)n == "SAVEBILL" || (string)n == "SAVEANDSETTELDBILL" ? "Yes, Save" : "Yes";
+                                                             page.ImgCancel.Text = (string)n == "SAVEBILL" || (string)n == "SAVEANDSETTELDBILL" ? "No, Cancel" : "No";
                                                          });
 
     }

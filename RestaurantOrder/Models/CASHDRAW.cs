@@ -22,7 +22,7 @@ namespace RestaurantOrder.Models
         public string? DESC4 { get; set; }
         public string MODE { get; set; }
         public double TOPUPAMT { get; set; }
-        public double CASHAMT { get; set; }
+        public decimal CASHAMT { get; set; }
         public double? DEPCASH { get; set; }
         public double? CARDAMT { get; set; }
         public string? CARDNAME { get; set; }
@@ -34,7 +34,7 @@ namespace RestaurantOrder.Models
         public double TXNNO { get; set; }
         public string? CRNO { get; set; }
         public DateTime TXNDT { get; set; }
-        public double AMOUNT { get; set; }
+        public decimal AMOUNT { get; set; }
         public string? CRCODE { get; set; }
         public string LASTUSER { get; set; }
         public DateTime LASTDATE { get; set; }
@@ -44,16 +44,34 @@ namespace RestaurantOrder.Models
         public string UPDATED { get; set; }
     }
 
+    public class INVCURRENCY
+    {
+        public string BranchCode { get; set; }   
+        public string CurCode { get; set; }      
+        public double TxnNo { get; set; }        
+        public DateTime TxnDt { get; set; }      
+        public double Amount { get; set; }       
+        public string Status { get; set; }       
+        public string LastUser { get; set; }     
+        public DateTime LastDate { get; set; }   
+        public string LastTime { get; set; }     
+        public string Updated { get; set; }      
+        public double ExchRate { get; set; }     
+    }
+
+
     public class SettlementRequest
     {
         public double BILLNO { get; set; }
-        public double BillAmount { get; set; }
+        public decimal BillAmount { get; set; }
         public string Mode => CashTotal > 0 && CardTotal > 0 ? "T" : CashTotal > 0 ? "C" : CardTotal > 0 ? "N" : "D";
         // USER ENTERED VALUES
-        public double CashTotal { get; set; }
-        public double CardTotal { get; set; }
+        public decimal CashTotal { get; set; }
+        public decimal CardTotal { get; set; }
+        public decimal CurrencyTotal { get; set; }
         public INVCARD InvCardEntry { get; set; }
         public CASHDRAW CashEntry { get; set; }
+        public INVCURRENCY CurrencyEntry { get; set; }
         public string LASTUSER { get; set; }
         public DateTime LASTDATE { get; set; }
         public string LASTTIME { get; set; }
